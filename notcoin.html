@@ -13,6 +13,7 @@
             --text-muted: #8b92a5;
             --accent-blue: #229ED9;
             --border-color: #232936;
+            --accent-green: #2bd67b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
@@ -49,7 +50,6 @@
         .card-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-id { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
         
-        /* Кнопка */
         .btn-price {
             background-color: var(--accent-blue); color: white; border: none;
             padding: 12px; border-radius: 12px; width: 100%;
@@ -57,11 +57,7 @@
             display: flex; justify-content: center; align-items: center; gap: 6px;
             transition: background-color 0.1s, transform 0.1s;
         }
-        /* Эффект нажатия */
-        .btn-price:active {
-            background-color: #1a7eb0;
-            transform: scale(0.96);
-        }
+        .btn-price:active { background-color: #1a7eb0; transform: scale(0.96); }
         
         .ton-icon {
             width: 16px; height: 16px; background-color: white; border-radius: 50%;
@@ -89,6 +85,15 @@
         .activity-price-row .ton-icon { width: 14px; height: 14px; font-size: 9px; }
         .activity-status { color: var(--accent-blue); font-size: 14px; font-weight: 600; }
         .activity-time { font-size: 11px; color: var(--text-muted); }
+
+        /* Профиль */
+        .profile-card {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 20px;
+        }
+        .profile-card p { margin-bottom: 10px; font-size: 15px; }
+        .profile-card b { color: var(--accent-blue); }
 
         /* Нижняя панель */
         .bottom-nav {
@@ -130,6 +135,19 @@
         </div>
     </div>
 
+    <!-- ПРОФИЛЬ -->
+    <div id="page-profile" class="page">
+        <h2>👤 Профиль</h2>
+        <p class="subtitle">Информация об аккаунте</p>
+        <div class="profile-card">
+            <p>Имя: <b id="user-name">Загрузка...</b></p>
+            <p>ID: <b id="user-id">...</b></p>
+            <p style="margin-top: 20px; color: var(--text-muted); font-size: 13px;">
+                Связь с менеджером: @cryptoironik
+            </p>
+        </div>
+    </div>
+
     <!-- НАВИГАЦИЯ -->
     <div class="bottom-nav">
         <div class="nav-item active" id="nav-market" onclick="switchPage('market')">
@@ -144,6 +162,10 @@
             <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
             Хранилище
         </div>
+        <div class="nav-item" id="nav-profile" onclick="switchPage('profile')">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Профиль
+        </div>
     </div>
 
     <script>
@@ -152,7 +174,13 @@
         tg.setHeaderColor('#0b0e14');
         tg.setBackgroundColor('#0b0e14');
 
-        // Переключение страниц
+        // Данные пользователя для профиля
+        let user = tg.initDataUnsafe?.user;
+        if (user) {
+            document.getElementById('user-name').innerText = user.first_name || 'Пользователь';
+            document.getElementById('user-id').innerText = user.id;
+        }
+
         function switchPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
@@ -165,7 +193,6 @@
 
         const baseUrl = "https://mistrobot510-blip.github.io/cryptoironik/";
         const gifts = [
-            // СТАРЫЕ
             { id: 1, name: "Durov's Cap", num: "#2997", price: 620, img: baseUrl + "DurovsCap-2997.jpg" },
             { id: 2, name: "Astral Shard", num: "#1221", price: 121, img: baseUrl + "AstralShard-1221.jpg" },
             { id: 3, name: "Loot Bag", num: "#9507", price: 97.7, img: baseUrl + "LootBag-9507.jpg" },
@@ -189,17 +216,16 @@
             { id: 21, name: "Jester Hat", num: "#132381", price: 5, img: baseUrl + "JesterHat-132381.jpg" },
             { id: 22, name: "Top Hat", num: "#12680", price: 5, img: baseUrl + "TopHat-12680.jpg" },
             
-            // НОВЫЕ
+            // Новые (без Trapped Heart)
             { id: 23, name: "Easter Egg", num: "#126516", price: 56.9, img: baseUrl + "EasterEgg-126516.jpg" },
             { id: 24, name: "Witch Hat", num: "#13759", price: 32.1, img: baseUrl + "WitchHat-13759.jpg" },
             { id: 25, name: "Bow Tie", num: "#17696", price: 29.0, img: baseUrl + "BowTie-17696.jpg" },
             { id: 26, name: "Clover Pin", num: "#135587", price: 22.7, img: baseUrl + "CloverPin-135587.jpg" },
             { id: 27, name: "Nail Bracelet", num: "#46", price: 240.0, img: baseUrl + "NailBracelet-46.jpg" },
-            { id: 28, name: "Trapped Heart", num: "#777", price: 43.0, img: baseUrl + "TrappedHeart-777.jpg" },
-            { id: 29, name: "Mini Oscar", num: "#1453", price: 87.6, img: baseUrl + "MiniOscar-1453.jpg" }
+            { id: 28, name: "Mini Oscar", num: "#1453", price: 87.6, img: baseUrl + "MiniOscar-1453.jpg" }
         ];
 
-        // --- МАРКЕТ ---
+        // МАРКЕТ
         const grid = document.getElementById('market-grid');
         gifts.forEach((gift) => {
             const card = document.createElement('div');
@@ -225,11 +251,8 @@
             btn.className = 'btn-price';
             btn.innerHTML = `<div class="ton-icon">▽</div> ${gift.price}`;
             
-            // ЧЕТКИЙ ОБРАБОТЧИК НАЖАТИЯ
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
-                // Сначала визуальный отклик (в CSS уже есть :active), 
-                // потом вызов окна Телеграма
                 tg.showAlert("Для покупки этого NFT напишите менеджеру: @cryptoironik");
             });
 
@@ -240,7 +263,7 @@
             grid.appendChild(card);
         });
 
-        // --- АКТИВНОСТЬ ---
+        // АКТИВНОСТЬ
         const activityList = document.getElementById('activity-list');
         function generateActivity() {
             const randomGift = gifts[Math.floor(Math.random() * gifts.length)];
@@ -271,7 +294,7 @@
         setInterval(generateActivity, 4000);
         for (let i = 0; i < 5; i++) setTimeout(generateActivity, i * 200);
 
-        // --- ХРАНИЛИЩЕ ---
+        // ХРАНИЛИЩЕ
         function getStorage() {
             let store = localStorage.getItem('notcoin_storage');
             return store ? JSON.parse(store) : [];
@@ -310,4 +333,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
