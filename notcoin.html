@@ -22,9 +22,15 @@
             padding: 16px;
             padding-bottom: 90px;
         }
+        
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.2s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
         .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
         
+        /* Сетка маркета */
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         .card {
             background-color: var(--bg-card);
@@ -43,18 +49,48 @@
         .card-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-id { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
         
+        /* Кнопка */
         .btn-price {
             background-color: var(--accent-blue); color: white; border: none;
             padding: 12px; border-radius: 12px; width: 100%;
             font-size: 15px; font-weight: 700; cursor: pointer;
             display: flex; justify-content: center; align-items: center; gap: 6px;
+            transition: background-color 0.1s, transform 0.1s;
         }
+        /* Эффект нажатия */
+        .btn-price:active {
+            background-color: #1a7eb0;
+            transform: scale(0.96);
+        }
+        
         .ton-icon {
             width: 16px; height: 16px; background-color: white; border-radius: 50%;
             display: inline-flex; justify-content: center; align-items: center;
             color: var(--accent-blue); font-size: 10px; font-weight: 900;
         }
 
+        /* Активность */
+        .activity-list { display: flex; flex-direction: column; gap: 8px; }
+        .activity-item {
+            background-color: var(--bg-card); border-radius: 16px; padding: 10px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .activity-img-container {
+            width: 56px; height: 56px; border-radius: 12px;
+            background: radial-gradient(circle, #2a2e38 0%, #15171e 100%);
+            display: flex; justify-content: center; align-items: center; flex-shrink: 0;
+        }
+        .activity-img { width: 80%; height: 80%; object-fit: contain; }
+        .activity-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .activity-name { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 2px; }
+        .activity-id { font-size: 13px; color: var(--text-muted); }
+        .activity-right { display: flex; flex-direction: column; align-items: flex-end; justify-content: center; }
+        .activity-price-row { display: flex; align-items: center; gap: 4px; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+        .activity-price-row .ton-icon { width: 14px; height: 14px; font-size: 9px; }
+        .activity-status { color: var(--accent-blue); font-size: 14px; font-weight: 600; }
+        .activity-time { font-size: 11px; color: var(--text-muted); }
+
+        /* Нижняя панель */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background-color: var(--bg-card);
@@ -63,25 +99,48 @@
             border-top: 1px solid var(--border-color);
             z-index: 100;
         }
-        .nav-item { color: var(--text-muted); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-weight: 500; }
+        .nav-item { color: var(--text-muted); font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-weight: 500; transition: color 0.2s; }
         .nav-item.active { color: var(--accent-blue); }
-        .nav-item svg { width: 24px; height: 24px; fill: currentColor; }
+        .nav-item svg { width: 22px; height: 22px; fill: currentColor; }
     </style>
 </head>
 <body>
 
+    <!-- МАРКЕТ -->
     <div id="page-market" class="page active">
         <h2>🛍 NotCoin Market</h2>
         <p class="subtitle">Лучшие NFT-подарки</p>
         <div class="grid" id="market-grid"></div>
     </div>
 
+    <!-- АКТИВНОСТЬ -->
+    <div id="page-activity" class="page">
+        <h2>⚡️ Активность</h2>
+        <p class="subtitle">Последние продажи на маркете</p>
+        <div class="activity-list" id="activity-list"></div>
+    </div>
+
+    <!-- ХРАНИЛИЩЕ -->
+    <div id="page-storage" class="page">
+        <h2>📦 Мои NFT</h2>
+        <p class="subtitle">Ваши подарки в хранилище</p>
+        <div class="grid" id="storage-grid"></div>
+        <div id="empty-storage" style="text-align: center; color: #8b92a5; margin-top: 40px;">
+            У вас пока нет NFT в хранилище.
+        </div>
+    </div>
+
+    <!-- НАВИГАЦИЯ -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="tg.showAlert('Вы на главной')">
+        <div class="nav-item active" id="nav-market" onclick="switchPage('market')">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             Маркет
         </div>
-        <div class="nav-item" onclick="tg.showAlert('В разработке')">
+        <div class="nav-item" id="nav-activity" onclick="switchPage('activity')">
+            <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+            Активность
+        </div>
+        <div class="nav-item" id="nav-storage" onclick="switchPage('storage')">
             <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
             Хранилище
         </div>
@@ -93,44 +152,55 @@
         tg.setHeaderColor('#0b0e14');
         tg.setBackgroundColor('#0b0e14');
 
+        // Переключение страниц
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('nav-' + pageId).classList.add('active');
+
+            if (pageId === 'storage') renderStorage();
+        }
+
         const baseUrl = "https://mistrobot510-blip.github.io/cryptoironik/";
         const gifts = [
             // СТАРЫЕ
-            { name: "Durov's Cap", num: "#2997", price: 620, img: baseUrl + "DurovsCap-2997.jpg" },
-            { name: "Astral Shard", num: "#1221", price: 121, img: baseUrl + "AstralShard-1221.jpg" },
-            { name: "Loot Bag", num: "#9507", price: 97.7, img: baseUrl + "LootBag-9507.jpg" },
-            { name: "Toy Bear", num: "#32994", price: 59.6, img: baseUrl + "ToyBear-32994.jpg" },
-            { name: "Diamond Ring", num: "#20493", price: 43.1, img: baseUrl + "DiamondRing-20493.jpg" },
-            { name: "Mighty Arm", num: "#3719", price: 23.2, img: baseUrl + "MightyArm-3719.jpg" },
-            { name: "Surge Board", num: "#1090", price: 21.5, img: baseUrl + "SurgeBoard-1090.jpg" },
-            { name: "Mood Pack", num: "#180789", price: 14, img: baseUrl + "MoodPack-180789.jpg" },
-            { name: "Lunar Snake", num: "#198046", price: 9.8, img: baseUrl + "LunarSnake-198046.jpg" },
-            { name: "Bunny Muffin", num: "#50431", price: 8.7, img: baseUrl + "BunnyMuffin-50431.jpg" },
-            { name: "Snake Box", num: "#165875", price: 5.1, img: baseUrl + "SnakeBox-165875.jpg" },
-            { name: "Love Potion", num: "#16384", price: 5, img: baseUrl + "LovePotion-16384.jpg" },
-            { name: "Lol Pop", num: "#232765", price: 5, img: baseUrl + "LolPop-232765.jpg" },
-            { name: "Candy Cane", num: "#46898", price: 5, img: baseUrl + "CandyCane-46898.jpg" },
-            { name: "Santa Hat", num: "#67499", price: 5, img: baseUrl + "SantaHat-67499.jpg" },
-            { name: "Precious Peach", num: "#975", price: 5, img: baseUrl + "PreciousPeach-975.jpg" },
-            { name: "Star Notepad", num: "#67850", price: 5, img: baseUrl + "StarNotepad-67850.jpg" },
-            { name: "Winter Wreath", num: "#70288", price: 5, img: baseUrl + "WinterWreath-70288.jpg" },
-            { name: "Ginger Cookie", num: "#140033", price: 5, img: baseUrl + "GingerCookie-140033.jpg" },
-            { name: "Pet Snake", num: "#187097", price: 5, img: baseUrl + "PetSnake-187097.jpg" },
-            { name: "Jester Hat", num: "#132381", price: 5, img: baseUrl + "JesterHat-132381.jpg" },
-            { name: "Top Hat", num: "#12680", price: 5, img: baseUrl + "TopHat-12680.jpg" },
+            { id: 1, name: "Durov's Cap", num: "#2997", price: 620, img: baseUrl + "DurovsCap-2997.jpg" },
+            { id: 2, name: "Astral Shard", num: "#1221", price: 121, img: baseUrl + "AstralShard-1221.jpg" },
+            { id: 3, name: "Loot Bag", num: "#9507", price: 97.7, img: baseUrl + "LootBag-9507.jpg" },
+            { id: 4, name: "Toy Bear", num: "#32994", price: 59.6, img: baseUrl + "ToyBear-32994.jpg" },
+            { id: 5, name: "Diamond Ring", num: "#20493", price: 43.1, img: baseUrl + "DiamondRing-20493.jpg" },
+            { id: 6, name: "Mighty Arm", num: "#3719", price: 23.2, img: baseUrl + "MightyArm-3719.jpg" },
+            { id: 7, name: "Surge Board", num: "#1090", price: 21.5, img: baseUrl + "SurgeBoard-1090.jpg" },
+            { id: 8, name: "Mood Pack", num: "#180789", price: 14, img: baseUrl + "MoodPack-180789.jpg" },
+            { id: 9, name: "Lunar Snake", num: "#198046", price: 9.8, img: baseUrl + "LunarSnake-198046.jpg" },
+            { id: 10, name: "Bunny Muffin", num: "#50431", price: 8.7, img: baseUrl + "BunnyMuffin-50431.jpg" },
+            { id: 11, name: "Snake Box", num: "#165875", price: 5.1, img: baseUrl + "SnakeBox-165875.jpg" },
+            { id: 12, name: "Love Potion", num: "#16384", price: 5, img: baseUrl + "LovePotion-16384.jpg" },
+            { id: 13, name: "Lol Pop", num: "#232765", price: 5, img: baseUrl + "LolPop-232765.jpg" },
+            { id: 14, name: "Candy Cane", num: "#46898", price: 5, img: baseUrl + "CandyCane-46898.jpg" },
+            { id: 15, name: "Santa Hat", num: "#67499", price: 5, img: baseUrl + "SantaHat-67499.jpg" },
+            { id: 16, name: "Precious Peach", num: "#975", price: 5, img: baseUrl + "PreciousPeach-975.jpg" },
+            { id: 17, name: "Star Notepad", num: "#67850", price: 5, img: baseUrl + "StarNotepad-67850.jpg" },
+            { id: 18, name: "Winter Wreath", num: "#70288", price: 5, img: baseUrl + "WinterWreath-70288.jpg" },
+            { id: 19, name: "Ginger Cookie", num: "#140033", price: 5, img: baseUrl + "GingerCookie-140033.jpg" },
+            { id: 20, name: "Pet Snake", num: "#187097", price: 5, img: baseUrl + "PetSnake-187097.jpg" },
+            { id: 21, name: "Jester Hat", num: "#132381", price: 5, img: baseUrl + "JesterHat-132381.jpg" },
+            { id: 22, name: "Top Hat", num: "#12680", price: 5, img: baseUrl + "TopHat-12680.jpg" },
             
-            // НОВЫЕ 7 (с твоими ценами)
-            { name: "Easter Egg", num: "#126516", price: 56.9, img: baseUrl + "EasterEgg-126516.jpg" },
-            { name: "Witch Hat", num: "#13759", price: 32.1, img: baseUrl + "WitchHat-13759.jpg" },
-            { name: "Bow Tie", num: "#17696", price: 29.0, img: baseUrl + "BowTie-17696.jpg" },
-            { name: "Clover Pin", num: "#135587", price: 22.7, img: baseUrl + "CloverPin-135587.jpg" },
-            { name: "Nail Bracelet", num: "#46", price: 240.0, img: baseUrl + "NailBracelet-46.jpg" },
-            { name: "Trapped Heart", num: "#777", price: 43.0, img: baseUrl + "TrappedHeart-777.jpg" },
-            { name: "Mini Oscar", num: "#1453", price: 87.6, img: baseUrl + "MiniOscar-1453.jpg" }
+            // НОВЫЕ
+            { id: 23, name: "Easter Egg", num: "#126516", price: 56.9, img: baseUrl + "EasterEgg-126516.jpg" },
+            { id: 24, name: "Witch Hat", num: "#13759", price: 32.1, img: baseUrl + "WitchHat-13759.jpg" },
+            { id: 25, name: "Bow Tie", num: "#17696", price: 29.0, img: baseUrl + "BowTie-17696.jpg" },
+            { id: 26, name: "Clover Pin", num: "#135587", price: 22.7, img: baseUrl + "CloverPin-135587.jpg" },
+            { id: 27, name: "Nail Bracelet", num: "#46", price: 240.0, img: baseUrl + "NailBracelet-46.jpg" },
+            { id: 28, name: "Trapped Heart", num: "#777", price: 43.0, img: baseUrl + "TrappedHeart-777.jpg" },
+            { id: 29, name: "Mini Oscar", num: "#1453", price: 87.6, img: baseUrl + "MiniOscar-1453.jpg" }
         ];
 
+        // --- МАРКЕТ ---
         const grid = document.getElementById('market-grid');
-
         gifts.forEach((gift) => {
             const card = document.createElement('div');
             card.className = 'card';
@@ -155,9 +225,13 @@
             btn.className = 'btn-price';
             btn.innerHTML = `<div class="ton-icon">▽</div> ${gift.price}`;
             
-            btn.onclick = function() {
+            // ЧЕТКИЙ ОБРАБОТЧИК НАЖАТИЯ
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Сначала визуальный отклик (в CSS уже есть :active), 
+                // потом вызов окна Телеграма
                 tg.showAlert("Для покупки этого NFT напишите менеджеру: @cryptoironik");
-            };
+            });
 
             card.appendChild(imgContainer);
             card.appendChild(title);
@@ -165,6 +239,75 @@
             card.appendChild(btn);
             grid.appendChild(card);
         });
+
+        // --- АКТИВНОСТЬ ---
+        const activityList = document.getElementById('activity-list');
+        function generateActivity() {
+            const randomGift = gifts[Math.floor(Math.random() * gifts.length)];
+            const now = new Date();
+            const timeStr = `0${now.getDate()} Nov ${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
+            const finalPrice = (randomGift.price + (Math.random() * 0.2 - 0.1) * randomGift.price).toFixed(3);
+
+            const div = document.createElement('div');
+            div.className = 'activity-item';
+            div.innerHTML = `
+                <div class="activity-img-container">
+                    <img src="${randomGift.img}" class="activity-img" onerror="this.src='https://via.placeholder.com/50?text=NFT'">
+                </div>
+                <div class="activity-info">
+                    <div class="activity-name">${randomGift.name}</div>
+                    <div class="activity-id">${randomGift.num}</div>
+                </div>
+                <div class="activity-right">
+                    <div class="activity-price-row">
+                        <div class="ton-icon">▽</div> ${finalPrice} <span class="activity-status">Продажа</span>
+                    </div>
+                    <div class="activity-time">${timeStr}</div>
+                </div>
+            `;
+            activityList.prepend(div);
+            if (activityList.children.length > 10) activityList.lastChild.remove();
+        }
+        setInterval(generateActivity, 4000);
+        for (let i = 0; i < 5; i++) setTimeout(generateActivity, i * 200);
+
+        // --- ХРАНИЛИЩЕ ---
+        function getStorage() {
+            let store = localStorage.getItem('notcoin_storage');
+            return store ? JSON.parse(store) : [];
+        }
+
+        function renderStorage() {
+            const storageGrid = document.getElementById('storage-grid');
+            const emptyMsg = document.getElementById('empty-storage');
+            storageGrid.innerHTML = ''; 
+
+            const storageIds = getStorage();
+            
+            if (storageIds.length === 0) {
+                emptyMsg.style.display = 'block';
+                return;
+            } else {
+                emptyMsg.style.display = 'none';
+            }
+
+            storageIds.forEach(id => {
+                const gift = gifts.find(g => g.id === id);
+                if (gift) {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-img-container">
+                            <img src="${gift.img}" class="card-img" onerror="this.src='https://via.placeholder.com/150?text=NFT'">
+                        </div>
+                        <div class="card-title">${gift.name}</div>
+                        <div class="card-id">${gift.num}</div>
+                        <button class="btn-price" style="background-color: #2bd67b;" onclick="tg.showAlert('Для продажи напишите: @cryptoironik')">Продать</button>
+                    `;
+                    storageGrid.appendChild(card);
+                }
+            });
+        }
     </script>
 </body>
 </html>
