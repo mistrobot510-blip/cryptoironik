@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Playerok Market</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-main: #0b0e14;
+            --bg-card: #151a22;
+            --text-main: #ffffff;
+            --text-muted: #8b92a5;
+            --accent-blue: #3b72f6;
+            --border-color: #232936;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 16px;
+            padding-bottom: 80px;
+        }
+        h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+        .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
+        
+        /* Кнопка продажи */
+        .sell-btn-container {
+            background: linear-gradient(135deg, #1c2a4a, #0f172a);
+            border: 1px solid #2a3b5c;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .sell-btn {
+            background-color: #2bd67b;
+            color: #000;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        /* Сетка товаров */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .card-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            background-color: #000;
+        }
+        .card-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-price {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        .card-price span { color: #f6c23b; font-weight: bold; }
+        .btn-buy {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 10px;
+            width: 100%;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Нижняя панель */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background-color: rgba(21, 26, 34, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex; justify-content: space-around;
+            padding: 12px 0 24px 0;
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+        }
+        .nav-item { color: var(--text-muted); font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+        .nav-item.active { color: var(--accent-blue); }
+        .nav-item svg { width: 24px; height: 24px; fill: currentColor; }
+    </style>
+</head>
+<body>
+
+    <h2>🛍 Маркет подарков</h2>
+    <p class="subtitle">Лучшие NFT-подарки в Telegram</p>
+
+    <!-- Блок продажи -->
+    <div class="sell-btn-container">
+        <div style="font-size: 16px; font-weight: 700; margin-bottom: 4px;">Хотите продать подарок?</div>
+        <div style="font-size: 12px; color: #8b92a5;">Выставьте его на маркет и получите Stars</div>
+        <button class="sell-btn" onclick="openSellModal()">💰 Продать подарок</button>
+    </div>
+
+    <div class="grid" id="market-grid"></div>
+
+    <!-- Нижняя навигация -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="tg.showAlert('Вы на главной')">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            Главная
+        </div>
+        <div class="nav-item" onclick="tg.showAlert('В разработке')">
+            <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+            Мои NFT
+        </div>
+        <div class="nav-item" onclick="tg.showAlert('Профиль в разработке')">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Профиль
+        </div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.setHeaderColor('#0b0e14');
+        tg.setBackgroundColor('#0b0e14');
+
+        // Функция для продажи подарка (выдает инструкцию)
+        function openSellModal() {
+            tg.showAlert(
+                "📝 ИНСТРУКЦИЯ ПО ПРОДАЖЕ ПОДАРКА:\n\n" +
+                "1. Нажмите ОК, чтобы перейти в поддержку.\n" +
+                "2. Напишите менеджеру @cryptoironik.\n" +
+                "3. Скиньте ссылку на ваш подарок.\n" +
+                "4. Менеджер проверит его и выставит на маркет.\n\n" +
+                "⚠️ Внимание: мы не принимаем подарки без предварительной проверки!"
+            );
+        }
+
+        // БАЗА ТОВАРОВ (Витрина)
+        const gifts = [
+            { name: "Durov's Cap", price: 1500, img: "https://i.imgur.com/8QO9y8j.png" },
+            { name: "Heart", price: 500, img: "https://i.imgur.com/vHq4w7z.png" },
+            { name: "Bear", price: 250, img: "https://i.imgur.com/3Y8w7x1.png" },
+            { name: "Bunny", price: 300, img: "https://i.imgur.com/9Z6w7x2.png" },
+            { name: "Cake", price: 150, img: "https://i.imgur.com/4W5w7x3.png" },
+            { name: "Rose", price: 100, img: "https://i.imgur.com/7T6w7x4.png" },
+            { name: "Crown", price: 5000, img: "https://i.imgur.com/2S3w7x5.png" },
+            { name: "Diamond", price: 10000, img: "https://i.imgur.com/6R4w7x6.png" },
+            { name: "Rocket", price: 800, img: "https://i.imgur.com/1Q2w7x7.png" },
+            { name: "Star", price: 50, img: "https://i.imgur.com/5P3w7x8.png" },
+            { name: "Doge", price: 1200, img: "https://i.imgur.com/8O4w7x9.png" },
+            { name: "Pepe", price: 700, img: "https://i.imgur.com/3N5w7x0.png" },
+            { name: "Cup", price: 200, img: "https://i.imgur.com/7M6w7x1.png" },
+            { name: "Ring", price: 3000, img: "https://i.imgur.com/2L7w7x2.png" },
+            { name: "Ghost", price: 400, img: "https://i.imgur.com/6K8w7x3.png" }
+        ];
+
+        const grid = document.getElementById('market-grid');
+
+        gifts.forEach(gift => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <img src="${gift.img}" class="card-img" alt="${gift.name}" onerror="this.src='https://via.placeholder.com/150?text=NFT'">
+                <div class="card-title">${gift.name}</div>
+                <div class="card-price"><span>${gift.price}</span> ⭐</div>
+                <button class="btn-buy" onclick="tg.showAlert('Чтобы приобрести этот товар, обратитесь к менеджеру маркета: @cryptoironik')">Купить</button>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+  </html>
