@@ -13,6 +13,7 @@
             --text-muted: #8b92a5;
             --accent-blue: #229ED9;
             --border-color: #232936;
+            --accent-green: #2bd67b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body {
@@ -30,8 +31,82 @@
         h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
         .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
         
+        /* --- СТИЛИ ДЛЯ АКТИВНОСТИ (Как на скрине) --- */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .activity-item {
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .activity-img-container {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: radial-gradient(circle, #2a2e38 0%, #15171e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .activity-img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+        .activity-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .activity-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+        .activity-id {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .activity-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        .activity-price-row {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .activity-price-row .ton-icon {
+            width: 14px; height: 14px; background-color: white; border-radius: 50%;
+            display: inline-flex; justify-content: center; align-items: center;
+            color: var(--accent-blue); font-size: 9px; font-weight: 900;
+        }
+        .activity-status {
+            color: var(--accent-blue);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .activity-time {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* --- СЕТКА МАРКЕТА --- */
         .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        
         .card {
             background-color: var(--bg-card);
             border-radius: 20px;
@@ -40,7 +115,6 @@
             flex-direction: column;
             position: relative;
         }
-        
         .card-header {
             display: flex; justify-content: space-between; align-items: center;
             position: absolute; top: 20px; left: 20px; right: 20px; z-index: 10;
@@ -50,7 +124,6 @@
             display: flex; justify-content: center; align-items: center;
             color: white; font-size: 14px; cursor: pointer; backdrop-filter: blur(4px);
         }
-
         .card-img-container {
             width: 100%; aspect-ratio: 1 / 1; border-radius: 16px;
             background: radial-gradient(circle, #2a2e38 0%, #15171e 100%);
@@ -58,10 +131,8 @@
             margin-bottom: 12px; position: relative; overflow: hidden;
         }
         .card-img { width: 90%; height: 90%; object-fit: contain; }
-
         .card-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .card-id { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
-
         .btn-price {
             background-color: var(--accent-blue); color: white; border: none;
             padding: 10px; border-radius: 12px; width: 100%;
@@ -74,7 +145,7 @@
             color: var(--accent-blue); font-size: 10px; font-weight: 900;
         }
 
-        /* Нижняя панель */
+        /* --- НИЖНЯЯ ПАНЕЛЬ --- */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background-color: var(--bg-card);
@@ -83,9 +154,9 @@
             border-top: 1px solid var(--border-color);
             z-index: 100;
         }
-        .nav-item { color: var(--text-muted); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-weight: 500; }
+        .nav-item { color: var(--text-muted); font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-weight: 500; }
         .nav-item.active { color: var(--accent-blue); }
-        .nav-item svg { width: 24px; height: 24px; fill: currentColor; }
+        .nav-item svg { width: 22px; height: 22px; fill: currentColor; }
     </style>
 </head>
 <body>
@@ -97,7 +168,14 @@
         <div class="grid" id="market-grid"></div>
     </div>
 
-    <!-- СТРАНИЦА 2: МОИ NFT -->
+    <!-- СТРАНИЦА 2: АКТИВНОСТЬ -->
+    <div id="page-activity" class="page">
+        <h2>⚡️ Активность</h2>
+        <p class="subtitle">Последние продажи на маркете</p>
+        <div class="activity-list" id="activity-list"></div>
+    </div>
+
+    <!-- СТРАНИЦА 3: МОИ NFT -->
     <div id="page-storage" class="page">
         <h2>📦 Мои NFT</h2>
         <p class="subtitle">Ваши подарки в хранилище</p>
@@ -107,16 +185,13 @@
         </div>
     </div>
 
-    <!-- СТРАНИЦА 3: ПРОФИЛЬ -->
+    <!-- СТРАНИЦА 4: ПРОФИЛЬ -->
     <div id="page-profile" class="page">
         <h2>👤 Профиль</h2>
         <p class="subtitle">Информация об аккаунте</p>
         <div style="background: var(--bg-card); padding: 20px; border-radius: 20px;">
             <p style="margin-bottom: 10px;">Имя: <b id="user-name">Загрузка...</b></p>
             <p style="margin-bottom: 10px;">ID: <code id="user-id">...</code></p>
-            <p style="color: var(--text-muted); font-size: 13px; margin-top: 20px;">
-                поддержка MARKET notcoin: @cryptoironik
-            </p>
         </div>
     </div>
 
@@ -125,6 +200,10 @@
         <div class="nav-item active" id="nav-market" onclick="switchPage('market')">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             Маркет
+        </div>
+        <div class="nav-item" id="nav-activity" onclick="switchPage('activity')">
+            <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+            Активность
         </div>
         <div class="nav-item" id="nav-storage" onclick="switchPage('storage')">
             <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
@@ -156,8 +235,6 @@
             
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById('nav-' + pageId).classList.add('active');
-
-            if (pageId === 'storage') renderStorage();
         }
 
         // БАЗА ТОВАРОВ
@@ -187,14 +264,13 @@
             { id: 22, name: "Top Hat", num: "#12680", price: 5, img: baseUrl + "TopHat-12680.jpg" }
         ];
 
-        // Отрисовка маркета
+        // --- ОТРИСОВКА МАРКЕТА ---
         const marketGrid = document.getElementById('market-grid');
         gifts.forEach(gift => {
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
                 <div class="card-header">
-                    <div class="icon-btn" onclick="addToStorage(${gift.id})">📥</div>
                     <div class="icon-btn" onclick="tg.showAlert('Добавлено в избранное')">🤍</div>
                 </div>
                 <div class="card-img-container">
@@ -209,53 +285,54 @@
             marketGrid.appendChild(card);
         });
 
-        // --- ЛОГИКА ХРАНИЛИЩА ---
-        function getStorage() {
-            let store = localStorage.getItem('notcoin_storage');
-            return store ? JSON.parse(store) : [];
-        }
+        // --- ГЕНЕРАЦИЯ АКТИВНОСТИ (КАК НА СКРИНЕ) ---
+        const activityList = document.getElementById('activity-list');
+        const fakeUsers = ["Myth Mask", "Lol Pop", "Mood Pack", "Toy Bear", "Winter Wreath"]; // Названия для рандома
 
-        function addToStorage(giftId) {
-            let storage = getStorage();
-            if (!storage.includes(giftId)) {
-                storage.push(giftId);
-                localStorage.setItem('notcoin_storage', JSON.stringify(storage));
-                tg.showAlert('✅ NFT добавлен в хранилище!');
-            } else {
-                tg.showAlert('Этот NFT уже в хранилище.');
-            }
-        }
-
-        function renderStorage() {
-            const storageGrid = document.getElementById('storage-grid');
-            const emptyMsg = document.getElementById('empty-storage');
-            storageGrid.innerHTML = ''; 
-
-            const storageIds = getStorage();
+        function generateActivity() {
+            // Берем случайный подарок
+            const randomGift = gifts[Math.floor(Math.random() * gifts.length)];
             
-            if (storageIds.length === 0) {
-                emptyMsg.style.display = 'block';
-                return;
-            } else {
-                emptyMsg.style.display = 'none';
-            }
+            // Генерируем время
+            const now = new Date();
+            const timeStr = `0${now.getDate()} Nov ${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}`;
 
-            storageIds.forEach(id => {
-                const gift = gifts.find(g => g.id === id);
-                if (gift) {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <div class="card-img-container">
-                            <img src="${gift.img}" class="card-img" alt="${gift.name}" onerror="this.src='https://via.placeholder.com/150?text=NFT'">
-                        </div>
-                        <div class="card-title">${gift.name}</div>
-                        <div class="card-id">${gift.num}</div>
-                        <button class="btn-price" style="background-color: #2bd67b;" onclick="tg.showAlert('Для продажи напишите: @cryptoironik')">Продать</button>
-                    `;
-                    storageGrid.appendChild(card);
-                }
-            });
+            // Генерируем случайную цену (в пределах ±10% от базовой)
+            const basePrice = randomGift.price;
+            const finalPrice = (basePrice + (Math.random() * 0.2 - 0.1) * basePrice).toFixed(3);
+
+            const div = document.createElement('div');
+            div.className = 'activity-item';
+            div.innerHTML = `
+                <div class="activity-img-container">
+                    <img src="${randomGift.img}" class="activity-img" onerror="this.src='https://via.placeholder.com/50?text=NFT'">
+                </div>
+                <div class="activity-info">
+                    <div class="activity-name">${randomGift.name}</div>
+                    <div class="activity-id">${randomGift.num}</div>
+                </div>
+                <div class="activity-right">
+                    <div class="activity-price-row">
+                        <div class="ton-icon">▽</div> ${finalPrice} <span class="activity-status">Продажа</span>
+                    </div>
+                    <div class="activity-time">${timeStr}</div>
+                </div>
+            `;
+            
+            // Добавляем в начало списка
+            activityList.prepend(div);
+            
+            // Оставляем только 10 последних
+            if (activityList.children.length > 10) {
+                activityList.lastChild.remove();
+            }
+        }
+
+        // Запускаем генерацию каждые 4 секунды
+        setInterval(generateActivity, 4000);
+        // Первые 5 записей добавляем сразу при загрузке
+        for (let i = 0; i < 5; i++) {
+            setTimeout(generateActivity, i * 200);
         }
     </script>
 </body>
