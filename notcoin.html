@@ -11,7 +11,7 @@
             --bg-card: #15171e;
             --text-main: #ffffff;
             --text-muted: #8b92a5;
-            --accent-blue: #229ED9; /* Цвет кнопки как на Tonnel */
+            --accent-blue: #229ED9;
             --border-color: #232936;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -20,20 +20,18 @@
             color: var(--text-main);
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             padding: 16px;
-            padding-bottom: 80px;
+            padding-bottom: 90px;
         }
         
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.2s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
         .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
         
-        /* Сетка товаров */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         
-        /* Карточка (стиль Tonnel) */
         .card {
             background-color: var(--bg-card);
             border-radius: 20px;
@@ -43,94 +41,37 @@
             position: relative;
         }
         
-        /* Иконки сверху (сердце и корзина) */
         .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            z-index: 10;
+            display: flex; justify-content: space-between; align-items: center;
+            position: absolute; top: 20px; left: 20px; right: 20px; z-index: 10;
         }
         .icon-btn {
-            width: 28px;
-            height: 28px;
-            background: rgba(0,0,0,0.4);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 14px;
-            cursor: pointer;
-            backdrop-filter: blur(4px);
+            width: 28px; height: 28px; background: rgba(0,0,0,0.4); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-size: 14px; cursor: pointer; backdrop-filter: blur(4px);
         }
-        .icon-btn.liked { color: #ff4b4b; }
 
-        /* Картинка */
         .card-img-container {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            border-radius: 16px;
+            width: 100%; aspect-ratio: 1 / 1; border-radius: 16px;
             background: radial-gradient(circle, #2a2e38 0%, #15171e 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 12px;
-            position: relative;
-            overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 12px; position: relative; overflow: hidden;
         }
-        .card-img {
-            width: 90%;
-            height: 90%;
-            object-fit: contain;
-        }
+        .card-img { width: 90%; height: 90%; object-fit: contain; }
 
-        /* Название и номер */
-        .card-title {
-            font-size: 15px;
-            font-weight: 700;
-            margin-bottom: 2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .card-id {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-        }
+        .card-title { font-size: 15px; font-weight: 700; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-id { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
 
-        /* Кнопка с ценой */
         .btn-price {
-            background-color: var(--accent-blue);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 12px;
-            width: 100%;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
+            background-color: var(--accent-blue); color: white; border: none;
+            padding: 10px; border-radius: 12px; width: 100%;
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; gap: 6px;
         }
-        .btn-price:active { opacity: 0.8; }
         .ton-icon {
-            width: 16px;
-            height: 16px;
-            background-color: white;
-            border-radius: 50%;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--accent-blue);
-            font-size: 10px;
-            font-weight: 900;
+            width: 16px; height: 16px; background-color: white; border-radius: 50%;
+            display: inline-flex; justify-content: center; align-items: center;
+            color: var(--accent-blue); font-size: 10px; font-weight: 900;
         }
 
         /* Нижняя панель */
@@ -149,22 +90,47 @@
 </head>
 <body>
 
-    <h2>🛍 NotCoin Market</h2>
-    <p class="subtitle">Лучшие NFT-подарки</p>
+    <!-- СТРАНИЦА 1: МАРКЕТ -->
+    <div id="page-market" class="page active">
+        <h2>🛍 NotCoin Market</h2>
+        <p class="subtitle">Лучшие NFT-подарки</p>
+        <div class="grid" id="market-grid"></div>
+    </div>
 
-    <div class="grid" id="market-grid"></div>
+    <!-- СТРАНИЦА 2: МОИ NFT -->
+    <div id="page-storage" class="page">
+        <h2>📦 Мои NFT</h2>
+        <p class="subtitle">Ваши подарки в хранилище</p>
+        <div class="grid" id="storage-grid"></div>
+        <div id="empty-storage" style="text-align: center; color: #8b92a5; margin-top: 40px;">
+            У вас пока нет NFT в хранилище.
+        </div>
+    </div>
 
-    <!-- Нижняя навигация -->
+    <!-- СТРАНИЦА 3: ПРОФИЛЬ -->
+    <div id="page-profile" class="page">
+        <h2>👤 Профиль</h2>
+        <p class="subtitle">Информация об аккаунте</p>
+        <div style="background: var(--bg-card); padding: 20px; border-radius: 20px;">
+            <p style="margin-bottom: 10px;">Имя: <b id="user-name">Загрузка...</b></p>
+            <p style="margin-bottom: 10px;">ID: <code id="user-id">...</code></p>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 20px;">
+                Все сделки проводятся через поддержку: @cryptoironik
+            </p>
+        </div>
+    </div>
+
+    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
     <div class="bottom-nav">
-        <div class="nav-item active">
+        <div class="nav-item active" id="nav-market" onclick="switchPage('market')">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             Маркет
         </div>
-        <div class="nav-item" onclick="tg.showAlert('Мои NFT в разработке')">
+        <div class="nav-item" id="nav-storage" onclick="switchPage('storage')">
             <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
             Мои NFT
         </div>
-        <div class="nav-item" onclick="tg.showAlert('Профиль в разработке')">
+        <div class="nav-item" id="nav-profile" onclick="switchPage('profile')">
             <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
             Профиль
         </div>
@@ -175,6 +141,24 @@
         tg.expand();
         tg.setHeaderColor('#0b0e14');
         tg.setBackgroundColor('#0b0e14');
+
+        // Данные пользователя
+        let user = tg.initDataUnsafe?.user;
+        if (user) {
+            document.getElementById('user-name').innerText = user.first_name || 'Пользователь';
+            document.getElementById('user-id').innerText = user.id;
+        }
+
+        // Переключение страниц
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('nav-' + pageId).classList.add('active');
+
+            if (pageId === 'storage') renderStorage();
+        }
 
         // БАЗА ТОВАРОВ
         const baseUrl = "https://mistrobot510-blip.github.io/cryptoironik/";
@@ -203,15 +187,15 @@
             { id: 22, name: "Top Hat", num: "#12680", price: 5, img: baseUrl + "TopHat-12680.jpg" }
         ];
 
-        const grid = document.getElementById('market-grid');
-
+        // Отрисовка маркета
+        const marketGrid = document.getElementById('market-grid');
         gifts.forEach(gift => {
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
                 <div class="card-header">
-                    <div class="icon-btn" onclick="this.classList.toggle('liked'); tg.showAlert('Добавлено в избранное')">🤍</div>
-                    <div class="icon-btn" onclick="tg.showAlert('Добавлено в корзину')">🛒</div>
+                    <div class="icon-btn" onclick="addToStorage(${gift.id})">📥</div>
+                    <div class="icon-btn" onclick="tg.showAlert('Добавлено в избранное')">🤍</div>
                 </div>
                 <div class="card-img-container">
                     <img src="${gift.img}" class="card-img" alt="${gift.name}" onerror="this.src='https://via.placeholder.com/150?text=NFT'">
@@ -222,8 +206,57 @@
                     <div class="ton-icon">▽</div> ${gift.price}
                 </button>
             `;
-            grid.appendChild(card);
+            marketGrid.appendChild(card);
         });
+
+        // --- ЛОГИКА ХРАНИЛИЩА ---
+        function getStorage() {
+            let store = localStorage.getItem('notcoin_storage');
+            return store ? JSON.parse(store) : [];
+        }
+
+        function addToStorage(giftId) {
+            let storage = getStorage();
+            if (!storage.includes(giftId)) {
+                storage.push(giftId);
+                localStorage.setItem('notcoin_storage', JSON.stringify(storage));
+                tg.showAlert('✅ NFT добавлен в хранилище!');
+            } else {
+                tg.showAlert('Этот NFT уже в хранилище.');
+            }
+        }
+
+        function renderStorage() {
+            const storageGrid = document.getElementById('storage-grid');
+            const emptyMsg = document.getElementById('empty-storage');
+            storageGrid.innerHTML = ''; 
+
+            const storageIds = getStorage();
+            
+            if (storageIds.length === 0) {
+                emptyMsg.style.display = 'block';
+                return;
+            } else {
+                emptyMsg.style.display = 'none';
+            }
+
+            storageIds.forEach(id => {
+                const gift = gifts.find(g => g.id === id);
+                if (gift) {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-img-container">
+                            <img src="${gift.img}" class="card-img" alt="${gift.name}" onerror="this.src='https://via.placeholder.com/150?text=NFT'">
+                        </div>
+                        <div class="card-title">${gift.name}</div>
+                        <div class="card-id">${gift.num}</div>
+                        <button class="btn-price" style="background-color: #2bd67b;" onclick="tg.showAlert('Для продажи напишите: @cryptoironik')">Продать</button>
+                    `;
+                    storageGrid.appendChild(card);
+                }
+            });
+        }
     </script>
 </body>
 </html>
