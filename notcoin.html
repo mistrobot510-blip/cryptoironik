@@ -8,11 +8,10 @@
     <style>
         :root {
             --bg-main: #0b0e14;
-            --bg-card: #151a22;
+            --bg-card: #15171e;
             --text-main: #ffffff;
             --text-muted: #8b92a5;
-            --accent-blue: #3b72f6;
-            --accent-green: #2bd67b;
+            --accent-blue: #229ED9; /* Цвет кнопки как на Tonnel */
             --border-color: #232936;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -24,146 +23,146 @@
             padding-bottom: 80px;
         }
         
-        /* Заголовки страниц */
-        .page { display: none; }
-        .page.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
         h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
         .subtitle { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
         
-        /* Блоки продажи */
-        .sell-actions { display: flex; gap: 10px; margin-bottom: 24px; }
-        .sell-btn {
-            flex: 1;
-            background: linear-gradient(135deg, #1c2a4a, #0f172a);
-            border: 1px solid #2a3b5c;
-            border-radius: 16px;
-            padding: 16px 10px;
-            text-align: center;
-            cursor: pointer;
-        }
-        .sell-btn .title { font-size: 14px; font-weight: 700; margin-bottom: 4px; display: block; }
-        .sell-btn .desc { font-size: 11px; color: #8b92a5; display: block; }
-        
-        .fast-sell {
-            background: linear-gradient(135deg, #2b4f1c, #0f2a17);
-            border: 1px solid #3b5c2a;
-        }
-        .fast-sell .title { color: var(--accent-green); }
-
         /* Сетка товаров */
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        /* Карточка (стиль Tonnel) */
         .card {
             background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 12px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
+            position: relative;
         }
-        .card-img {
+        
+        /* Иконки сверху (сердце и корзина) */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        .icon-btn {
+            width: 28px;
+            height: 28px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+        }
+        .icon-btn.liked { color: #ff4b4b; }
+
+        /* Картинка */
+        .card-img-container {
             width: 100%;
             aspect-ratio: 1 / 1;
-            border-radius: 12px;
-            object-fit: cover;
-            margin-bottom: 10px;
-            background-color: #000;
+            border-radius: 16px;
+            background: radial-gradient(circle, #2a2e38 0%, #15171e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
         }
+        .card-img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+        }
+
+        /* Название и номер */
         .card-title {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
-            margin-bottom: 4px;
-            width: 100%;
+            margin-bottom: 2px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .card-price { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
-        .card-price span { color: #f6c23b; font-weight: bold; }
-        .btn-buy {
+        .card-id {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        /* Кнопка с ценой */
+        .btn-price {
             background-color: var(--accent-blue);
             color: white;
             border: none;
-            padding: 8px;
-            border-radius: 10px;
+            padding: 10px;
+            border-radius: 12px;
             width: 100%;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
         }
-
-        /* Кнопка добавления в хранилище */
-        .btn-store {
-            background-color: transparent;
-            border: 1px solid var(--accent-green);
-            color: var(--accent-green);
-            padding: 8px;
-            border-radius: 10px;
-            width: 100%;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 6px;
+        .btn-price:active { opacity: 0.8; }
+        .ton-icon {
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--accent-blue);
+            font-size: 10px;
+            font-weight: 900;
         }
 
         /* Нижняя панель */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
-            background-color: rgba(21, 26, 34, 0.95);
-            backdrop-filter: blur(10px);
+            background-color: var(--bg-card);
             display: flex; justify-content: space-around;
             padding: 12px 0 24px 0;
             border-top: 1px solid var(--border-color);
             z-index: 100;
         }
-        .nav-item { color: var(--text-muted); font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+        .nav-item { color: var(--text-muted); font-size: 11px; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-weight: 500; }
         .nav-item.active { color: var(--accent-blue); }
         .nav-item svg { width: 24px; height: 24px; fill: currentColor; }
     </style>
 </head>
 <body>
 
-    <!-- СТРАНИЦА 1: МАРКЕТ -->
-    <div id="page-market" class="page active">
-        <h2>🛍 NotCoin Market</h2>
-        <p class="subtitle">Покупка и продажа NFT-подарков</p>
+    <h2>🛍 NotCoin Market</h2>
+    <p class="subtitle">Лучшие NFT-подарки</p>
 
-        <div class="sell-actions">
-            <div class="sell-btn" onclick="openSellModal()">
-                <span class="title">💰 Продать</span>
-                <span class="desc">Выставить на маркет</span>
-            </div>
-            <div class="sell-btn fast-sell" onclick="fastSellModal()">
-                <span class="title">⚡️ Быстрая продажа</span>
-                <span class="desc">Сдать моментально</span>
-            </div>
-        </div>
-
-        <div class="grid" id="market-grid"></div>
-    </div>
-
-    <!-- СТРАНИЦА 2: ХРАНИЛИЩЕ -->
-    <div id="page-storage" class="page">
-        <h2>📦 Хранилище</h2>
-        <p class="subtitle">Ваши NFT-подарки, выставленные на продажу</p>
-        <div class="grid" id="storage-grid"></div>
-        <div id="empty-storage" style="text-align: center; color: #8b92a5; margin-top: 40px; display: none;">
-            У вас пока нет подарков в хранилище.
-        </div>
-    </div>
+    <div class="grid" id="market-grid"></div>
 
     <!-- Нижняя навигация -->
     <div class="bottom-nav">
-        <div class="nav-item active" id="nav-market" onclick="switchPage('market')">
+        <div class="nav-item active">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             Маркет
         </div>
-        <div class="nav-item" id="nav-storage" onclick="switchPage('storage')">
+        <div class="nav-item" onclick="tg.showAlert('Мои NFT в разработке')">
             <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
-            Хранилище
+            Мои NFT
         </div>
         <div class="nav-item" onclick="tg.showAlert('Профиль в разработке')">
             <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -177,116 +176,54 @@
         tg.setHeaderColor('#0b0e14');
         tg.setBackgroundColor('#0b0e14');
 
-        // Переключение страниц
-        function switchPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
-            
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('nav-' + pageId).classList.add('active');
-
-            if (pageId === 'storage') renderStorage();
-        }
-
-        // Инструкции
-        function openSellModal() {
-            tg.showAlert("📝 ИНСТРУКЦИЯ:\n\n1. Напишите @cryptoironik.\n2. Скиньте ссылку на подарок.\n3. Менеджер выставит его на маркет.");
-        }
-
-        function fastSellModal() {
-            tg.showAlert("⚡️ БЫСТРАЯ ПРОДАЖА:\n\n1. Напишите @cryptoironik.\n2. Скиньте ссылку.\n3. Менеджер сразу выкупит его по лучшей цене.");
-        }
-
         // БАЗА ТОВАРОВ
         const baseUrl = "https://mistrobot510-blip.github.io/cryptoironik/";
         const gifts = [
-            { id: 1, name: "Durov's Cap", price: 750, img: baseUrl + "DurovsCap-2997.jpg" },
-            { id: 2, name: "Diamond Ring", price: 500, img: baseUrl + "DiamondRing-20493.jpg" },
-            { id: 3, name: "Astral Shard", price: 350, img: baseUrl + "AstralShard-1221.jpg" },
-            { id: 4, name: "Loot Bag", price: 250, img: baseUrl + "LootBag-9507.jpg" },
-            { id: 5, name: "Top Hat", price: 150, img: baseUrl + "TopHat-12680.jpg" },
-            { id: 6, name: "Mighty Arm", price: 120, img: baseUrl + "MightyArm-3719.jpg" },
-            { id: 7, name: "Lunar Snake", price: 85, img: baseUrl + "LunarSnake-198046.jpg" },
-            { id: 8, name: "Surge Board", price: 60, img: baseUrl + "SurgeBoard-1090.jpg" },
-            { id: 9, name: "Jester Hat", price: 45, img: baseUrl + "JesterHat-132381.jpg" },
-            { id: 10, name: "Bunny Muffin", price: 35, img: baseUrl + "BunnyMuffin-50431.jpg" },
-            { id: 11, name: "Ginger Cookie", price: 28, img: baseUrl + "GingerCookie-140033.jpg" },
-            { id: 12, name: "Pet Snake", price: 20, img: baseUrl + "PetSnake-187097.jpg" },
-            { id: 13, name: "Snake Box", price: 18, img: baseUrl + "SnakeBox-165875.jpg" },
-            { id: 14, name: "Mood Pack", price: 15, img: baseUrl + "MoodPack-180789.jpg" },
-            { id: 15, name: "Winter Wreath", price: 12, img: baseUrl + "WinterWreath-70288.jpg" },
-            { id: 16, name: "Toy Bear", price: 9, img: baseUrl + "ToyBear-32994.jpg" },
-            { id: 17, name: "Star Notepad", price: 6, img: baseUrl + "StarNotepad-67850.jpg" },
-            { id: 18, name: "Santa Hat", price: 5, img: baseUrl + "SantaHat-67499.jpg" },
-            { id: 19, name: "Precious Peach", price: 3.5, img: baseUrl + "PreciousPeach-975.jpg" },
-            { id: 20, name: "Love Potion", price: 1.5, img: baseUrl + "LovePotion-16384.jpg" },
-            { id: 21, name: "Lol Pop", price: 1, img: baseUrl + "LolPop-232765.jpg" },
-            { id: 22, name: "Candy Cane", price: 0.5, img: baseUrl + "CandyCane-46898.jpg" }
+            { id: 1, name: "Durov's Cap", num: "#2997", price: 620, img: baseUrl + "DurovsCap-2997.jpg" },
+            { id: 2, name: "Astral Shard", num: "#1221", price: 121, img: baseUrl + "AstralShard-1221.jpg" },
+            { id: 3, name: "Loot Bag", num: "#9507", price: 97.7, img: baseUrl + "LootBag-9507.jpg" },
+            { id: 4, name: "Toy Bear", num: "#32994", price: 59.6, img: baseUrl + "ToyBear-32994.jpg" },
+            { id: 5, name: "Diamond Ring", num: "#20493", price: 43.1, img: baseUrl + "DiamondRing-20493.jpg" },
+            { id: 6, name: "Mighty Arm", num: "#3719", price: 23.2, img: baseUrl + "MightyArm-3719.jpg" },
+            { id: 7, name: "Surge Board", num: "#1090", price: 21.5, img: baseUrl + "SurgeBoard-1090.jpg" },
+            { id: 8, name: "Mood Pack", num: "#180789", price: 14, img: baseUrl + "MoodPack-180789.jpg" },
+            { id: 9, name: "Lunar Snake", num: "#198046", price: 9.8, img: baseUrl + "LunarSnake-198046.jpg" },
+            { id: 10, name: "Bunny Muffin", num: "#50431", price: 8.7, img: baseUrl + "BunnyMuffin-50431.jpg" },
+            { id: 11, name: "Snake Box", num: "#165875", price: 5.1, img: baseUrl + "SnakeBox-165875.jpg" },
+            { id: 12, name: "Love Potion", num: "#16384", price: 5, img: baseUrl + "LovePotion-16384.jpg" },
+            { id: 13, name: "Lol Pop", num: "#232765", price: 5, img: baseUrl + "LolPop-232765.jpg" },
+            { id: 14, name: "Candy Cane", num: "#46898", price: 5, img: baseUrl + "CandyCane-46898.jpg" },
+            { id: 15, name: "Santa Hat", num: "#67499", price: 5, img: baseUrl + "SantaHat-67499.jpg" },
+            { id: 16, name: "Precious Peach", num: "#975", price: 5, img: baseUrl + "PreciousPeach-975.jpg" },
+            { id: 17, name: "Star Notepad", num: "#67850", price: 5, img: baseUrl + "StarNotepad-67850.jpg" },
+            { id: 18, name: "Winter Wreath", num: "#70288", price: 5, img: baseUrl + "WinterWreath-70288.jpg" },
+            { id: 19, name: "Ginger Cookie", num: "#140033", price: 5, img: baseUrl + "GingerCookie-140033.jpg" },
+            { id: 20, name: "Pet Snake", num: "#187097", price: 5, img: baseUrl + "PetSnake-187097.jpg" },
+            { id: 21, name: "Jester Hat", num: "#132381", price: 5, img: baseUrl + "JesterHat-132381.jpg" },
+            { id: 22, name: "Top Hat", num: "#12680", price: 5, img: baseUrl + "TopHat-12680.jpg" }
         ];
 
-        // Отрисовка маркета
-        const marketGrid = document.getElementById('market-grid');
+        const grid = document.getElementById('market-grid');
+
         gifts.forEach(gift => {
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                <img src="${gift.img}" class="card-img" alt="${gift.name}" onerror="this.src='https://via.placeholder.com/150?text=NFT'">
+                <div class="card-header">
+                    <div class="icon-btn" onclick="this.classList.toggle('liked'); tg.showAlert('Добавлено в избранное')">🤍</div>
+                    <div class="icon-btn" onclick="tg.showAlert('Добавлено в корзину')">🛒</div>
+                </div>
+                <div class="card-img-container">
+                    <img src="${gift.img}" class="card-img" alt="${gift.name}" onerror="this.src='https://via.placeholder.com/150?text=NFT'">
+                </div>
                 <div class="card-title">${gift.name}</div>
-                <div class="card-price"><span>${gift.price}</span> Gram</div>
-                <button class="btn-buy" onclick="tg.showAlert('Чтобы купить, напишите: @cryptoironik')">Купить</button>
-                <button class="btn-store" onclick="addToStorage(${gift.id})">📥 В хранилище</button>
+                <div class="card-id">${gift.num}</div>
+                <button class="btn-price" onclick="tg.showAlert('Для покупки напишите: @cryptoironik')">
+                    <div class="ton-icon">▽</div> ${gift.price}
+                </button>
             `;
-            marketGrid.appendChild(card);
+            grid.appendChild(card);
         });
-
-        // --- ЛОГИКА ХРАНИЛИЩА (LocalStorage) ---
-        function getStorage() {
-            let store = localStorage.getItem('notcoin_storage');
-            return store ? JSON.parse(store) : [];
-        }
-
-        function addToStorage(giftId) {
-            let storage = getStorage();
-            if (!storage.includes(giftId)) {
-                storage.push(giftId);
-                localStorage.setItem('notcoin_storage', JSON.stringify(storage));
-                tg.showAlert('✅ Подарок добавлен в хранилище!');
-            } else {
-                tg.showAlert('Этот подарок уже в хранилище.');
-            }
-        }
-
-        // Отрисовка хранилища
-        function renderStorage() {
-            const storageGrid = document.getElementById('storage-grid');
-            const emptyMsg = document.getElementById('empty-storage');
-            storageGrid.innerHTML = ''; // Очищаем
-
-            const storageIds = getStorage();
-            
-            if (storageIds.length === 0) {
-                emptyMsg.style.display = 'block';
-                return;
-            } else {
-                emptyMsg.style.display = 'none';
-            }
-
-            // Ищем подарки по ID
-            storageIds.forEach(id => {
-                const gift = gifts.find(g => g.id === id);
-                if (gift) {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <img src="${gift.img}" class="card-img" alt="${gift.name}" onerror="this.src='https://via.placeholder.com/150?text=NFT'">
-                        <div class="card-title">${gift.name}</div>
-                        <div class="card-price"><span>${gift.price}</span> Gram</div>
-                        <button class="btn-buy" onclick="tg.showAlert('Напишите @cryptoironik для продажи')" style="background-color: #2bd67b;">Продать</button>
-                    `;
-                    storageGrid.appendChild(card);
-                }
-            });
-        }
     </script>
 </body>
-    </html>
+</html>
