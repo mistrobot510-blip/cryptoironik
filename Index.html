@@ -17,14 +17,11 @@
             padding-bottom: 85px;
             -webkit-tap-highlight-color: transparent;
         }
-
         ::-webkit-scrollbar { display: none; }
-
         .page { display: none; }
         .page.active { display: block; animation: fadeIn 0.2s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Синий баннер с 3D */
         .hero-banner {
             background: linear-gradient(180deg, #1d4ed8 0%, #0b0e14 100%);
             border-radius: 0 0 24px 24px;
@@ -32,558 +29,206 @@
             position: relative;
             overflow: hidden;
         }
-
         .float-img {
             position: absolute;
             animation: float 4s ease-in-out infinite;
             filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4));
+            z-index: 5;
         }
         @keyframes float {
             0% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-8px) rotate(2deg); }
             100% { transform: translateY(0px) rotate(0deg); }
         }
-
-        /* Категории */
         .card-game {
-            background: #151822;
-            border-radius: 16px;
-            padding: 10px;
-            min-width: 80px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            border: 1px solid #1f2330;
-            cursor: pointer;
-            transition: 0.2s;
+            background: #151822; border-radius: 16px; padding: 10px; min-width: 80px;
+            text-align: center; display: flex; flex-direction: column; align-items: center;
+            gap: 6px; border: 1px solid #1f2330; cursor: pointer; transition: 0.2s;
         }
         .card-game:active { transform: scale(0.95); background: #1a1f2e; }
-
-        .icon-box {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
+        .icon-box { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .icon-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Товары */
         .product-card {
-            background: #151822;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid #1f2330;
-            position: relative;
-            cursor: pointer;
-            transition: 0.2s;
+            background: #151822; border-radius: 16px; overflow: hidden;
+            border: 1px solid #1f2330; position: relative; cursor: pointer; transition: 0.2s;
         }
         .product-card:active { transform: scale(0.97); border-color: #3b82f6; }
-
-        .product-img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            background: #1f2330;
-            display: block;
-        }
-
+        .product-img { width: 100%; height: 140px; object-fit: cover; background: #1f2330; display: block; }
         .discount-badge {
-            background: #ef4444;
-            color: white;
-            font-size: 11px;
-            font-weight: bold;
-            padding: 2px 8px;
-            border-radius: 6px;
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            z-index: 10;
+            background: #ef4444; color: white; font-size: 11px; font-weight: bold;
+            padding: 2px 8px; border-radius: 6px; position: absolute; top: 8px; right: 8px; z-index: 10;
         }
-
         .price { color: #10b981; font-weight: 800; font-size: 16px; }
         .old-price { color: #6b7280; text-decoration: line-through; font-size: 12px; margin-left: 6px; }
-        
-        /* Нижнее меню */
+
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(21, 24, 34, 0.98);
-            border-top: 1px solid #1f2330;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 0 20px;
-            z-index: 50;
-            backdrop-filter: blur(10px);
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(21, 24, 34, 0.98); border-top: 1px solid #1f2330;
+            display: flex; justify-content: space-around; padding: 12px 0 20px;
+            z-index: 50; backdrop-filter: blur(10px);
         }
-
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #6b7280;
-            font-size: 11px;
-            font-weight: 500;
-            text-decoration: none;
-            gap: 4px;
-            cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; color: #6b7280;
+            font-size: 11px; font-weight: 500; text-decoration: none; gap: 4px; cursor: pointer;
         }
-
         .nav-item.active { color: #3b82f6; }
         .nav-item i { font-size: 22px; }
 
-        /* Скролл-бар фильтров */
-        .filter-scroll {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            white-space: nowrap;
-        }
+        .filter-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; white-space: nowrap; }
         .filter-scroll::-webkit-scrollbar { display: none; }
         .filter-btn {
-            background: #1c1f2b;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: #9ca3af;
-            cursor: pointer;
+            background: #1c1f2b; padding: 8px 16px; border-radius: 12px; font-size: 14px;
+            font-weight: 600; display: flex; align-items: center; gap: 6px; color: #9ca3af; cursor: pointer;
         }
-        .filter-btn.active {
-            background: #1e3a8a;
-            color: #60a5fa;
-        }
+        .filter-btn.active { background: #1e3a8a; color: #60a5fa; }
 
-        /* Инпуты */
         .input-dark {
-            background: #1c1f2b;
-            border: 1px solid #2a2e3d;
-            color: white;
-            border-radius: 12px;
-            padding: 16px;
-            width: 100%;
-            outline: none;
-            font-size: 15px;
+            background: #1c1f2b; border: 1px solid #2a2e3d; color: white;
+            border-radius: 12px; padding: 16px; width: 100%; outline: none; font-size: 15px;
         }
         .input-dark:focus { border-color: #3b82f6; }
         .label-text { font-size: 13px; color: #9ca3af; margin-bottom: 6px; display: block; }
 
-        /* Модалка */
         .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(5px);
-            z-index: 100;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+            z-index: 100; align-items: center; justify-content: center; padding: 20px;
         }
         .modal.active { display: flex; }
         .modal-content {
-            background: #151822;
-            border: 1px solid #2a2e3d;
-            border-radius: 24px;
-            width: 100%;
-            max-width: 360px;
-            padding: 24px;
-            text-align: center;
-            animation: pop 0.2s ease-out;
+            background: #151822; border: 1px solid #2a2e3d; border-radius: 24px;
+            width: 100%; max-width: 360px; padding: 24px; text-align: center; animation: pop 0.2s ease-out;
         }
         @keyframes pop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <!-- ================= СТРАНИЦА 1: ГЛАВНАЯ ================= -->
+    <!-- ГЛАВНАЯ -->
     <div id="page-home" class="page active">
-        <!-- Баннер с 3D элементами -->
         <div class="hero-banner relative">
-            <!-- 3D элементы -->
-            <img src="https://cdn3d.iconscout.com/3d/premium/thumb/package-4039976-3342723.png" class="float-img" style="width: 70px; top: 20px; left: 20px; transform: rotate(-15deg);">
-            <img src="https://cdn3d.iconscout.com/3d/premium/thumb/girl-4039979-3342726.png" class="float-img" style="width: 60px; top: 15px; left: 40%; animation-delay: 1s;">
-            <img src="https://cdn3d.iconscout.com/3d/premium/thumb/boy-4039971-3342718.png" class="float-img" style="width: 80px; top: 50px; right: 20px; animation-delay: 0.5s;">
-            <img src="https://cdn3d.iconscout.com/3d/premium/thumb/chest-4039985-3342732.png" class="float-img" style="width: 60px; top: 80px; right: 80px; transform: rotate(10deg); animation-delay: 1.5s;">
-            <img src="https://cdn3d.iconscout.com/3d/premium/thumb/padlock-4039991-3342738.png" class="float-img" style="width: 45px; top: 100px; left: 30%; animation-delay: 2s;">
-            
-            <div class="flex justify-between items-center mb-10 relative z-10">
-                <h1 class="text-2xl font-bold text-white">Playerok</h1>
-                <div class="bg-black/30 w-9 h-9 rounded-full flex items-center justify-center">
-                    <i class="fa-regular fa-moon text-white"></i>
-                </div>
-            </div>
+            <!-- 3D SVG элементы -->
+            <svg class="float-img" style="width: 70px; top: 30px; left: 10px; transform: rotate(-15deg);" viewBox="0 0 100 100"><rect x="10" y="30" width="80" height="60" rx="10" fill="#d4a373"/><rect x="10" y="30" width="80" height="15" rx="5" fill="#faedcd"/><path d="M50 30V90" stroke="#ccd5ae" stroke-width="4"/><path d="M35 45L45 55L65 35" stroke="#22c55e" stroke-width="6" stroke-linecap="round"/></svg>
+            <svg class="float-img" style="width: 65px; top: 10px; left: 40%; animation-delay: 0.5s;" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#fbcfe8"/><path d="M20 50C20 30 30 20 50 20C70 20 80 30 80 50" stroke="#a78bfa" stroke-width="12" stroke-linecap="round"/><rect x="30" y="45" width="15" height="10" rx="3" fill="#1e293b"/><rect x="55" y="45" width="15" height="10" rx="3" fill="#1e293b"/><path d="M45 50H55" stroke="#1e293b" stroke-width="2"/></svg>
+            <svg class="float-img" style="width: 85px; top: 40px; right: 10px; animation-delay: 1s;" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#60a5fa"/><path d="M20 40C20 20 30 10 50 10C70 10 80 20 80 40" stroke="#1e3a8a" stroke-width="8" stroke-linecap="round"/><rect x="10" y="35" width="15" height="30" rx="7" fill="#1e3a8a"/><rect x="75" y="35" width="15" height="30" rx="7" fill="#1e3a8a"/><circle cx="40" cy="50" r="4" fill="white"/><circle cx="60" cy="50" r="4" fill="white"/></svg>
+            <svg class="float-img" style="width: 60px; top: 10px; right: 30px; transform: rotate(10deg); animation-delay: 1.5s;" viewBox="0 0 100 100"><rect x="20" y="40" width="60" height="40" rx="5" fill="#1d4ed8"/><rect x="15" y="30" width="70" height="15" rx="5" fill="#2563eb"/><rect x="45" y="45" width="10" height="15" rx="2" fill="#fbbf24"/><circle cx="50" cy="75" r="5" fill="#fbbf24"/></svg>
+            <svg class="float-img" style="width: 45px; top: 110px; left: 35%; animation-delay: 2s;" viewBox="0 0 100 100"><rect x="25" y="40" width="50" height="45" rx="10" fill="#3b82f6"/><path d="M35 40V30C35 20 40 15 50 15C60 15 65 20 65 30V40" stroke="#93c5fd" stroke-width="8" stroke-linecap="round"/></svg>
 
+            <div class="flex justify-between items-center mb-12 relative z-10">
+                <h1 class="text-2xl font-bold text-white">Playerok</h1>
+                <div class="bg-black/30 w-9 h-9 rounded-full flex items-center justify-center"><i class="fa-regular fa-moon text-white"></i></div>
+            </div>
             <h2 class="text-3xl font-black text-white leading-tight mb-3 relative z-10">Зарабатывай на<br>любимых играх и<br>приложениях</h2>
             <p class="text-sm text-blue-100 mb-8 relative z-10">Монетизируй игровые предметы, аккаунты, донат и цифровые товары в одном месте</p>
             
-            <button onclick="switchPage('sell', document.getElementById('nav-sell'))" class="w-full bg-[#2563eb] text-white font-bold py-4 rounded-xl shadow-lg text-sm btn-active relative z-10">Начать продажу</button>
+            <!-- Кнопка "Начать продажу" ведет в Профиль -->
+            <button onclick="switchPage('profile', document.getElementById('nav-profile'))" class="w-full bg-[#2563eb] text-white font-bold py-4 rounded-xl shadow-lg text-sm btn-active relative z-10">Начать продажу</button>
         </div>
 
         <div class="px-4 py-4">
-            <!-- Горизонтальные категории -->
             <div class="flex gap-3 overflow-x-auto pb-4 no-scrollbar mb-2">
-                <div class="card-game" onclick="switchPage('sell', document.getElementById('nav-sell'))">
-                    <div class="icon-box bg-blue-600"><img src="https://cdn-icons-png.flaticon.com/512/5969/5969076.png"></div>
-                    <span class="text-[11px]">Roblox</span>
-                </div>
-                <div class="card-game" onclick="switchPage('sell', document.getElementById('nav-sell'))">
-                    <div class="icon-box bg-orange-100"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Claude_AI_logo.svg"></div>
-                    <span class="text-[11px]">Claude</span>
-                </div>
-                <div class="card-game" onclick="switchPage('sell', document.getElementById('nav-sell'))">
-                    <div class="icon-box bg-[#10a37f]"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg"></div>
-                    <span class="text-[11px]">ChatGPT</span>
-                </div>
-                <div class="card-game" onclick="switchPage('sell', document.getElementById('nav-sell'))">
+                <div class="card-game" onclick="switchPage('steam', document.getElementById('nav-home'))">
                     <div class="icon-box bg-gray-700"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Steam_Logo.svg/1200px-Steam_Logo.svg.png"></div>
                     <span class="text-[11px]">Steam</span>
                 </div>
-                <div class="card-game" onclick="switchPage('sell', document.getElementById('nav-sell'))">
+                <div class="card-game" onclick="switchPage('stars', document.getElementById('nav-home'))">
                     <div class="icon-box bg-blue-400"><i class="fa-brands fa-telegram text-white text-2xl"></i></div>
                     <span class="text-[11px]">Telegram</span>
                 </div>
+                <div class="card-game" onclick="switchPage('chatgpt', document.getElementById('nav-home'))">
+                    <div class="icon-box bg-[#10a37f]"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg"></div>
+                    <span class="text-[11px]">ChatGPT</span>
+                </div>
+                <div class="card-game" onclick="switchPage('claude', document.getElementById('nav-home'))">
+                    <div class="icon-box bg-orange-100"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Claude_AI_logo.svg"></div>
+                    <span class="text-[11px]">Claude</span>
+                </div>
             </div>
 
-            <!-- Скролл категорий -->
             <div class="filter-scroll mb-6">
                 <div class="filter-btn active"><i class="fa-solid fa-border-all"></i> Все</div>
                 <div class="filter-btn"><i class="fa-solid fa-cube text-blue-500"></i> Playerok</div>
                 <div class="filter-btn"><i class="fa-solid fa-gamepad text-gray-400"></i> Донат</div>
             </div>
 
-            <!-- Сетка товаров -->
+            <!-- ТОВАРЫ -->
             <div class="grid grid-cols-2 gap-3 mb-8">
-                
-                <!-- 1. Dota 2 -->
+                <!-- 1 -->
                 <div class="product-card" onclick="openPayModal(207, 'Dota 2 — Погода Genuine Weather Aurora')">
-                    <div class="relative">
-                        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg" class="product-img" alt="Dota 2">
-                        <div class="discount-badge">-59%</div>
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/570/capsule_231x87.jpg" class="w-6 h-6 rounded">
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">Dota 2</div>
-                                <div class="text-gray-500">Скины</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">207 ₽</span>
-                            <span class="old-price">499 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Погода Genuine Weather Aurora +</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 1 898</div>
-                    </div>
+                    <div class="relative"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg" class="product-img"><div class="discount-badge">-59%</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/570/capsule_231x87.jpg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">Dota 2</div><div class="text-gray-500">Скины</div></div></div><div class="flex items-center mb-1"><span class="price">207 ₽</span><span class="old-price">499 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Погода Genuine Weather Aurora +</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 1 898</div></div>
                 </div>
-
-                <!-- 2. Valorant -->
+                <!-- 2 -->
                 <div class="product-card" onclick="openPayModal(929, 'Valorant — 1000 VPoints (промокод)')">
-                    <div class="relative">
-                        <img src="https://images.contentstack.io/v3/assets/bltb6530b271fddd0b1/blt4e4f6f7b8f8c7e6f/61c2a8c2e6a1b0a4e4a0e6e6/valorant-cover.jpg" class="product-img" alt="Valorant">
-                        <div class="discount-badge">-7%</div>
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-6 h-6 bg-red-600 rounded text-center text-[10px] font-bold pt-1">V</div>
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">Valorant</div>
-                                <div class="text-gray-500">VPoints</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">929 ₽</span>
-                            <span class="old-price">999 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">1000 VPoints промокодом (Россия)</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-circle-check text-blue-500"></i> Playerok</div>
-                    </div>
+                    <div class="relative"><img src="https://images.contentstack.io/v3/assets/bltb6530b271fddd0b1/blt4e4f6f7b8f8c7e6f/61c2a8c2e6a1b0a4e4a0e6e6/valorant-cover.jpg" class="product-img"><div class="discount-badge">-7%</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-red-600 rounded text-center text-[10px] font-bold pt-1">V</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">Valorant</div><div class="text-gray-500">VPoints</div></div></div><div class="flex items-center mb-1"><span class="price">929 ₽</span><span class="old-price">999 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">1000 VPoints промокодом</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-circle-check text-blue-500"></i> Playerok</div></div>
                 </div>
-
-                <!-- 3. Claude Pro -->
+                <!-- 3 -->
                 <div class="product-card" onclick="openPayModal(2399, 'Claude Pro — 1 месяц')">
-                    <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Claude_AI_logo.svg/1200px-Claude_AI_logo.svg.png" class="product-img object-contain bg-orange-50 p-6" alt="Claude">
-                        <div class="discount-badge">-8%</div>
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-6 h-6 bg-orange-500 rounded text-center text-[10px] pt-1 text-white"><i class="fa-solid fa-sun"></i></div>
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">Claude</div>
-                                <div class="text-gray-500">Подписки</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">2 399 ₽</span>
-                            <span class="old-price">2 599 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Claude Pro подписка на 1 месяц</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-circle-check text-blue-500"></i> Playerok</div>
-                    </div>
+                    <div class="relative"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Claude_AI_logo.svg/1200px-Claude_AI_logo.svg.png" class="product-img object-contain bg-orange-50 p-6"><div class="discount-badge">-8%</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-orange-500 rounded text-center text-[10px] pt-1 text-white"><i class="fa-solid fa-sun"></i></div><div class="text-[11px] leading-tight"><div class="font-bold text-white">Claude</div><div class="text-gray-500">Подписки</div></div></div><div class="flex items-center mb-1"><span class="price">2 399 ₽</span><span class="old-price">2 599 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Claude Pro подписка на 1 месяц</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-circle-check text-blue-500"></i> Playerok</div></div>
                 </div>
-
-                <!-- 4. FC Mobile -->
+                <!-- 4 -->
                 <div class="product-card" onclick="openPayModal(250, 'EA SPORTS FC Mobile — БУСТ')">
-                    <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/EA_Sports_FC_Mobile_logo.svg/1200px-EA_Sports_FC_Mobile_logo.svg.png" class="product-img object-contain bg-gray-900 p-6" alt="FC Mobile">
-                        <div class="discount-badge">-16%</div>
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-6 h-6 bg-green-600 rounded text-center text-[10px] pt-1">FC</div>
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">EA SPORTS</div>
-                                <div class="text-gray-500">Буст</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">250 ₽</span>
-                            <span class="old-price">299 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">БУСТ ДО ЧЕМПИОНА В РАВНОЙ ИГРЕ</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 288</div>
-                    </div>
+                    <div class="relative"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/EA_Sports_FC_Mobile_logo.svg/1200px-EA_Sports_FC_Mobile_logo.svg.png" class="product-img object-contain bg-gray-900 p-6"><div class="discount-badge">-16%</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-green-600 rounded text-center text-[10px] pt-1">FC</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">EA SPORTS</div><div class="text-gray-500">Буст</div></div></div><div class="flex items-center mb-1"><span class="price">250 ₽</span><span class="old-price">299 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">БУСТ ДО ЧЕМПИОНА В РАВНОЙ ИГРЕ</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 288</div></div>
                 </div>
-
-                <!-- 5. Diablo 4 -->
+                <!-- 5 -->
                 <div class="product-card" onclick="openPayModal(1090, 'Diablo 4 — Энигма Телепорт')">
-                    <div class="relative">
-                        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/header.jpg" class="product-img" alt="Diablo 4">
-                        <div class="discount-badge">-27%</div>
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/capsule_231x87.jpg" class="w-6 h-6 rounded">
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">Diablo 4</div>
-                                <div class="text-gray-500">Предметы</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">1 090 ₽</span>
-                            <span class="old-price">1 499 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">S15 ЭНИГМА ТЕЛЕПОРТ НА ЛЮБОЙ</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 2 454</div>
-                    </div>
+                    <div class="relative"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/header.jpg" class="product-img"><div class="discount-badge">-27%</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/capsule_231x87.jpg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">Diablo 4</div><div class="text-gray-500">Предметы</div></div></div><div class="flex items-center mb-1"><span class="price">1 090 ₽</span><span class="old-price">1 499 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">S15 ЭНИГМА ТЕЛЕПОРТ НА ЛЮБОЙ</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 2 454</div></div>
                 </div>
-
-                <!-- 6. Boom Beach -->
+                <!-- 6 -->
                 <div class="product-card" onclick="openPayModal(379, 'Boom Beach — Акция')">
-                    <div class="relative">
-                        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/301440/header.jpg" class="product-img" alt="Boom Beach">
-                        <div class="discount-badge">-24%</div>
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-6 h-6 bg-blue-500 rounded text-center text-[10px] pt-1">BB</div>
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">Boom Beach</div>
-                                <div class="text-gray-500">Акции</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">379 ₽</span>
-                            <span class="old-price">499 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">АКЦИЯ | ДОПОЛНИТЕЛЬНЫЙ</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 203 388</div>
-                    </div>
+                    <div class="relative"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/301440/header.jpg" class="product-img"><div class="discount-badge">-24%</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-blue-500 rounded text-center text-[10px] pt-1">BB</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">Boom Beach</div><div class="text-gray-500">Акции</div></div></div><div class="flex items-center mb-1"><span class="price">379 ₽</span><span class="old-price">499 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">АКЦИЯ | ДОПОЛНИТЕЛЬНЫЙ</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 203 388</div></div>
                 </div>
-
-                <!-- 7. War Thunder -->
+                <!-- 7 -->
                 <div class="product-card" onclick="openPayModal(450, 'War Thunder — Leopard 2PL')">
-                    <div class="relative">
-                        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/236390/header.jpg" class="product-img" alt="WT">
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-6 h-6 bg-gray-600 rounded text-center text-[10px] pt-1">WT</div>
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">WT</div>
-                                <div class="text-gray-500">Аккаунты</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">450 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Leopard 2PL ⚡ Cy-33 ⚡ Leopard</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 81</div>
-                    </div>
+                    <div class="relative"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/236390/header.jpg" class="product-img"></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-gray-600 rounded text-center text-[10px] pt-1">WT</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">WT</div><div class="text-gray-500">Аккаунты</div></div></div><div class="flex items-center mb-1"><span class="price">450 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Leopard 2PL ⚡ Cy-33 ⚡ Leopard</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 81</div></div>
                 </div>
-
-                <!-- 8. Telegram Premium -->
+                <!-- 8 -->
                 <div class="product-card" onclick="openPayModal(310, 'Telegram Premium — 1 месяц')">
-                    <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="product-img object-contain bg-blue-900/50 p-8" alt="TG">
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="w-6 h-6 rounded">
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">Telegram</div>
-                                <div class="text-gray-500">Премиум</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">310 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Telegram premium / 1 месяц / Со входом</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 24</div>
-                    </div>
+                    <div class="relative"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="product-img object-contain bg-blue-900/50 p-8"></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">Telegram</div><div class="text-gray-500">Премиум</div></div></div><div class="flex items-center mb-1"><span class="price">310 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Telegram premium / 1 месяц / Со входом</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 24</div></div>
                 </div>
-
-                <!-- 9. PUBG Mobile UC -->
+                <!-- 9 -->
                 <div class="product-card" onclick="openPayModal(42599, 'PUBG Mobile — 40500 UC')">
-                    <div class="relative">
-                        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg" class="product-img" alt="PUBG">
-                        <div class="discount-badge">-19%</div>
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/578080/capsule_231x87.jpg" class="w-6 h-6 rounded">
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">PUBG Mobile</div>
-                                <div class="text-gray-500">UC</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">42 599 ₽</span>
-                            <span class="old-price">52 549 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">40500 UC по ID</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-circle-check text-blue-500"></i> Playerok</div>
-                    </div>
+                    <div class="relative"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg" class="product-img"><div class="discount-badge">-19%</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/578080/capsule_231x87.jpg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">PUBG Mobile</div><div class="text-gray-500">UC</div></div></div><div class="flex items-center mb-1"><span class="price">42 599 ₽</span><span class="old-price">52 549 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">40500 UC по ID</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-circle-check text-blue-500"></i> Playerok</div></div>
                 </div>
-
-                <!-- 10. Roblox Robux -->
+                <!-- 10 -->
                 <div class="product-card" onclick="openPayModal(999, 'Roblox — 1000 Robux')">
-                    <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Roblox_logo.svg" class="product-img object-contain bg-gray-900 p-6" alt="Roblox">
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Roblox_logo.svg" class="w-6 h-6 rounded">
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">Roblox</div>
-                                <div class="text-gray-500">Робуксы</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">999 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">1000 РОБУКСОВ МОМЕНТАЛЬНО</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 106 574</div>
-                    </div>
+                    <div class="relative"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Roblox_logo.svg" class="product-img object-contain bg-gray-900 p-6"></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Roblox_logo.svg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">Roblox</div><div class="text-gray-500">Робуксы</div></div></div><div class="flex items-center mb-1"><span class="price">999 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">1000 РОБУКСОВ МОМЕНТАЛЬНО</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 106 574</div></div>
                 </div>
-
-                <!-- 11. Playstation FC -->
+                <!-- 11 -->
                 <div class="product-card" onclick="openPayModal(575, 'PlayStation — EA SPORTS FC 27')">
-                    <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg" class="product-img object-contain bg-blue-900 p-8" alt="PS">
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg" class="w-6 h-6 rounded">
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">PlayStation</div>
-                                <div class="text-gray-500">Игры</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">575 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">PlayStation EA SPORTS FC 27 Lite</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 1 886</div>
-                    </div>
+                    <div class="relative"><img src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg" class="product-img object-contain bg-blue-900 p-8"></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">PlayStation</div><div class="text-gray-500">Игры</div></div></div><div class="flex items-center mb-1"><span class="price">575 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">PlayStation EA SPORTS FC 27 Lite</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 1 886</div></div>
                 </div>
-
-                <!-- 12. ChatGPT Plus -->
+                <!-- 12 -->
                 <div class="product-card" onclick="openPayModal(2299, 'ChatGPT Plus — 1 месяц')">
-                    <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="product-img object-contain bg-emerald-900/30 p-8" alt="GPT">
-                        <div class="discount-badge">-23%</div>
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="w-6 h-6 rounded">
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">ChatGPT</div>
-                                <div class="text-gray-500">Подписка</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">2 299 ₽</span>
-                            <span class="old-price">2 999 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">ChatGPT Плюс подписка на 1 месяц</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-circle-check text-blue-500"></i> Playerok</div>
-                    </div>
+                    <div class="relative"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="product-img object-contain bg-emerald-900/30 p-8"><div class="discount-badge">-23%</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">ChatGPT</div><div class="text-gray-500">Подписка</div></div></div><div class="flex items-center mb-1"><span class="price">2 299 ₽</span><span class="old-price">2 999 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">ChatGPT Плюс подписка на 1 месяц</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-circle-check text-blue-500"></i> Playerok</div></div>
                 </div>
-
-                <!-- 13. Windows -->
+                <!-- 13 -->
                 <div class="product-card" onclick="openPayModal(199, 'Microsoft Office — Лицензия')">
-                    <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" class="product-img object-contain bg-gray-800 p-8" alt="MS">
-                        <div class="discount-badge">-60%</div>
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" class="w-6 h-6 rounded">
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">Windows</div>
-                                <div class="text-gray-500">Лицензия</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">199 ₽</span>
-                            <span class="old-price">499 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">ЛИЦЕНЗИЯ Microsoft Office</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 37 377</div>
-                    </div>
+                    <div class="relative"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" class="product-img object-contain bg-gray-800 p-8"><div class="discount-badge">-60%</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">Windows</div><div class="text-gray-500">Лицензия</div></div></div><div class="flex items-center mb-1"><span class="price">199 ₽</span><span class="old-price">499 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">ЛИЦЕНЗИЯ Microsoft Office</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 37 377</div></div>
                 </div>
-
-                <!-- 14. Hello Neighbor -->
+                <!-- 14 -->
                 <div class="product-card" onclick="openPayModal(329, 'Hello Neighbor — Steam ключ')">
-                    <div class="relative">
-                        <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/521890/header.jpg" class="product-img" alt="Hello Neighbor">
-                        <div class="discount-badge">-34%</div>
-                    </div>
-                    <div class="p-3">
-                        <div class="flex items-center gap-2 mb-2">
-                            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/521890/capsule_231x87.jpg" class="w-6 h-6 rounded">
-                            <div class="text-[11px] leading-tight">
-                                <div class="font-bold text-white">Hello Neighbor</div>
-                                <div class="text-gray-500">Ключи</div>
-                            </div>
-                        </div>
-                        <div class="flex items-center mb-1">
-                            <span class="price">329 ₽</span>
-                            <span class="old-price">499 ₽</span>
-                        </div>
-                        <div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Hello Neighbor — Steam Ключ РФ</div>
-                        <div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 33 098</div>
-                    </div>
+                    <div class="relative"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/521890/header.jpg" class="product-img"><div class="discount-badge">-34%</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/521890/capsule_231x87.jpg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">Hello Neighbor</div><div class="text-gray-500">Ключи</div></div></div><div class="flex items-center mb-1"><span class="price">329 ₽</span><span class="old-price">499 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Hello Neighbor — Steam Ключ РФ</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 33 098</div></div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- ================= СТРАНИЦА 2: ПРОФИЛЬ ================= -->
+    <!-- ПРОФИЛЬ -->
     <div id="page-profile" class="page px-4 pt-8 pb-4">
         <h1 class="text-2xl font-bold text-white mb-8">Вход или регистрация</h1>
         <div class="flex flex-col gap-4">
@@ -592,227 +237,101 @@
                 <span class="text-blue-400 font-medium">Войти с VK ID</span>
             </button>
             <button class="w-full bg-[#151822] border border-[#1f2330] rounded-xl flex items-center px-4 py-4 btn-active">
-                <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center mr-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="w-5 h-5">
-                </div>
+                <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center mr-4"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="w-5 h-5"></div>
                 <span class="text-blue-400 font-medium">Войти через Google</span>
             </button>
-            <div class="mt-4">
-                <input type="email" placeholder="Адрес электронной почты" class="input-dark">
-            </div>
+            <div class="mt-4"><input type="email" placeholder="Адрес электронной почты" class="input-dark"></div>
             <button onclick="alert('Код отправлен на почту!')" class="w-full bg-[#2563eb] text-white font-bold py-4 rounded-xl shadow-lg text-sm mt-2 btn-active">Получить код</button>
         </div>
     </div>
 
-    <!-- ================= СТРАНИЦА 3: ПРОДАТЬ ================= -->
+    <!-- ПРОДАТЬ -->
     <div id="page-sell" class="page px-4 pt-6 pb-8">
         <h1 class="text-2xl font-bold mb-6">Выставить товар</h1>
-        <div class="mb-4">
-            <label class="label-text">Выберите игру</label>
-            <select class="input-dark appearance-none">
-                <option>Dota 2</option>
-                <option>Valorant</option>
-                <option>Roblox</option>
-                <option>Steam</option>
-                <option>Claude</option>
-                <option>ChatGPT</option>
-            </select>
-        </div>
-        <div class="mb-4">
-            <label class="label-text">Что продаете?</label>
-            <input type="text" placeholder="Например: Скины, аккаунт, ключ" class="input-dark">
-        </div>
-        <div class="mb-4">
-            <label class="label-text">Цена (в рублях)</label>
-            <input type="number" placeholder="1000" class="input-dark">
-        </div>
-        <div class="mb-6">
-            <label class="label-text">Описание</label>
-            <textarea class="input-dark h-24" placeholder="Опишите товар..."></textarea>
-        </div>
+        <div class="mb-4"><label class="label-text">Выберите игру</label><select class="input-dark appearance-none"><option>Dota 2</option><option>Valorant</option><option>Roblox</option></select></div>
+        <div class="mb-4"><label class="label-text">Что продаете?</label><input type="text" placeholder="Например: Скины" class="input-dark"></div>
+        <div class="mb-4"><label class="label-text">Цена (в рублях)</label><input type="number" placeholder="1000" class="input-dark"></div>
+        <div class="mb-6"><label class="label-text">Описание</label><textarea class="input-dark h-24" placeholder="Опишите товар..."></textarea></div>
         <button onclick="alert('Товар отправлен на модерацию!')" class="w-full bg-[#2563eb] text-white font-bold py-4 rounded-xl shadow-lg text-sm btn-active">Опубликовать</button>
     </div>
 
-    <!-- ================= СТРАНИЦА STEAM ================= -->
+    <!-- STEAM -->
     <div id="page-steam" class="page px-4 pt-6 pb-8">
-        <div class="flex items-center gap-2 mb-6 cursor-pointer" onclick="switchPage('home', document.getElementById('nav-home'))">
-            <i class="fa-solid fa-arrow-left text-gray-400"></i> <span class="text-gray-400">Назад</span>
-        </div>
+        <div class="flex items-center gap-2 mb-6 cursor-pointer" onclick="switchPage('home', document.getElementById('nav-home'))"><i class="fa-solid fa-arrow-left text-gray-400"></i> <span class="text-gray-400">Назад</span></div>
         <h1 class="text-2xl font-bold mb-6">Пополнение Steam</h1>
-        
-        <div class="flex gap-2 mb-6">
-            <span class="bg-purple-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold"><i class="fa-solid fa-bolt text-yellow-300"></i> Автовыдача</span>
-            <span class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold"><i class="fa-solid fa-circle-check"></i> Playerok</span>
-        </div>
-
+        <div class="flex gap-2 mb-6"><span class="bg-purple-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold"><i class="fa-solid fa-bolt text-yellow-300"></i> Автовыдача</span><span class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold"><i class="fa-solid fa-circle-check"></i> Playerok</span></div>
         <div class="flex gap-3 mb-6">
-            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4">
-                <div class="label-text">Логин Steam</div>
-                <input type="text" placeholder="Введите логин" class="bg-transparent text-white outline-none w-full font-bold">
-            </div>
-            <div class="w-1/3 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4">
-                <div class="label-text">Сумма</div>
-                <div class="text-white font-bold">1 000 ₽</div>
-            </div>
+            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4"><div class="label-text">Логин Steam</div><input type="text" placeholder="Введите логин" class="bg-transparent text-white outline-none w-full font-bold"></div>
+            <div class="w-1/3 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4"><div class="label-text">Сумма</div><div class="text-white font-bold">1 000 ₽</div></div>
         </div>
-
-        <div class="flex justify-between items-center mb-4">
-            <span class="text-sm text-gray-400">Комиссия <span class="bg-blue-600 text-white text-xs px-2 py-0.5 rounded ml-1">5%</span></span>
-            <span class="text-sm text-blue-500 font-medium">Ввести промокод <i class="fa-solid fa-chevron-right text-[10px]"></i></span>
-        </div>
-
-        <button onclick="openPayModal(1050, 'Пополнение Steam на 1000 ₽')" class="w-full bg-[#2563eb] text-white font-bold py-4 rounded-xl shadow-lg text-lg mb-8 relative">
-            Оплатить 1 050 ₽
-            <div class="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded-full border border-blue-200">+210 P</div>
-        </button>
+        <div class="flex justify-between items-center mb-4"><span class="text-sm text-gray-400">Комиссия <span class="bg-blue-600 text-white text-xs px-2 py-0.5 rounded ml-1">5%</span></span><span class="text-sm text-blue-500 font-medium">Ввести промокод <i class="fa-solid fa-chevron-right text-[10px]"></i></span></div>
+        <button onclick="openPayModal(1050, 'Пополнение Steam на 1000 ₽')" class="w-full bg-[#2563eb] text-white font-bold py-4 rounded-xl shadow-lg text-lg mb-8 relative">Оплатить 1 050 ₽<div class="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded-full border border-blue-200">+210 P</div></button>
     </div>
 
-    <!-- ================= СТРАНИЦА TELEGRAM STARS ================= -->
+    <!-- STARS -->
     <div id="page-stars" class="page px-4 pt-6 pb-8">
-        <div class="flex items-center gap-2 mb-6 cursor-pointer" onclick="switchPage('home', document.getElementById('nav-home'))">
-            <i class="fa-solid fa-arrow-left text-gray-400"></i> <span class="text-gray-400">Назад</span>
-        </div>
+        <div class="flex items-center gap-2 mb-6 cursor-pointer" onclick="switchPage('home', document.getElementById('nav-home'))"><i class="fa-solid fa-arrow-left text-gray-400"></i> <span class="text-gray-400">Назад</span></div>
         <h1 class="text-2xl font-bold mb-6">Звёзды Telegram</h1>
-        
-        <div class="flex gap-2 mb-6">
-            <span class="bg-purple-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold"><i class="fa-solid fa-bolt text-yellow-300"></i> Автовыдача</span>
-            <span class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold"><i class="fa-solid fa-circle-check"></i> Playerok</span>
-        </div>
-
+        <div class="flex gap-2 mb-6"><span class="bg-purple-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold"><i class="fa-solid fa-bolt text-yellow-300"></i> Автовыдача</span><span class="bg-blue-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold"><i class="fa-solid fa-circle-check"></i> Playerok</span></div>
         <div class="flex gap-3 mb-4">
-            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4">
-                <div class="label-text">Имя пользователя</div>
-                <input type="text" placeholder="@username" class="bg-transparent text-white outline-none w-full font-bold">
-            </div>
-            <div class="w-1/3 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4">
-                <div class="label-text">Количество</div>
-                <div class="text-white font-bold">100 ⭐</div>
-            </div>
+            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4"><div class="label-text">Имя пользователя</div><input type="text" placeholder="@username" class="bg-transparent text-white outline-none w-full font-bold"></div>
+            <div class="w-1/3 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4"><div class="label-text">Количество</div><div class="text-white font-bold">100 ⭐</div></div>
         </div>
-        
         <div class="text-sm text-gray-400 mb-4">1 ⭐ = 1.51 ₽</div>
-
-        <button onclick="openPayModal(151, 'Звёзды Telegram (100 шт)')" class="w-full bg-[#d97706] text-white font-bold py-4 rounded-xl shadow-lg text-lg mb-8 relative">
-            Оплатить 151 ₽
-            <div class="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-orange-600 text-xs font-bold px-2 py-1 rounded-full border border-orange-200">+45 P</div>
-        </button>
+        <button onclick="openPayModal(151, 'Звёзды Telegram (100 шт)')" class="w-full bg-[#d97706] text-white font-bold py-4 rounded-xl shadow-lg text-lg mb-8 relative">Оплатить 151 ₽<div class="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-orange-600 text-xs font-bold px-2 py-1 rounded-full border border-orange-200">+45 P</div></button>
     </div>
 
-    <!-- ================= СТРАНИЦА CHATGPT ================= -->
+    <!-- CHATGPT -->
     <div id="page-chatgpt" class="page px-4 pt-6 pb-8">
-        <div class="flex items-center gap-2 mb-6 cursor-pointer" onclick="switchPage('home', document.getElementById('nav-home'))">
-            <i class="fa-solid fa-arrow-left text-gray-400"></i> <span class="text-gray-400">Назад</span>
-        </div>
+        <div class="flex items-center gap-2 mb-6 cursor-pointer" onclick="switchPage('home', document.getElementById('nav-home'))"><i class="fa-solid fa-arrow-left text-gray-400"></i> <span class="text-gray-400">Назад</span></div>
         <h1 class="text-2xl font-bold mb-6">Подписка ChatGPT</h1>
-        
         <div class="flex items-center gap-4 mb-6">
-            <div class="w-16 h-16 bg-[#10a37f] rounded-2xl flex items-center justify-center">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="w-10 h-10 invert">
-            </div>
-            <div>
-                <div class="font-bold text-lg">ChatGPT GO</div>
-                <div class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded inline-block mt-1"><i class="fa-solid fa-circle-check"></i> Playerok</div>
-            </div>
+            <div class="w-16 h-16 bg-[#10a37f] rounded-2xl flex items-center justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="w-10 h-10 invert"></div>
+            <div><div class="font-bold text-lg">ChatGPT GO</div><div class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded inline-block mt-1"><i class="fa-solid fa-circle-check"></i> Playerok</div></div>
         </div>
-
         <div class="flex gap-3 mb-6">
-            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4">
-                <div class="label-text">Срок</div>
-                <div class="text-white font-bold">1 Месяц</div>
-            </div>
-            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4">
-                <div class="label-text">Тип</div>
-                <div class="text-white font-bold">GO</div>
-            </div>
+            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4"><div class="label-text">Срок</div><div class="text-white font-bold">1 Месяц</div></div>
+            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4"><div class="label-text">Тип</div><div class="text-white font-bold">GO</div></div>
         </div>
-
-        <button onclick="openPayModal(799, 'Подписка ChatGPT GO (1 месяц)')" class="w-full bg-[#2563eb] text-white font-bold py-4 rounded-xl shadow-lg text-lg relative mb-8">
-            Оплатить 799 ₽
-            <div class="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded-full border border-blue-200">+400 P</div>
-        </button>
+        <button onclick="openPayModal(799, 'Подписка ChatGPT GO (1 месяц)')" class="w-full bg-[#2563eb] text-white font-bold py-4 rounded-xl shadow-lg text-lg relative mb-8">Оплатить 799 ₽<div class="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded-full border border-blue-200">+400 P</div></button>
     </div>
 
-    <!-- ================= СТРАНИЦА CLAUDE ================= -->
+    <!-- CLAUDE -->
     <div id="page-claude" class="page px-4 pt-6 pb-8">
-        <div class="flex items-center gap-2 mb-6 cursor-pointer" onclick="switchPage('home', document.getElementById('nav-home'))">
-            <i class="fa-solid fa-arrow-left text-gray-400"></i> <span class="text-gray-400">Назад</span>
-        </div>
+        <div class="flex items-center gap-2 mb-6 cursor-pointer" onclick="switchPage('home', document.getElementById('nav-home'))"><i class="fa-solid fa-arrow-left text-gray-400"></i> <span class="text-gray-400">Назад</span></div>
         <h1 class="text-2xl font-bold mb-6">Подписки Claude</h1>
-        
         <div class="flex items-center gap-4 mb-6">
-            <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Claude_AI_logo.svg" class="w-10 h-10">
-            </div>
-            <div>
-                <div class="font-bold text-lg">Claude Pro</div>
-                <div class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded inline-block mt-1"><i class="fa-solid fa-circle-check"></i> Playerok</div>
-            </div>
+            <div class="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Claude_AI_logo.svg" class="w-10 h-10"></div>
+            <div><div class="font-bold text-lg">Claude Pro</div><div class="bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded inline-block mt-1"><i class="fa-solid fa-circle-check"></i> Playerok</div></div>
         </div>
-
         <div class="flex gap-3 mb-6">
-            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4">
-                <div class="label-text">Тип подписки</div>
-                <div class="text-white font-bold">Pro</div>
-            </div>
-            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4">
-                <div class="label-text">Срок подписки</div>
-                <div class="text-white font-bold">1 месяц</div>
-            </div>
+            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4"><div class="label-text">Тип подписки</div><div class="text-white font-bold">Pro</div></div>
+            <div class="flex-1 bg-[#1c1f2b] border border-[#2a2e3d] rounded-xl p-4"><div class="label-text">Срок подписки</div><div class="text-white font-bold">1 месяц</div></div>
         </div>
-
-        <button onclick="openPayModal(2399, 'Подписка Claude Pro (1 месяц)')" class="w-full bg-[#2563eb] text-white font-bold py-4 rounded-xl shadow-lg text-lg relative mb-8">
-            Оплатить 2 399 ₽
-            <div class="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded-full border border-blue-200">+1 200 P</div>
-        </button>
+        <button onclick="openPayModal(2399, 'Подписка Claude Pro (1 месяц)')" class="w-full bg-[#2563eb] text-white font-bold py-4 rounded-xl shadow-lg text-lg relative mb-8">Оплатить 2 399 ₽<div class="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-blue-600 text-xs font-bold px-2 py-1 rounded-full border border-blue-200">+1 200 P</div></button>
     </div>
 
-    <!-- ================= НИЖНЕЕ МЕНЮ ================= -->
+    <!-- НИЖНЕЕ МЕНЮ -->
     <div class="bottom-nav">
-        <a href="#" class="nav-item" id="nav-home" onclick="switchPage('home', this)">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <span>Поиск</span>
-        </a>
-        <a href="#" class="nav-item relative">
-            <div class="absolute -top-3 bg-white text-black text-[10px] font-bold px-2 py-0.5 rounded-full">Призы</div>
-            <div class="w-9 h-9 bg-gradient-to-tr from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-1">
-                <span class="text-white font-bold text-sm">P</span>
-            </div>
-        </a>
-        <a href="#" class="nav-item" id="nav-sell" onclick="switchPage('sell', this)">
-            <i class="fa-solid fa-circle-plus text-blue-500"></i>
-            <span class="text-blue-500">Продать</span>
-        </a>
-        <a href="https://t.me/playerokmger" target="_blank" class="nav-item">
-            <i class="fa-solid fa-comment-dots"></i>
-            <span>Чаты</span>
-        </a>
-        <a href="#" class="nav-item" id="nav-profile" onclick="switchPage('profile', this)">
-            <i class="fa-solid fa-circle-user"></i>
-            <span>Профиль</span>
-        </a>
+        <a href="#" class="nav-item" id="nav-home" onclick="switchPage('home', this)"><i class="fa-solid fa-magnifying-glass"></i><span>Поиск</span></a>
+        <a href="#" class="nav-item relative"><div class="absolute -top-3 bg-white text-black text-[10px] font-bold px-2 py-0.5 rounded-full">Призы</div><div class="w-9 h-9 bg-gradient-to-tr from-purple-500 to-pink-500 rounded-full flex items-center justify-center mb-1"><span class="text-white font-bold text-sm">P</span></div></a>
+        <a href="#" class="nav-item" id="nav-sell" onclick="switchPage('sell', this)"><i class="fa-solid fa-circle-plus text-blue-500"></i><span class="text-blue-500">Продать</span></a>
+        <a href="https://t.me/playerokmger" target="_blank" class="nav-item"><i class="fa-solid fa-comment-dots"></i><span>Чаты</span></a>
+        <a href="#" class="nav-item" id="nav-profile" onclick="switchPage('profile', this)"><i class="fa-solid fa-circle-user"></i><span>Профиль</span></a>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО ОПЛАТЫ -->
+    <!-- МОДАЛЬНОЕ ОКНО -->
     <div id="payModal" class="modal">
         <div class="modal-content">
-            <div class="w-16 h-16 bg-blue-500/10 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
-                <i class="fa-solid fa-headset"></i>
-            </div>
+            <div class="w-16 h-16 bg-blue-500/10 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl"><i class="fa-solid fa-headset"></i></div>
             <h3 class="text-xl font-bold mb-2">Оплата через поддержку</h3>
             <p class="text-sm text-gray-400 mb-6" id="modal-text">Чтобы оплатить товар, обратитесь в поддержку.</p>
-            
-            <a href="https://t.me/playerokmger" target="_blank" class="w-full bg-[#2563eb] text-white font-bold py-3.5 rounded-xl shadow-lg text-sm block text-center mb-3 btn-active">
-                <i class="fa-brands fa-telegram mr-2"></i> Написать в поддержку
-            </a>
-            
-            <button onclick="closePayModal()" class="w-full bg-transparent text-gray-400 font-medium py-2 rounded-xl text-sm border border-gray-700 btn-active">
-                Отмена
-            </button>
+            <a href="https://t.me/playerokmger" target="_blank" class="w-full bg-[#2563eb] text-white font-bold py-3.5 rounded-xl shadow-lg text-sm block text-center mb-3 btn-active"><i class="fa-brands fa-telegram mr-2"></i> Написать в поддержку</a>
+            <button onclick="closePayModal()" class="w-full bg-transparent text-gray-400 font-medium py-2 rounded-xl text-sm border border-gray-700 btn-active">Отмена</button>
         </div>
     </div>
 
     <script>
-        // === НАВИГАЦИЯ ===
         function switchPage(pageId, element) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const target = document.getElementById('page-' + pageId);
@@ -825,7 +344,6 @@
             window.scrollTo(0, 0);
         }
 
-        // === МОДАЛЬНОЕ ОКНО ОПЛАТЫ ===
         const modal = document.getElementById('payModal');
         const modalText = document.getElementById('modal-text');
 
@@ -843,4 +361,4 @@
         });
     </script>
 </body>
-    </html>
+                </html>
