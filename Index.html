@@ -47,12 +47,15 @@
         }
         .card-game:active { transform: scale(0.95); background: #1a1f2e; }
         .icon-box { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .icon-box img { width: 100%; height: 100%; object-fit: cover; }
 
         .product-card {
             background: #151822; border-radius: 16px; overflow: hidden;
             border: 1px solid #1f2330; position: relative; cursor: pointer; transition: 0.2s;
         }
         .product-card:active { transform: scale(0.97); border-color: #3b82f6; }
+        
+        /* Обложки */
         .product-img { width: 100%; height: 140px; object-fit: cover; background: #1f2330; display: block; }
         
         .discount-badge {
@@ -151,7 +154,7 @@
                 <div class="filter-btn" onclick="setFilter(this)"><i class="fa-solid fa-gamepad text-gray-400"></i> Донат</div>
             </div>
 
-            <!-- ТОВАРЫ С РЕАЛЬНЫМИ КАРТИНКАМИ -->
+            <!-- ТОВАРЫ С РЕАЛЬНЫМИ ОБЛОЖКАМИ -->
             <div class="grid grid-cols-2 gap-3 mb-8">
                 <!-- 1. Dota 2 -->
                 <div class="product-card" onclick="openPayModal(207, 'Dota 2 — Погода Genuine Weather Aurora')">
@@ -164,7 +167,7 @@
                 <!-- 2. Valorant -->
                 <div class="product-card" onclick="openPayModal(929, 'Valorant — 1000 VPoints')">
                     <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Valorant_logo.svg/1200px-Valorant_logo.svg.png" class="product-img object-contain p-6 bg-[#1f2330]" alt="Valorant">
+                        <img src="https://i.imgur.com/8QeP4pP.jpg" class="product-img" alt="Valorant">
                         <div class="discount-badge">-7%</div>
                     </div>
                     <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-red-600 rounded text-center text-[10px] font-bold pt-1">V</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">Valorant</div><div class="text-gray-500">VPoints</div></div></div><div class="flex items-center mb-1"><span class="price">929 ₽</span><span class="old-price">999 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">1000 VPoints промокодом</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-circle-check text-blue-500"></i> Playerok</div></div>
@@ -172,7 +175,7 @@
                 <!-- 3. Claude Pro -->
                 <div class="product-card" onclick="openPayModal(2399, 'Claude Pro — 1 месяц')">
                     <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Claude_AI_logo.svg" class="product-img object-contain p-6 bg-[#d97757]" alt="Claude">
+                        <img src="https://i.imgur.com/k7R3b1n.jpg" class="product-img" alt="Claude">
                         <div class="discount-badge">-8%</div>
                     </div>
                     <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-[#d97757] rounded text-center text-[10px] pt-1 text-white font-bold">C</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">Claude</div><div class="text-gray-500">Подписки</div></div></div><div class="flex items-center mb-1"><span class="price">2 399 ₽</span><span class="old-price">2 599 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Claude Pro подписка на 1 месяц</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-circle-check text-blue-500"></i> Playerok</div></div>
@@ -180,10 +183,10 @@
                 <!-- 4. FC Mobile -->
                 <div class="product-card" onclick="openPayModal(250, 'EA SPORTS FC Mobile — БУСТ')">
                     <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/EA_Sports_FC_Mobile_logo.svg/1200px-EA_Sports_FC_Mobile_logo.svg.png" class="product-img object-contain p-6 bg-[#1f2330]" alt="FC Mobile">
+                        <img src="https://i.imgur.com/P5s7b4D.jpg" class="product-img" alt="FC Mobile">
                         <div class="discount-badge">-16%</div>
                     </div>
-                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-green-600 rounded text-center text-[10px] pt-1">FC</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">EA SPORTS</div><div class="text-gray-500">Буст</div></div></div><div class="flex items-center mb-1"><span class="price">250 ₽</span><span class="old-price">299 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">БУСТ ДО ЧЕМПИОНА</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 288</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-green-600 rounded text-center text-[10px] pt-1">FC</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">EA SPORTS</div><div class="text-gray-500">Буст</div></div></div><div class="flex items-center mb-1"><span class="price">250 ₽</span><span class="old-price">299 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">БУСТ ДО ЧЕМПИОНА В РАВНОЙ ИГРЕ</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 288</div></div>
                 </div>
                 <!-- 5. Diablo 4 -->
                 <div class="product-card" onclick="openPayModal(1090, 'Diablo 4 — Энигма Телепорт')">
@@ -191,27 +194,27 @@
                         <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/header.jpg" class="product-img" alt="Diablo 4">
                         <div class="discount-badge">-27%</div>
                     </div>
-                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/capsule_231x87.jpg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">Diablo 4</div><div class="text-gray-500">Предметы</div></div></div><div class="flex items-center mb-1"><span class="price">1 090 ₽</span><span class="old-price">1 499 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">S15 ЭНИГМА ТЕЛЕПОРТ</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 2 454</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://cdn.cloudflare.steamstatic.com/steam/apps/2344520/capsule_231x87.jpg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">Diablo 4</div><div class="text-gray-500">Предметы</div></div></div><div class="flex items-center mb-1"><span class="price">1 090 ₽</span><span class="old-price">1 499 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">S15 ЭНИГМА ТЕЛЕПОРТ НА ЛЮБОЙ</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 2 454</div></div>
                 </div>
                 <!-- 6. Boom Beach -->
                 <div class="product-card" onclick="openPayModal(379, 'Boom Beach — Акция')">
                     <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/7e/Boom_Beach_Logo.png/220px-Boom_Beach_Logo.png" class="product-img object-contain p-6 bg-[#1f2330]" alt="Boom Beach">
+                        <img src="https://i.imgur.com/9Xm4K5w.jpg" class="product-img" alt="Boom Beach">
                         <div class="discount-badge">-24%</div>
                     </div>
-                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-blue-500 rounded text-center text-[10px] pt-1">BB</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">Boom Beach</div><div class="text-gray-500">Акции</div></div></div><div class="flex items-center mb-1"><span class="price">379 ₽</span><span class="old-price">499 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">АКЦИЯ | ДОПОЛНИТЕЛЬНЫЙ</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 203 388</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-blue-500 rounded text-center text-[10px] pt-1 font-bold">BB</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">Boom Beach</div><div class="text-gray-500">Акции</div></div></div><div class="flex items-center mb-1"><span class="price">379 ₽</span><span class="old-price">499 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">АКЦИЯ | ДОПОЛНИТЕЛЬНЫЙ</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 203 388</div></div>
                 </div>
                 <!-- 7. War Thunder -->
                 <div class="product-card" onclick="openPayModal(450, 'War Thunder — Leopard 2PL')">
                     <div class="relative">
                         <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/236390/header.jpg" class="product-img" alt="WT">
                     </div>
-                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-gray-600 rounded text-center text-[10px] pt-1">WT</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">WT</div><div class="text-gray-500">Аккаунты</div></div></div><div class="flex items-center mb-1"><span class="price">450 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Leopard 2PL ⚡ Cy-33</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 81</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-gray-600 rounded text-center text-[10px] pt-1 font-bold">WT</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">WT</div><div class="text-gray-500">Аккаунты</div></div></div><div class="flex items-center mb-1"><span class="price">450 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Leopard 2PL ⚡ Cy-33 ⚡ Leopard</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 81</div></div>
                 </div>
                 <!-- 8. Telegram Premium -->
                 <div class="product-card" onclick="openPayModal(310, 'Telegram Premium — 1 месяц')">
                     <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="product-img object-contain p-8 bg-blue-900/50" alt="TG">
+                        <img src="https://i.imgur.com/Z5s8b4D.jpg" class="product-img" alt="TG">
                     </div>
                     <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">Telegram</div><div class="text-gray-500">Премиум</div></div></div><div class="flex items-center mb-1"><span class="price">310 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">Telegram premium / 1 месяц / Со входом</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 24</div></div>
                 </div>
@@ -226,21 +229,21 @@
                 <!-- 10. Roblox -->
                 <div class="product-card" onclick="openPayModal(999, 'Roblox — 1000 Robux')">
                     <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Roblox_player_icon_black.svg/1200px-Roblox_player_icon_black.svg.png" class="product-img object-contain p-6 bg-[#e6e6e6]" alt="Roblox">
+                        <img src="https://i.imgur.com/L7k8P9w.jpg" class="product-img" alt="Roblox">
                     </div>
-                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-red-600 rounded text-center text-[10px] pt-1">R</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">Roblox</div><div class="text-gray-500">Робуксы</div></div></div><div class="flex items-center mb-1"><span class="price">999 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">1000 РОБУКСОВ МОМЕНТАЛЬНО</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 106 574</div></div>
+                    <div class="p-3"><div class="flex items-center gap-2 mb-2"><div class="w-6 h-6 bg-red-600 rounded text-center text-[10px] pt-1 font-bold">R</div><div class="text-[11px] leading-tight"><div class="font-bold text-white">Roblox</div><div class="text-gray-500">Робуксы</div></div></div><div class="flex items-center mb-1"><span class="price">999 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">1000 РОБУКСОВ МОМЕНТАЛЬНО</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 106 574</div></div>
                 </div>
                 <!-- 11. PlayStation -->
                 <div class="product-card" onclick="openPayModal(575, 'PlayStation — EA SPORTS FC 27')">
                     <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg" class="product-img object-contain p-8 bg-blue-900" alt="PS">
+                        <img src="https://i.imgur.com/1W2s3fD.jpg" class="product-img" alt="PS">
                     </div>
                     <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg" class="w-6 h-6 rounded bg-blue-900"><div class="text-[11px] leading-tight"><div class="font-bold text-white">PlayStation</div><div class="text-gray-500">Игры</div></div></div><div class="flex items-center mb-1"><span class="price">575 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">PlayStation EA SPORTS FC 27 Lite</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 1 886</div></div>
                 </div>
                 <!-- 12. ChatGPT -->
                 <div class="product-card" onclick="openPayModal(2299, 'ChatGPT Plus — 1 месяц')">
                     <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="product-img object-contain p-8 bg-emerald-900/30" alt="GPT">
+                        <img src="https://i.imgur.com/gH6jK8l.jpg" class="product-img" alt="GPT">
                         <div class="discount-badge">-23%</div>
                     </div>
                     <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="w-6 h-6 rounded"><div class="text-[11px] leading-tight"><div class="font-bold text-white">ChatGPT</div><div class="text-gray-500">Подписка</div></div></div><div class="flex items-center mb-1"><span class="price">2 299 ₽</span><span class="old-price">2 999 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">ChatGPT Плюс подписка на 1 месяц</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-circle-check text-blue-500"></i> Playerok</div></div>
@@ -248,7 +251,7 @@
                 <!-- 13. Microsoft Office -->
                 <div class="product-card" onclick="openPayModal(199, 'Microsoft Office — Лицензия')">
                     <div class="relative">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" class="product-img object-contain p-8 bg-gray-800" alt="MS">
+                        <img src="https://i.imgur.com/9c7d8K9.jpg" class="product-img" alt="MS">
                         <div class="discount-badge">-60%</div>
                     </div>
                     <div class="p-3"><div class="flex items-center gap-2 mb-2"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" class="w-6 h-6 rounded bg-gray-800 p-1"><div class="text-[11px] leading-tight"><div class="font-bold text-white">Windows</div><div class="text-gray-500">Лицензия</div></div></div><div class="flex items-center mb-1"><span class="price">199 ₽</span><span class="old-price">499 ₽</span></div><div class="text-[11px] text-gray-300 font-medium leading-tight mb-1">ЛИЦЕНЗИЯ Microsoft Office</div><div class="text-[10px] text-gray-500"><i class="fa-solid fa-star text-blue-500"></i> 37 377</div></div>
@@ -274,7 +277,7 @@
                 <span class="text-blue-400 font-medium">Войти с VK ID</span>
             </button>
             <button class="w-full bg-[#151822] border border-[#1f2330] rounded-xl flex items-center px-4 py-4 btn-active">
-                <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center mr-4"><img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" class="w-5 h-5"></div>
+                <div class="w-9 h-9 bg-white rounded-lg flex items-center justify-center mr-4"><i class="fa-brands fa-google text-red-500 text-xl"></i></div>
                 <span class="text-blue-400 font-medium">Войти через Google</span>
             </button>
             <div class="mt-4"><input type="email" placeholder="Адрес электронной почты" class="input-dark"></div>
@@ -403,4 +406,4 @@
         });
     </script>
 </body>
-                            </html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                 </html>
