@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playerok — Маркетплейс игр</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f111a;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Градиентный фон */
+        .bg-gradient {
+            background: linear-gradient(135deg, #101424 0%, #1a2035 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: #2563eb;
+            filter: blur(120px);
+            opacity: 0.3;
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .content-z {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Карточки */
+        .card {
+            background: rgba(26, 32, 53, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+
+        /* Кнопки */
+        .btn-primary {
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: #a1a1aa;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Плавающие элементы */
+        .float-icon {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка -->
+    <nav class="bg-gradient border-b border-gray-800">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center relative z-10">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-xl">P</div>
+                <span class="text-2xl font-bold tracking-tight">Playerok</span>
+            </div>
+            <div class="hidden md:flex gap-6 text-sm font-medium text-gray-400">
+                <a href="#features" class="hover:text-white transition">Возможности</a>
+                <a href="#games" class="hover:text-white transition">Игры</a>
+                <a href="#faq" class="hover:text-white transition">FAQ</a>
+            </div>
+            <a href="https://t.me/playerok" class="btn-secondary text-sm">Открыть бота</a>
+        </div>
+    </nav>
+
+    <!-- Главный экран (Hero) -->
+    <section class="bg-gradient pt-20 pb-32 relative">
+        <div class="glow top-0 left-1/2 -translate-x-1/2"></div>
+        <div class="glow bottom-0 right-0"></div>
+        
+        <div class="max-w-6xl mx-auto px-6 text-center content-z relative">
+            <div class="inline-block bg-blue-500/10 border border-blue-500/20 text-blue-400 px-4 py-2 rounded-full text-sm font-semibold mb-8">
+                🚀 Более 1 200 игр и приложений
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight tracking-tight">
+                Зарабатывай на <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">любимых играх</span>
+            </h1>
+            
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10">
+                Монетизируй игровые предметы, аккаунты, донат и цифровые товары в одном месте. Гарант, автовыплата и комиссия всего 2.5%.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://t.me/playerokmger" class="btn-primary">Начать продажу</a>
+                <a href="#features" class="btn-secondary flex items-center justify-center">Как это работает</a>
+            </div>
+
+            <!-- Мини-витрина -->
+            <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
+                <div class="card p-4 float-icon" style="animation-delay: 0s;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5969/5969076.png" alt="Roblox" class="w-12 h-12 mb-3 rounded-xl">
+                    <h3 class="font-bold text-sm">Roblox</h3>
+                    <p class="text-xs text-gray-500">Аккаунты и предметы</p>
+                </div>
+                <div class="card p-4 float-icon" style="animation-delay: 0.5s;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Steam_icon_logo.svg/1200px-Steam_icon_logo.svg.png" alt="Steam" class="w-12 h-12 mb-3 rounded-xl">
+                    <h3 class="font-bold text-sm">Steam</h3>
+                    <p class="text-xs text-gray-500">Пополнение и регионы</p>
+                </div>
+                <div class="card p-4 float-icon" style="animation-delay: 1s;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/ChatGPT_logo.svg/1200px-ChatGPT_logo.svg.png" alt="ChatGPT" class="w-12 h-12 mb-3 rounded-xl bg-white p-1">
+                    <h3 class="font-bold text-sm">ChatGPT</h3>
+                    <p class="text-xs text-gray-500">Подписки Plus</p>
+                </div>
+                <div class="card p-4 float-icon" style="animation-delay: 1.5s;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png" alt="Brawl" class="w-12 h-12 mb-3 rounded-xl">
+                    <h3 class="font-bold text-sm">Brawl Stars</h3>
+                    <p class="text-xs text-gray-500">Гемы и Pass</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Возможности -->
+    <section id="features" class="py-24 bg-[#0b0e17]">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Почему Playerok?</h2>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card p-8">
+                    <div class="w-14 h-14 bg-green-500/20 text-green-400 rounded-2xl flex items-center justify-center text-2xl mb-6">🛡</div>
+                    <h3 class="text-xl font-bold mb-3">Безопасная сделка</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Деньги замораживаются на счету сервиса. Продавец получает их только после подтверждения покупателя. Никакого кидалова.</p>
+                </div>
+                <div class="card p-8">
+                    <div class="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center text-2xl mb-6">⚡</div>
+                    <h3 class="text-xl font-bold mb-3">Автовыплата</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Средства поступают на баланс сразу после закрытия сделки. Выводи на карту, СБП или крипту в пару кликов.</p>
+                </div>
+                <div class="card p-8">
+                    <div class="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-2xl flex items-center justify-center text-2xl mb-6">📊</div>
+                    <h3 class="text-xl font-bold mb-3">Низкая комиссия</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Всего 2.5% с успешной сделки. Остальное — твое. Никаких скрытых платежей и подписок.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Калькулятор -->
+    <section class="py-24 bg-gradient border-y border-gray-800 relative">
+        <div class="glow top-1/2 left-0"></div>
+        <div class="max-w-3xl mx-auto px-6 relative z-10">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-center">Сколько вы получите?</h2>
+            <p class="text-gray-400 text-center mb-12">Узнайте, сколько средств поступит на ваш баланс после успешной сделки</p>
+            
+            <div class="card p-8 md:p-10">
+                <div class="mb-8">
+                    <div class="flex justify-between mb-2">
+                        <label class="text-gray-400 text-sm font-semibold">Цена товара</label>
+                        <span class="text-xl font-bold" id="price-display">900 ₽</span>
+                    </div>
+                    <input type="range" id="price" min="100" max="100000" value="900" class="w-full accent-blue-500 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between text-xs text-gray-500 mt-2">
+                        <span>от 100 ₽</span>
+                        <span>до 100 000 ₽</span>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <div class="flex justify-between mb-2">
+                        <label class="text-gray-400 text-sm font-semibold">Количество продаж</label>
+                        <span class="text-xl font-bold" id="qty-display">80</span>
+                    </div>
+                    <input type="range" id="qty" min="1" max="1000" value="80" class="w-full accent-blue-500 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between text-xs text-gray-500 mt-2">
+                        <span>от 1</span>
+                        <span>до 1 000</span>
+                    </div>
+                </div>
+
+                <div class="bg-[#0f111a] rounded-xl p-6 flex items-center justify-between border border-gray-800">
+                    <span class="text-gray-400 font-medium">Вы получите</span>
+                    <span class="text-3xl md:text-4xl font-extrabold text-white" id="total-display">57 600 ₽</span>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <a href="https://t.me/playerok" class="btn-primary w-full block text-center">Выставить товар</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer class="py-12 bg-[#0b0e17] text-center border-t border-gray-800">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex justify-center items-center gap-2 mb-6">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-sm">P</div>
+                <span class="text-xl font-bold">Playerok</span>
+            </div>
+            <p class="text-gray-500 text-sm mb-6">Маркетплейс игровых ценностей и цифровых товаров.</p>
+            <div class="flex justify-center gap-6 text-sm text-gray-400">
+                <a href="https://t.me/playerok" class="hover:text-white transition">Telegram</a>
+                <a href="https://t.me/playerokmger" class="hover:text-white transition">Поддержка</a>
+            </div>
+            <p class="text-gray-600 text-xs mt-8">© 2024 Playerok. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Скрипт калькулятора -->
+    <script>
+        const priceInput = document.getElementById('price');
+        const qtyInput = document.getElementById('qty');
+        const priceDisplay = document.getElementById('price-display');
+        const qtyDisplay = document.getElementById('qty-display');
+        const totalDisplay = document.getElementById('total-display');
+
+        function formatMoney(amount) {
+            return amount.toLocaleString('ru-RU') + ' ₽';
+        }
+
+        function updateCalc() {
+            const price = parseInt(priceInput.value);
+            const qty = parseInt(qtyInput.value);
+            
+            // Комиссия 2.5%
+            const commission = 0.025;
+            // Вы получаете: (цена * кол-во) - комиссия
+            const total = (price * qty) * (1 - commission);
+
+            priceDisplay.textContent = formatMoney(price);
+            qtyDisplay.textContent = qty;
+            totalDisplay.textContent = formatMoney(Math.round(total));
+        }
+
+        priceInput.addEventListener('input', updateCalc);
+        qtyInput.addEventListener('input', updateCalc);
+        
+        // Инициализация
+        updateCalc();
+    </script>
+</body>
+                      </html>
