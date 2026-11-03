@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Playerok</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        :root {
+            --bg-main: #0a0b10;
+            --bg-card: #12141c;
+            --text-main: #ffffff;
+            --text-muted: #7a8194;
+            --accent-blue: #2b9eff;
+            --accent-blue-glow: rgba(43, 158, 255, 0.2);
+            --border-color: #20232d;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, sans-serif;
+            padding-bottom: 100px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 16px 20px;
+            background: radial-gradient(circle at 50% 0%, rgba(43, 158, 255, 0.15) 0%, transparent 70%);
+        }
+        .logo-circle {
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            display: flex; justify-content: center; align-items: center;
+            margin: 0 auto 16px;
+            box-shadow: 0 0 20px var(--accent-blue-glow), inset 0 0 20px var(--accent-blue-glow);
+            font-weight: 900; font-size: 24px; color: var(--accent-blue);
+        }
+        .title { font-size: 26px; font-weight: 900; letter-spacing: 1px; margin-bottom: 4px; }
+        .subtitle { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 4px; margin-bottom: 8px; text-transform: uppercase; }
+        .desc { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+
+        .tabs {
+            display: flex; justify-content: space-around;
+            padding: 16px; border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .tab {
+            color: var(--text-muted); font-size: 11px; font-weight: 600;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            cursor: pointer; transition: color 0.2s;
+        }
+        .tab.active { color: var(--accent-blue); }
+        .tab svg { width: 20px; height: 20px; fill: currentColor; }
+
+        .page { display: none; padding: 0 16px; animation: fadeIn 0.2s; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        h3 { font-size: 20px; font-weight: 800; margin-bottom: 16px; }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .stats-big { font-size: 42px; font-weight: 900; color: var(--accent-blue); margin: 10px 0; text-shadow: 0 0 15px var(--accent-blue-glow); }
+        .stats-sub { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+        .stats-row { display: flex; gap: 12px; }
+        .stats-row .card { flex: 1; padding: 16px; }
+        .stats-row .stat-val { font-size: 24px; font-weight: 800; color: var(--accent-blue); margin-top: 4px; }
+        .stats-row .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+
+        .profile-avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            margin: 0 auto 12px;
+            box-shadow: 0 0 15px var(--accent-blue-glow);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .profile-name { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+        .profile-id { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+        .profile-grid { display: flex; gap: 12px; text-align: left; }
+        .profile-grid .card { flex: 1; padding: 16px; }
+        .warning-box {
+            background: rgba(43, 158, 255, 0.05);
+            border: 1px solid rgba(43, 158, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 12px; color: var(--accent-blue); font-weight: 500;
+            margin-top: 16px; line-height: 1.4;
+        }
+
+        .func-item {
+            display: flex; align-items: flex-start; gap: 14px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px; margin-bottom: 12px;
+        }
+        .func-icon {
+            width: 40px; height: 40px; border-radius: 12px;
+            background: rgba(43, 158, 255, 0.1); color: var(--accent-blue);
+            display: flex; justify-content: center; align-items: center; flex-shrink: 0;
+            font-size: 20px;
+        }
+        .func-text h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+        .func-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+        .rule-title { font-size: 15px; font-weight: 700; color: var(--accent-blue); margin-bottom: 8px; }
+        .rule-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+        .floating-btn {
+            position: fixed; bottom: 20px; left: 16px; right: 16px;
+            background: linear-gradient(90deg, #1a7ed9 0%, #2b9eff 100%);
+            color: white; text-decoration: none;
+            padding: 16px; border-radius: 16px;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            font-weight: 700; font-size: 15px;
+            box-shadow: 0 8px 25px rgba(43, 158, 255, 0.4);
+            z-index: 100;
+        }
+        .floating-btn:active { transform: scale(0.98); }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo-circle">P</div>
+        <div class="title">PLAYEROK</div>
+        <div class="subtitle">WEB3 ESCROW</div>
+        <div class="desc">Безопасные сделки и вывод средств 24/7</div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" id="tab-stats" onclick="switchPage('stats')">
+            <svg viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg>
+            Статистика
+        </div>
+        <div class="tab" id="tab-funcs" onclick="switchPage('funcs')">
+            <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            Функции
+        </div>
+        <div class="tab" id="tab-profile" onclick="switchPage('profile')">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            Профиль
+        </div>
+        <div class="tab" id="tab-rules" onclick="switchPage('rules')">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            Правила
+        </div>
+    </div>
+
+    <div id="page-stats" class="page active">
+        <div class="card">
+            <div class="stats-sub">Онлайн игроков в сети</div>
+            <div class="stats-big" id="online-count">152 478</div>
+            <div class="stats-sub">Web3 Ecosystem Online</div>
+        </div>
+        <div class="stats-row">
+            <div class="card">
+                <div class="stat-label">Сделок за сутки</div>
+                <div class="stat-val" id="deals-count">3 844</div>
+            </div>
+            <div class="card">
+                <div class="stat-label">Комиссия</div>
+                <div class="stat-val">3%</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-funcs" class="page">
+        <h3>Функции экосистемы</h3>
+        <div class="func-item">
+            <div class="func-icon">🛡</div>
+            <div class="func-text">
+                <h4>Smart Escrow</h4>
+                <p>Автоматическое удержание средств гарантом до подтверждения.</p>
+            </div>
+        </div>
+        <div class="func-item">
+            <div class="func-icon">💱</div>
+            <div class="func-text">
+                <h4>Crypto & Fiat Bridge</h4>
+                <p>Поддержка RUB, карт, криптовалюты TON и систем.</p>
+            </div>
+        </div>
+        <div class="func-item">
+            <div class="func-icon">🎧</div>
+            <div class="func-text">
+                <h4>Поддержка 24/7</h4>
+                <p>Арбитраж и решение споров через @cryptoironik.</p>
+            </div>
+        </div>
+        <div class="func-item">
+            <div class="func-icon">⚡️</div>
+            <div class="func-text">
+                <h4>Fast Payouts</h4>
+                <p>Моментальные выплаты по завершению условий.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-profile" class="page">
+        <h3>Профиль игрока</h3>
+        <div class="card">
+            <div class="profile-avatar">
+                <svg viewBox="0 0 24 24" width="40" height="40" fill="var(--text-main)"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            </div>
+            <div class="profile-name" id="user-name">Загрузка...</div>
+            <div class="profile-id" id="user-id">ID: ...</div>
+            <div class="profile-grid">
+                <div class="card">
+                    <div class="stat-label">Успешных сделок</div>
+                    <div class="stat-val" style="color: var(--text-muted);">0 / 3</div>
+                </div>
+                <div class="card">
+                    <div class="stat-label">Баланс</div>
+                    <div class="stat-val">0.00 RUB</div>
+                </div>
+            </div>
+            <div class="warning-box">
+                ⚠️ Для разблокировки вывода необходимо завершить минимум 3 сделки и внести залог.
+            </div>
+        </div>
+    </div>
+
+    <div id="page-rules" class="page">
+        <h3>Правила и Условия</h3>
+        <div class="card" style="text-align: left;">
+            <div class="rule-title">1. Лимит на вывод средств</div>
+            <div class="rule-text">Вывод средств с баланса бота становится доступным исключительно после совершения и успешного завершения минимум 3 сделок через гаранта.</div>
+        </div>
+        <div class="card" style="text-align: left;">
+            <div class="rule-title">2. Обязательный гарантийный залог</div>
+            <div class="rule-text">Для предотвращения мошенничества и обеспечения безопасности, перед выводом средств пользователи обязаны внести разовый гарантийный залог. Подробности уточняйте у @cryptoironik.</div>
+        </div>
+        <div class="card" style="text-align: left;">
+            <div class="rule-title">3. Запрет на накрутку сделок</div>
+            <div class="rule-text">Категорически запрещено искусственно накручивать количество сделок. При выявлении накрутки аккаунт и активы аннулируются навсегда.</div>
+        </div>
+        <div class="card" style="text-align: left;">
+            <div class="rule-title">4. Комиссия экосистемы</div>
+            <div class="rule-text">Стандартная комиссия за проведение безопасной сделки составляет фиксированные 3% от общей суммы перевода.</div>
+        </div>
+        <div class="card" style="text-align: left;">
+            <div class="rule-title">5. Ответственность и арбитраж</div>
+            <div class="rule-text">Все спорные вопросы и арбитраж решаются исключительно через официальную поддержку: @cryptoironik.</div>
+        </div>
+    </div>
+
+    <a href="https://t.me/cryptoironik" target="_blank" class="floating-btn">
+        🎧 Написать в поддержку
+    </a>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.setHeaderColor('#0a0b10');
+        tg.setBackgroundColor('#0a0b10');
+
+        let user = tg.initDataUnsafe?.user;
+        if (user) {
+            document.getElementById('user-name').innerText = user.first_name || 'Пользователь';
+            document.getElementById('user-id').innerText = 'ID: ' + user.id;
+        }
+
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('tab-' + pageId).classList.add('active');
+        }
+
+        function updateStats() {
+            let online = document.getElementById('online-count');
+            let deals = document.getElementById('deals-count');
+            let currentOnline = parseInt(online.innerText.replace(/\s/g, ''));
+            let currentDeals = parseInt(deals.innerText.replace(/\s/g, ''));
+            currentOnline += Math.floor(Math.random() * 50) - 25;
+            currentDeals += Math.floor(Math.random() * 5);
+            online.innerText = currentOnline.toLocaleString('ru-RU');
+            deals.innerText = currentDeals.toLocaleString('ru-RU');
+        }
+
+        setInterval(updateStats, 3000);
+    </script>
+</body>
+                                       </html>
