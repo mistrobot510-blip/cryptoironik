@@ -232,4 +232,463 @@
         <button class="gcard" id="cardTarget" data-act="openTarget"></button>
         <button class="swap" data-act="autoTarget" aria-label="Подобрать цель">
           <svg viewBox="0 0 24 24"><path d="M5 12 H19 M13 6 L19 12 L13 18"/></svg>
-  </button>
+        </button>
+      </div>
+
+      <div class="qrow">
+        <button class="qb" data-act="mult" data-v="2">×2</button>
+        <button class="qb" data-act="mult" data-v="3">×3</button>
+        <button class="qb" data-act="mult" data-v="4">×4</button>
+        <button class="qb" data-act="mult" data-v="5">×5</button>
+      </div>
+
+      <div class="mrow">
+        <div class="mchip">
+          <button class="mpill off" id="mPill" data-act="clearMult"><span id="mLabel">Множитель</span></button>
+          <span>⭐</span>
+        </div>
+        <div class="rangewrap"><input class="range" id="range" type="range" min="1.2" max="5" step="0.1" value="1.2"></div>
+      </div>
+
+      <div class="hint" id="hint">Введите сумму Stars или выберите подарок</div>
+
+      <button class="go" id="goBtn" data-act="go" disabled>
+        <span class="row"><svg viewBox="0 0 24 24"><path d="M6 11 L12 5 L18 11 M6 18 L12 12 L18 18"/></svg>Улучшить</span>
+        <small id="goSub">выберите ставку</small>
+      </button>
+    </section>
+
+    <!-- ===== ПРОФИЛЬ ===== -->
+    <section class="screen" id="screen-profile"></section>
+  </main>
+
+  <nav class="nav" id="nav">
+    <button class="on" data-act="nav" data-v="game">Игра</button>
+    <button data-act="nav" data-v="profile">Профиль</button>
+  </nav>
+</div>
+
+<div class="overlay" id="ov"><div class="panel" id="ovBody"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= Настройки ================= */
+const tg = window.Telegram?.WebApp;
+if (tg) { tg.ready(); tg.expand(); }
+
+const FALLBACK_IMG = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#2a3366"/><text x="50" y="55" font-size="40" text-anchor="middle" fill="#8791c2">?</text></svg>');
+
+/* Список подарков для отображения */
+const gifts = [
+  { id: 'bear', name: 'Мишка', price: 15, image: 'https://mistrobot510-blip.github.io/cryptoironik/ToyBear-32994.jpg' },
+  { id: 'heart', name: 'Сердечко', price: 25, image: 'https://mistrobot510-blip.github.io/cryptoironik/WitchHat-13759.jpg' },
+  { id: 'cake', name: 'Торт', price: 40, image: 'https://mistrobot510-blip.github.io/cryptoironik/LovePotion-16384.jpg' },
+  { id: 'ring', name: 'Кольцо', price: 100, image: 'https://mistrobot510-blip.github.io/cryptoironik/NailBracelet-46.jpg' },
+  { id: 'crown', name: 'Корона', price: 500, image: 'https://mistrobot510-blip.github.io/cryptoironik/SantaHat-67499.jpg' }
+];
+
+const multipliers = [{val: 2, chance: 50}, {val: 3, chance: 33}, {val: 4, chance: 25}, {val: 5, chance: 15}];
+const chanceTable = [[1.2, 85], [1.5, 66], [2, 50], [3, 33], [4, 25], [5, 15]];
+const MULT_MIN = 1.2, MULT_MAX = 5;
+
+function chanceFor(m) {
+  if (!m) return 0;
+  const ex = multipliers.find(x => Math.abs(x.val - m) < 1e-6);
+  if (ex) return ex.chance;
+  const t = chanceTable;
+  if (m <= t[0][0]) return t[0][1];
+  for (let i = 1; i < t.length; i++) {
+    if (m <= t[i][0]) {
+      const k = (m - t[i-1][0]) / (t[i][0] - t[i-1][0]);
+      return t[i-1][1] + (t[i][1] - t[i-1][1]) * k;
+    }
+  }
+  return t[t.length-1][1];
+}
+
+const $ = id => document.getElementById(id);
+const fmtNum = n => (Math.round(n * 10) / 10).toLocaleString('ru-RU');
+
+const state = {
+  balance: 0, inventory: [], stake: null, mult: null, target: null,
+  targetManual: false, filter: 'gift', spinning: false, sheet: null,
+  user: { id: 123456789, first_name: 'Игрок', username: '', photo_url: '' },
+  screen: 'game', stats: { games: 0, wins: 0, best: 0, history: [] }
+};
+
+let angle = 180;
+let shownChance = 0;
+
+/* Загрузка данных пользователя */
+function loadUser() {
+  const u = tg?.initDataUnsafe?.user;
+  if (u) state.user = u;
+  const el = $('hdrAva');
+  if (el) {
+    if (state.user.photo_url) {
+      el.innerHTML = `<img src="${state.user.photo_url}" alt="">`;
+    } else {
+      el.textContent = (state.user.first_name || 'И')[0].toUpperCase();
+    }
+  }
+}
+
+/* Рендер шапки */
+function renderHeader() {
+  // Убрали кнопку валюты, оставили только баланс в профиле
+}
+
+/* Рендер круга */
+function setChanceNumber(to) {
+  const from = shownChance, t0 = performance.now(), dur = 450;
+  function step(now) {
+    const k = Math.min(1, (now - t0) / dur);
+    shownChance = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3)));
+    $('chanceNum').textContent = shownChance;
+    if (k < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function renderDial() {
+  const chance = state.mult ? chanceFor(state.mult) : 0;
+  const C = 2 * Math.PI * 178.5;
+  $('arc').setAttribute('stroke-dasharray', (chance / 100 * C) + ' ' + C);
+  if (Math.round(chance) !== shownChance) setChanceNumber(Math.round(chance));
+  $('chanceNum').classList.toggle('hot', chance > 0);
+  $('dial').classList.toggle('spinning', state.spinning);
+
+  const c = $('core');
+  const t = state.target;
+  let h = '';
+  if (t) {
+    h += `<div class="core-target"><img src="${t.image}" alt=""><b>${t.name}</b><small>${fmtNum(t.price)} ⭐</small></div>`;
+  } else {
+    h += `<button class="core-plus" data-act="openTarget"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4 V20 M4 12 H20"/></svg></button><div class="core-title">Выберите цель</div>`;
+  }
+  c.innerHTML = h;
+}
+
+/* Карточки */
+function renderCards() {
+  const s = state.stake, t = state.target;
+  const plusIco = '<span class="plus"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4 V20 M4 12 H20"/></svg></span>';
+  
+  const cs = $('cardStake');
+  cs.classList.toggle('has', !!s);
+  if (s) {
+    const img = s.image || FALLBACK_IMG;
+    cs.innerHTML = `<span class="lbl">Ваша ставка</span><span class="body"><span class="plus"><img src="${img}" alt=""></span><span class="txt"><b>${s.name}</b><span class="gold">${fmtNum(s.price)} ⭐</span></span></span>`;
+  } else {
+    cs.innerHTML = `<span class="lbl">Ваша ставка</span><span class="body">${plusIco}<span class="txt"><b>Выбрать</b><span>подарок или сумму</span></span></span>`;
+  }
+  
+  const ct = $('cardTarget');
+  ct.classList.toggle('has', !!t);
+  if (t) {
+    ct.innerHTML = `<span class="lbl">Хочу получить</span><span class="body"><span class="plus"><img src="${t.image}" alt=""></span><span class="txt"><b>${t.name}</b><span class="gold">${fmtNum(t.price)} ⭐</span></span></span>`;
+  } else {
+    ct.innerHTML = `<span class="lbl">Хочу получить</span><span class="body">${plusIco}<span class="txt"><b>Выбрать</b><span>из всех подарков</span></span></span>`;
+  }
+}
+
+/* Управление */
+function renderControls() {
+  document.querySelectorAll('.qb[data-v]').forEach(b => b.classList.toggle('on', !!state.mult && Math.abs(+b.dataset.v - state.mult) < 1e-6));
+  
+  const r = $('range');
+  const v = state.mult || MULT_MIN;
+  r.value = v;
+  r.style.setProperty('--p', ((v - MULT_MIN) / (MULT_MAX - MULT_MIN) * 100) + '%');
+  $('mPill').classList.toggle('off', !state.mult);
+  $('mLabel').textContent = state.mult ? '×' + state.mult : 'Множитель';
+  r.disabled = state.spinning;
+
+  const hint = $('hint');
+  if (!state.stake) hint.innerHTML = 'Введите сумму Stars или выберите подарок';
+  else if (!state.mult) hint.innerHTML = `Ставка: <b>${state.stake.name}</b><br>Выберите множитель`;
+  else if (!state.target) hint.innerHTML = `Нет цели для ×${state.mult}<br>Выберите цель вручную`;
+  else hint.innerHTML = `<b>${state.stake.name}</b> → <b>${state.target.name}</b><br><em>×${state.mult}</em> · шанс <em>${Math.round(chanceFor(state.mult))}%</em>`;
+
+  const ok = canSpin();
+  $('goBtn').disabled = !ok;
+  let sub = 'выберите ставку';
+  if (state.spinning) sub = 'идёт апгрейд…';
+  else if (state.stake && !state.mult) sub = 'выберите множитель';
+  else if (state.stake && state.mult && !state.target) sub = 'выберите цель';
+  else if (ok) sub = `×${state.mult} · шанс ${Math.round(chanceFor(state.mult))}%`;
+  $('goSub').textContent = sub;
+}
+
+function canSpin() {
+  if (state.spinning || !state.stake || !state.mult || !state.target) return false;
+  return true;
+}
+
+function setStake(s) { state.stake = s; reconcile(); render(); }
+function setMult(m) { state.mult = m; state.targetManual = false; reconcile(); render(); }
+
+function setTarget(t) {
+  if (state.stake) {
+    const r = t.price / state.stake.price;
+    if (r < MULT_MIN - 1e-9 || r > MULT_MAX + 1e-9) { toast('Цель вне диапазона ×1.2–×5'); return false; }
+  }
+  state.target = t; state.targetManual = true; reconcile(); render(); return true;
+}
+
+function autoPickTarget() {
+  if (!state.stake || !state.mult) return null;
+  const desired = state.stake.price * state.mult;
+  const pool = gifts.filter(g => Math.abs(g.price - desired) > 0);
+  if (!pool.length) return null;
+  pool.sort((a, b) => Math.abs(a.price - desired) - Math.abs(b.price - desired));
+  return pool[0];
+}
+
+function reconcile() {
+  if (!state.stake) { state.target = null; return; }
+  if (state.targetManual && state.target) {
+    const r = state.target.price / state.stake.price;
+    if (r >= MULT_MIN - 1e-9 && r <= MULT_MAX + 1e-9) state.mult = Math.round(r * 100) / 100;
+    else { state.targetManual = false; state.target = null; }
+  }
+  if (!state.targetManual && state.mult) state.target = autoPickTarget();
+}
+
+function render() {
+  renderDial(); renderCards(); renderControls();
+  if (state.screen === 'profile') renderProfile();
+}
+
+/* Окна */
+function openOv(html, mode) {
+  const ov = $('ov'), body = $('ovBody');
+  body.className = 'panel ' + mode;
+  body.innerHTML = html;
+  ov.className = 'overlay ' + mode;
+  void ov.offsetWidth;
+  ov.classList.add('open');
+}
+function closeOv() { $('ov').classList.remove('open'); state.sheet = null; }
+function head(title) { return `<div class="grab"></div><div class="sh-head"><h3>${title}</h3><button class="x" data-act="closeSheet">✕</button></div>`; }
+function openSheet(name) { state.sheet = name; openOv(sheetHTML(name), 'sheet'); }
+
+function sheetHTML(name) {
+  if (name === 'stake') return stakeSheet();
+  if (name === 'target') return targetSheet();
+  return '';
+}
+
+function stakeSheet() {
+  let h = head('Ваша ставка');
+  h += `<p class="note">Введите сумму Stars для апгрейда или выберите подарок из инвентаря.</p>`;
+  h += `<input class="field" id="amtInput" type="number" placeholder="Сумма в ⭐" value="${state.amountDraft || ''}">`;
+  h += `<div class="chips"><button data-act="amtChip" data-v="10">10</button><button data-act="amtChip" data-v="50">50</button><button data-act="amtChip" data-v="100">100</button><button data-act="amtChip" data-v="max">МАКС</button></div>`;
+  h += `<button class="btn pri" data-act="amtConfirm" style="margin-bottom:10px">Использовать Stars</button>`;
+  h += `<p class="note" style="margin-top:10px">Или выберите подарок:</p>`;
+  if (!state.inventory.length) {
+    h += `<div class="empty">У вас пока нет подарков.</div>`;
+  } else {
+    h += `<div class="grid3">` + state.inventory.map(it => `<button class="it" data-act="pickStake" data-uid="${it.uid}"><img src="${it.image}" alt=""><b>${it.name}</b><span>${fmtNum(it.price)} ⭐</span></button>`).join('') + `</div>`;
+  }
+  return h;
+}
+
+function targetSheet() {
+  let h = head('Хочу получить');
+  h += `<div class="grid3">` + gifts.map(g => {
+    const sel = state.target && state.target.id === g.id ? ' sel' : '';
+    let dis = '';
+    if (state.stake) {
+      const r = g.price / state.stake.price;
+      if (r < MULT_MIN - 1e-9 || r > MULT_MAX + 1e-9) dis = ' dis';
+    }
+    return `<button class="it${sel}${dis}" data-act="pickTarget" data-id="${g.id}"><img src="${g.image}" alt=""><b>${g.name}</b><span>${fmtNum(g.price)} ⭐</span></button>`;
+  }).join('') + `</div>`;
+  return h;
+}
+
+/* Экраны */
+function showScreen(name) {
+  state.screen = name;
+  closeOv();
+  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id === 'screen-' + name));
+  document.querySelectorAll('#nav button').forEach(b => b.classList.toggle('on', b.dataset.v === name));
+  if (name === 'profile') renderProfile();
+  window.scrollTo(0, 0);
+}
+
+function renderProfile() {
+  const u = state.user;
+  const name = [u.first_name, u.last_name].filter(Boolean).join(' ') || 'Игрок';
+  let h = `<div class="pf-hero"><div class="pf-ava"><div class="pic" id="pfPic">?</div></div>
+    <div class="pf-name">${name}</div>
+    <div class="pf-user">${u.username ? '@' + u.username : 'без username'}</div>
+    <div class="pf-id" style="display:inline-flex; margin-top:12px; padding:8px 14px; background:rgba(255,255,255,.06); border-radius:20px; font-size:14px; font-weight:700; color:var(--soft);">ID: ${u.id}</div>
+  </div>`;
+  
+  h += `<div class="wallet"><div class="top"><span class="coin star" style="font-size:24px; width:40px; height:40px; border-radius:50%; display:grid; place-items:center; background:#f7c948; color:#000;">★</span><div><div class="big">${fmtNum(state.balance)} ⭐</div><div class="sub">Баланс</div></div></div>
+    <div class="btns"><button class="btn pri" data-act="topup">Пополнить</button><button class="btn sec" data-act="withdraw">Вывести</button></div></div>`;
+  
+  h += `<div class="stats"><div class="stat"><span>Игр сыграно</span><b>${state.stats.games}</b></div><div class="stat"><span>Побед</span><b class="g">${state.stats.wins}</b></div></div>`;
+  
+  h += `<div class="settings" style="margin-top:16px; border-radius:22px; overflow:hidden; background:linear-gradient(180deg, #1b2250, #151b44); border:1px solid var(--line2);">
+    <button class="srow" data-act="topupNft" style="display:flex; width:100%; padding:15px 16px; font-size:16px; font-weight:700; text-align:left; border-bottom:1px solid var(--line);"><span>Пополнить подарком</span></button>
+    <button class="srow" data-act="setting" style="display:flex; width:100%; padding:15px 16px; font-size:16px; font-weight:700; text-align:left;"><span>Поддержка</span></button>
+  </div>`;
+  
+  $('screen-profile').innerHTML = h;
+  const pfPic = $('pfPic');
+  if (pfPic) {
+    if (state.user.photo_url) pfPic.innerHTML = `<img src="${state.user.photo_url}" alt="">`;
+    else pfPic.textContent = (state.user.first_name || 'И')[0].toUpperCase();
+  }
+}
+
+/* Действия */
+let toastTimer;
+function toast(text) {
+  const t = $('toast');
+  t.textContent = text;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+function sendToBot(payload) {
+  if (tg) { try { tg.sendData(JSON.stringify(payload)); } catch (e) { toast('Ошибка: ' + e); } return; }
+  toast('Демо: ' + JSON.stringify(payload));
+}
+
+const actions = {
+  nav: (d) => { showScreen(d.v); },
+  topup: () => sendToBot({ action: 'topup', method: 'stars', amount: 50 }),
+  topupNft: () => sendToBot({ action: 'topup', method: 'nft' }),
+  withdraw: () => sendToBot({ action: 'withdraw' }),
+  closeSheet: () => closeOv(),
+  openStake: () => { if (!state.spinning) openSheet('stake'); },
+  openTarget: () => { if (!state.spinning) openSheet('target'); },
+  amtChip: (d) => {
+    const bal = state.balance;
+    const v = d.v === 'max' ? Math.floor(bal) : +d.v;
+    const f = $('amtInput'); if (f) f.value = v;
+    state.amountDraft = v;
+  },
+  amtConfirm: () => {
+    const raw = parseFloat(($('amtInput') || {}).value);
+    if (!(raw > 0)) { toast('Введите сумму'); return; }
+    if (raw > state.balance) { toast('Недостаточно Stars'); return; }
+    closeOv();
+    setStake({ type: 'amount', value: raw, name: raw + ' ⭐', price: raw, image: FALLBACK_IMG });
+  },
+  pickStake: (d) => {
+    const it = state.inventory.find(x => x.uid === +d.uid);
+    if (!it) return;
+    closeOv();
+    setStake({ type: 'gift', uid: it.uid, name: it.name, price: it.price, image: it.image });
+  },
+  pickTarget: (d) => {
+    const g = gifts.find(x => x.id === d.id);
+    if (!g) return;
+    if (setTarget(g)) closeOv();
+  },
+  mult: (d) => {
+    if (state.spinning) return;
+    const v = +d.v;
+    setMult(state.mult === v ? null : v);
+  },
+  clearMult: () => { if (!state.spinning && state.mult) setMult(null); },
+  autoTarget: () => {
+    if (!state.stake || !state.mult) { toast('Сначала выберите ставку и множитель'); return; }
+    state.targetManual = false; reconcile(); render();
+  },
+  go: () => upgrade(),
+  resultClose: () => { closeOv(); state.spinning = false; render(); }
+};
+
+document.addEventListener('click', function (e) {
+  if (e.target.id === 'ov') { closeOv(); return; }
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+  const fn = actions[el.dataset.act];
+  if (fn) fn(el.dataset);
+});
+
+$('range').addEventListener('input', function () {
+  if (state.spinning) return;
+  let v = Math.round(parseFloat(this.value) * 10) / 10;
+  const snap = multipliers.find(m => Math.abs(m.val - v) < 0.06);
+  if (snap) v = snap.val;
+  state.mult = v; state.targetManual = false; reconcile();
+  renderHeader(); renderDial(); renderCards(); renderControls();
+  this.style.setProperty('--p', ((v - MULT_MIN) / (MULT_MAX - MULT_MIN) * 100) + '%');
+});
+
+/* Апгрейд */
+function upgrade() {
+  if (!canSpin()) return;
+  const stake = state.stake, target = state.target, mult = state.mult;
+  const chance = chanceFor(mult);
+  state.spinning = true;
+  closeOv();
+
+  // Списание
+  if (stake.type === 'amount') state.balance = Math.max(0, state.balance - stake.value);
+  else state.inventory = state.inventory.filter(x => x.uid !== stake.uid);
+  render();
+
+  // Результат
+  const win = Math.random() * 100 < chance;
+  const dur = 3000;
+  const cur = ((angle % 360) + 360) % 360;
+  const targetAngle = win ? (Math.random() * chance * 3.6) : (chance * 3.6 + Math.random() * (360 - chance * 3.6));
+  const delta = ((targetAngle - cur) + 360) % 360;
+  angle += 360 * 6 + delta;
+
+  const p = $('pointer');
+  p.style.transition = 'none';
+  void p.getBoundingClientRect();
+  p.style.transition = `transform ${dur}ms cubic-bezier(.1,.55,.12,1)`;
+  p.style.transform = `rotate(${angle}deg)`;
+
+  setTimeout(() => {
+    $('dial').classList.add(win ? 'win' : 'lose');
+    if (win) {
+      if (target.kind === 'cash') state.balance += target.price;
+      else state.inventory.push({ uid: Date.now(), name: target.name, price: target.price, image: target.image });
+    }
+    
+    state.stats.games++;
+    if (win) state.stats.wins++;
+    state.stake = null; state.target = null; state.targetManual = false;
+    p.style.transition = 'none'; angle = ((angle % 360) + 360) % 360; p.style.transform = `rotate(${angle}deg)`;
+    render();
+
+    setTimeout(() => {
+      openOv(`<div class="res ${win ? 'win' : 'lose'}"><div class="t">${win ? 'Вы выиграли!' : 'Вы проиграли'}</div>
+        <img src="${target.image}" alt="">
+        <p>${win ? `Апгрейд <b>${stake.name}</b> → <b>${target.name}</b> успешен!` : `Не повезло: <b>${stake.name}</b> сгорел.`}</p>
+        <button class="btn pri" data-act="resultClose">Продолжить</button></div>`, 'modal');
+    }, 600);
+
+    setTimeout(() => sendToBot({ action: 'spin_result', win, multiplier: mult }), 2600);
+  }, dur + 80);
+}
+
+/* Тики */
+(function buildTicks() {
+  let h = '';
+  for (let i = 0; i < 60; i++) {
+    const a = i * 6 * Math.PI / 180, major = i % 15 === 0, mid = i % 5 === 0;
+    const r2 = 216, r1 = r2 - (major ? 10 : mid ? 7 : 4.5);
+    h += `<line x1="${(220 + r1 * Math.sin(a)).toFixed(2)}" y1="${(220 - r1 * Math.cos(a)).toFixed(2)}" x2="${(220 + r2 * Math.sin(a)).toFixed(2)}" y2="${(220 - r2 * Math.cos(a)).toFixed(2)}" stroke="rgba(170,185,255,${major ? '.55' : '.28'})" stroke-width="${major ? 2 : 1.3}" stroke-linecap="round"/>`;
+  }
+  $('ticks').innerHTML = h;
+})();
+
+/* Запуск */
+loadUser();
+render();
+</script>
+</body>
+  </html>
