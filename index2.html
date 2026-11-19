@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Gift Market</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#0a0a12;--glass:rgba(255,255,255,.06);--bord:rgba(255,255,255,.12);
+--neon:#00e5ff;--neon2:#a855f7;--text:#e8e8f0;--dim:#8a8a9e;--danger:#ff4d6d}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI',Roboto,sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;z-index:-1;
+background:radial-gradient(circle at 20% 10%,rgba(0,229,255,.12),transparent 45%),
+radial-gradient(circle at 85% 80%,rgba(168,85,247,.12),transparent 45%),var(--bg)}
+.glass{background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+border:1px solid var(--bord);border-radius:16px}
+.app{max-width:480px;margin:0 auto;padding:12px 12px 90px}
+.header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;
+position:sticky;top:8px;z-index:10}
+.logo{font-weight:800;font-size:18px}.logo span{color:var(--neon);text-shadow:0 0 12px var(--neon)}
+.balances{display:flex;gap:8px}
+.pill{padding:4px 10px;border-radius:20px;font-size:13px;font-weight:700;
+background:rgba(0,0,0,.35);border:1px solid var(--bord)}
+.pill.stars{color:#ffd166}.pill.gram{color:var(--neon)}
+.tab{display:none;animation:fade .25s ease}.tab.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px;margin-bottom:12px}
+select,input{background:rgba(0,0,0,.4);border:1px solid var(--bord);color:var(--text);
+border-radius:10px;padding:10px;font-size:14px;outline:none;width:100%}
+.filters .btn{grid-column:span 2}
+.btn{border:none;border-radius:12px;padding:12px 18px;font-size:15px;font-weight:700;
+cursor:pointer;transition:.15s}
+.btn.neon{background:linear-gradient(135deg,var(--neon),var(--neon2));color:#06060c;
+box-shadow:0 0 18px rgba(0,229,255,.35)}
+.btn.neon:active{transform:scale(.96);box-shadow:0 0 30px rgba(0,229,255,.6)}
+.btn.ghost{background:transparent;border:1px solid var(--bord);color:var(--dim)}
+.btn.wide{width:100%;margin-top:12px}.btn.buy{width:100%}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{overflow:hidden;transition:.2s}.card:active{transform:scale(.97)}
+.card-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;
+background:linear-gradient(135deg,#1a1a2e,#16162a)}
+.card-body{padding:10px}.card-name{font-weight:700;font-size:14px;margin-bottom:2px}
+.rarity{font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.rarity.common{color:var(--dim)}.rarity.rare{color:var(--neon)}
+.rarity.epic{color:var(--neon2);text-shadow:0 0 8px var(--neon2)}
+.rarity.legendary{color:#ffd166;text-shadow:0 0 10px #ffd166}
+.card-price{font-weight:800;margin:6px 0;font-size:16px}
+.card-price.stars{color:#ffd166}.card-price.gram{color:var(--neon)}
+.card-seller{font-size:11px;color:var(--dim);margin-bottom:8px}
+.card-actions{display:flex;gap:6px}.card-actions .btn{flex:1;padding:8px;font-size:13px}
+.profile-card{padding:24px 16px;text-align:center;margin-top:12px}
+.avatar{width:72px;height:72px;border-radius:50%;margin:0 auto 10px;
+background:linear-gradient(135deg,var(--neon),var(--neon2));display:flex;align-items:center;
+justify-content:center;font-size:32px;box-shadow:0 0 24px rgba(168,85,247,.4)}
+.dim{color:var(--dim);font-size:13px}
+.balance-row{display:flex;gap:10px;margin-top:14px}
+.bal-box{flex:1;padding:12px}.bal-box span{display:block;font-size:12px;color:var(--dim)}
+.bal-box b{font-size:20px}
+.section-title{margin:20px 4px 10px}
+.tx-list{display:flex;flex-direction:column;gap:8px}
+.tx{display:flex;justify-content:space-between;padding:12px 14px;font-size:13px}
+.tx .amt.pos{color:#4ade80}.tx .amt.neg{color:var(--danger)}
+.rules{padding:20px;margin-top:12px;line-height:1.6}
+.rules h3{margin-bottom:12px}
+.rules ul{padding-left:18px;margin-top:10px;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.warn{background:rgba(255,77,109,.12);border:1px solid rgba(255,77,109,.4);
+border-radius:12px;padding:12px;font-size:14px}
+.bottom-nav{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);
+width:calc(100% - 24px);max-width:456px;display:flex;justify-content:space-around;
+padding:8px 4px;z-index:20}
+.nav-btn{background:none;border:none;color:var(--dim);font-size:20px;display:flex;
+flex-direction:column;align-items:center;gap:2px;padding:6px 14px;border-radius:12px;
+cursor:pointer;transition:.15s}
+.nav-btn span{font-size:10px}
+.nav-btn.active{color:var(--neon);text-shadow:0 0 12px var(--neon)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;
+align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{width:calc(100% - 40px);max-width:380px;padding:20px}
+.modal h3{margin-bottom:14px}.modal input,.modal select{width:100%;margin-bottom:10px}
+.modal-actions{display:flex;gap:10px;margin-top:6px}.modal-actions .btn{flex:1}
+.toast{position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-20px);
+background:rgba(10,10,18,.95);border:1px solid var(--neon);color:var(--text);
+padding:12px 20px;border-radius:12px;opacity:0;pointer-events:none;transition:.3s;
+z-index:100;box-shadow:0 0 20px rgba(0,229,255,.3);max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="glass header">
+    <div class="logo">🎁 <span>Gift</span>Market</div>
+    <div class="balances">
+      <span class="pill stars" id="balStars">⭐ 0</span>
+      <span class="pill gram" id="balGram">💎 0</span>
+    </div>
+  </header>
+
+  <section class="tab active" id="tab-market">
+    <div class="filters glass">
+      <select id="fRarity">
+        <option value="">Все редкости</option>
+        <option value="common">Common</option>
+        <option value="rare">Rare</option>
+        <option value="epic">Epic</option>
+        <option value="legendary">Legendary</option>
+      </select>
+      <select id="fCurrency">
+        <option value="">Все валюты</option>
+        <option value="stars">⭐ Stars</option>
+        <option value="gram">💎 Gram</option>
+      </select>
+      <input type="number" id="fMin" placeholder="мин. цена" min="0">
+      <input type="number" id="fMax" placeholder="макс. цена" min="0">
+      <button class="btn neon" onclick="loadMarket()">Применить</button>
+    </div>
+    <div id="marketList" class="grid"></div>
+  </section>
+
+  <section class="tab" id="tab-gifts">
+    <div id="giftsList" class="grid"></div>
+  </section>
+
+  <section class="tab" id="tab-profile">
+    <div class="glass profile-card">
+      <div class="avatar">👤</div>
+      <h3 id="pName">—</h3>
+      <p id="pUsername" class="dim"></p>
+      <div class="balance-row">
+        <div class="glass bal-box"><span>⭐ Stars</span><b id="pStars">0</b></div>
+        <div class="glass bal-box"><span>💎 Gram</span><b id="pGram">0</b></div>
+      </div>
+      <button class="btn neon wide" onclick="deposit()">Пополнить баланс</button>
+    </div>
+    <h4 class="section-title">История транзакций</h4>
+    <div id="txList" class="tx-list"></div>
+  </section>
+
+  <section class="tab" id="tab-rules">
+    <div class="glass rules">
+      <h3>📜 Правила безопасности</h3>
+      <div class="warn">⚠️ <b>Никогда не передавайте подарок напрямую другому пользователю — только через гарант-бота.</b></div>
+      <ul>
+        <li>Мы <b>НИКОГДА</b> не просим пароль 2FA, коды из СМС или seed-фразу кошелька.</li>
+        <li>Авторизация только через Telegram WebApp и TON Connect.</li>
+        <li>При продаже подарок блокируется на гарант-счёте до момента покупки.</li>
+        <li>Покупка — мгновенно, средства зачисляются продавцу сразу.</li>
+        <li>Комиссия: 2% при оплате Stars, 0% при оплате Gram.</li>
+        <li>Все транзакции прозрачны и отображаются в вашем профиле.</li>
+        <li>Подозрительные сделки проходят ручную модерацию.</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="glass bottom-nav">
+    <button class="nav-btn active" onclick="switchTab('market',this)">🛍️<span>Маркет</span></button>
+    <button class="nav-btn" onclick="switchTab('gifts',this)">🎁<span>Мои подарки</span></button>
+    <button class="nav-btn" onclick="switchTab('profile',this)">👤<span>Профиль</span></button>
+    <button class="nav-btn" onclick="switchTab('rules',this)">📜<span>Правила</span></button>
+  </nav>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="glass modal">
+    <h3 id="mTitle"></h3>
+    <div id="mBody"></div>
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal()">Отмена</button>
+      <button class="btn neon" id="mConfirm">Подтвердить</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+var tg = window.Telegram ? window.Telegram.WebApp : null;
+if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor('#0a0a12'); tg.setBackgroundColor('#0a0a12'); }
+
+var TOKEN = null;
+var state = { lots: [], gifts: [] };
+
+function api(path, opts) {
+  opts = opts || {};
+  opts.headers = Object.assign({ 'Content-Type': 'application/json' },
+    TOKEN ? { Authorization: 'Bearer ' + TOKEN } : {}, opts.headers || {});
+  return fetch(path, opts).then(function (res) {
+    return res.json().then(function (data) {
+      if (!res.ok) { data.status = res.status; throw data; }
+      return data;
+    });
+  });
+}
+
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) {
+  return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(function () { t.classList.remove('show'); }, 3000);
+}
+function curIcon(c) { return c === 'stars' ? '⭐' : '💎'; }
+
+/* ---------- Auth ---------- */
+function init() {
+  api('/api/auth', { method: 'POST',
+    body: JSON.stringify({ initData: tg && tg.initData ? tg.initData : '' }) })
+  .then(function (r) {
+    TOKEN = r.token;
+    document.getElementById('pName').textContent = r.user.first_name || 'User';
+    document.getElementById('pUsername').textContent = r.user.username ? '@' + r.user.username : '';
+    refreshBalances(); loadMarket(); loadMyGifts();
+  })
+  .catch(function () { toast('Ошибка авторизации. Откройте через Telegram.'); });
+}
+
+function refreshBalances() {
+  api('/api/me').then(function (r) {
+    document.getElementById('balStars').textContent = '⭐ ' + r.user.stars_balance;
+    document.getElementById('balGram').textContent = '💎 ' + r.user.gram_balance;
+    document.getElementById('pStars').textContent = r.user.stars_balance;
+    document.getElementById('pGram').textContent = r.user.gram_balance;
+  }).catch(function () {});
+}
+
+/* ---------- Navigation ---------- */
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(function (t) { t.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(function (b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  if (tab === 'profile') loadProfile();
+  if (tab === 'gifts') loadMyGifts();
+  if (tab === 'market') loadMarket();
+}
+
+/* ---------- Market ---------- */
+function loadMarket() {
+  var q = new URLSearchParams({
+    rarity: fRarity.value, currency: fCurrency.value,
+    minPrice: fMin.value, maxPrice: fMax.value });
+  api('/api/market?' + q).then(function (lots) {
+    state.lots = lots;
+    var el = document.getElementById('marketList');
+    if (!lots.length) {
+      el.innerHTML = '<p class="dim" style="grid-column:span 2;text-align:center">Лотов не найдено</p>';
+      return;
+    }
+    el.innerHTML = lots.map(function (l) {
+      return '<div class="card glass">' +
+        '<img class="card-img" src="' + (l.image_url || 'https://placehold.co/300x300/16162a/00e5ff?text=🎁') + '">' +
+        '<div class="card-body">' +
+          '<div class="card-name">' + esc(l.name) + '</div>' +
+          '<div class="rarity ' + l.rarity + '">' + l.rarity + '</div>' +
+          '<div class="card-price ' + l.currency + '">' + curIcon(l.currency) + ' ' + l.price + '</div>' +
+          '<div class="card-seller">продавец: @' + esc(l.seller_name || 'anon') + '</div>' +
+          '<button class="btn neon buy" onclick="buyLot(' + l.id + ')">Купить</button>' +
+        '</div></div>';
+    }).join('');
+  }).catch(function () {});
+}
+
+function buyLot(id) {
+  var l = state.lots.find(function (x) { return x.id === id; });
+  openModal('Купить «' + l.name + '»?',
+    '<p>Цена: <b>' + curIcon(l.currency) + ' ' + l.price + '</b></p>' +
+    '<p class="dim">Комиссия включена. Сделка через гарант-бота.</p>',
+    function () {
+      api('/api/buy', { method: 'POST', body: JSON.stringify({ listingId: id }) })
+      .then(function (r) {
+        toast(r.message);
+        if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        closeModal(); refreshBalances(); loadMarket();
+      })
+      .catch(function (e) {
+        if (e.status === 402) {
+          closeModal();
+          toast('Не хватает ' + e.short.toFixed(2) + ' ' + curIcon(e.currency) + '. Пополните баланс.');
+          switchTab('profile', document.querySelectorAll('.nav-btn')[2]);
+        } else toast(e.error || 'Ошибка покупки');
+      });
+    });
+}
+
+/* ---------- My Gifts ---------- */
+function loadMyGifts() {
+  api('/api/my-gifts').then(function (gifts) {
+    state.gifts = gifts;
+    var el = document.getElementById('giftsList');
+    if (!gifts.length) {
+      el.innerHTML = '<p class="dim" style="grid-column:span 2;text-align:center">У вас пока нет подарков</p>';
+      return;
+    }
+    el.innerHTML = gifts.map(function (g) {
+      var actions = '';
+      if (g.status === 'held') {
+        actions = '<div class="card-actions" style="margin-top:8px">' +
+          '<button class="btn neon" onclick="sellGift(' + g.id + ')">Продать</button>' +
+          '<button class="btn ghost" onclick="transferGift(' + g.id + ')">Передать</button></div>';
+      }
+      return '<div class="card glass">' +
+        '<img class="card-img" src="' + (g.image_url || 'https://placehold.co/300x300/16162a/a855f7?text=🎁') + '">' +
+        '<div class="card-body">' +
+          '<div class="card-name">' + esc(g.name) + '</div>' +
+          '<div class="rarity ' + g.rarity + '">' + g.rarity +
+            (g.status === 'escrow' ? ' · на продаже' : '') + '</div>' + actions +
+        '</div></div>';
+    }).join('');
+  }).catch(function () {});
+}
+
+function sellGift(giftId) {
+  var g = state.gifts.find(function (x) { return x.id === giftId; });
+  openModal('Выставить «' + g.name + '» на продажу',
+    '<select id="sCur"><option value="stars">⭐ Stars</option><option value="gram">💎 Gram</option></select>' +
+    '<input id="sPrice" type="number" min="1" placeholder="Цена" inputmode="decimal">' +
+    '<p class="dim" style="font-size:12px">Подарок будет заблокирован на гарант-счёте до продажи или отмены.</p>',
+    function () {
+      api('/api/sell', { method: 'POST', body: JSON.stringify({
+        giftId: giftId, price: +document.getElementById('sPrice').value,
+        currency: document.getElementById('sCur').value }) })
+      .then(function (r) { toast(r.message); closeModal(); loadMyGifts(); })
+      .catch(function (e) { toast(e.error || 'Ошибка'); });
+    });
+}
+
+function transferGift(giftId) {
+  var g = state.gifts.find(function (x) { return x.id === giftId; });
+  openModal('Передать «' + g.name + '»',
+    '<input id="tTo" type="number" placeholder="Telegram ID получателя" inputmode="numeric">' +
+    '<div class="warn" style="font-size:12px;padding:8px">⚠️ Передача идёт <b>только через гарант-бота</b>. Прямые передачи — скам.</div>',
+    function () {
+      api('/api/transfer', { method: 'POST', body: JSON.stringify({
+        giftId: giftId, toUserId: +document.getElementById('tTo').value }) })
+      .then(function (r) { toast(r.message); closeModal(); loadMyGifts(); })
+      .catch(function (e) { toast(e.error || 'Ошибка'); });
+    });
+}
+
+/* ---------- Profile ---------- */
+function loadProfile() {
+  api('/api/me').then(function (r) {
+    var TYPES = { buy: 'Покупка', sell: 'Продажа', deposit: 'Пополнение',
+      commission: 'Комиссия', transfer_out: 'Передача' };
+    document.getElementById('txList').innerHTML = r.history.length
+      ? r.history.map(function (t) {
+          return '<div class="tx glass"><span>' + (TYPES[t.type] || t.type) +
+            (t.currency ? ' ' + curIcon(t.currency) : '') + '</span>' +
+            '<span class="amt ' + (t.amount >= 0 ? 'pos' : 'neg') + '">' +
+            (t.amount >= 0 ? '+' : '') + t.amount + '</span></div>';
+        }).join('')
+      : '<p class="dim">История пуста</p>';
+  }).catch(function () {});
+  refreshBalances();
+}
+
+function deposit() {
+  api('/api/deposit', { method: 'POST' })
+    .then(function () { toast('Инструкция по пополнению отправлена ботом.'); })
+    .catch(function () {});
+}
+
+/* ---------- Modal ---------- */
+function openModal(title, bodyHTML, onConfirm) {
+  document.getElementById('mTitle').textContent = title;
+  document.getElementById('mBody').innerHTML = bodyHTML;
+  document.getElementById('mConfirm').onclick = onConfirm;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+document.getElementById('modal').addEventListener('click', function (e) {
+  if (e.target.id === 'modal') closeModal();
+});
+
+init();
+</script>
+</body>
+  </html>
