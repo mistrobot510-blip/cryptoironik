@@ -11,12 +11,12 @@
   --bg:#060708;
   --surface:#131418;
   --sheet:#1b1d22;
-  --muted:#8f949e;
+  --muted:#a2a8b3;
   --line:rgba(255,255,255,0.08);
   --green:#34c759;
   --red:#ff453a;
 }
-*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif;color:#fff;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;overflow-x:hidden}
 .app{max-width:500px;margin:0 auto;padding:12px 14px 38px}
 
@@ -31,15 +31,15 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
 }
 .circle-ico:active{transform:translateY(2px) scale(0.95);box-shadow:0 2px 6px rgba(0,0,0,0.5),inset 0 1px 1px rgba(255,255,255,0.1)}
 
-.top-title{font-size:18px;font-weight:700;letter-spacing:-0.2px}
+.top-title{font-size:18px;font-weight:700;letter-spacing:-0.2px;color:#fff}
 .top-pill{
   height:38px;padding:0 12px;border-radius:999px;
   background:linear-gradient(180deg,#23252c 0%,#15171c 100%);
   border:1px solid rgba(255,255,255,0.14);
   box-shadow:0 6px 14px rgba(0,0,0,0.45),inset 0 1px 1px rgba(255,255,255,0.2);
-  color:#e8ecf2;display:inline-flex;align-items:center;gap:14px;font-size:15px;
+  color:#fff;display:inline-flex;align-items:center;gap:14px;font-size:15px;
 }
-.top-pill button{background:none;border:none;color:inherit;font:inherit;cursor:pointer;padding:2px 4px;transition:transform .12s ease}
+.top-pill button{background:none;border:none;color:#fff;font:inherit;cursor:pointer;padding:2px 4px;transition:transform .12s ease}
 .top-pill button:active{transform:scale(0.88)}
 
 #toast{min-height:20px;text-align:center;font-size:13px;font-weight:600;margin-bottom:8px}
@@ -50,15 +50,15 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
   border:1px solid rgba(255,255,255,0.1);
   box-shadow:0 8px 18px rgba(0,0,0,0.38),inset 0 1px 0 rgba(255,255,255,0.12);
   border-radius:16px;padding:13px 16px;margin-bottom:14px;
-  color:#f0f3f8;font-size:14px;font-weight:600;cursor:pointer;text-align:left;
+  color:#fff;font-size:14px;font-weight:600;cursor:pointer;text-align:left;
   transition:transform .14s cubic-bezier(.22,1,.36,1);
 }
 .promo-banner:active{transform:translateY(2px) scale(0.99)}
-.promo-banner span:last-child{color:var(--muted);font-size:18px}
+.promo-banner span:last-child{color:#d4dae4;font-size:18px}
 
 /* Широкая живая синяя карточка */
 .balance-card{
-  position:relative;width:100%;border-radius:28px;padding:26px 22px 24px;min-height:176px;
+  position:relative;width:100%;border-radius:28px;padding:26px 22px 24px;min-height:178px;
   background:
     radial-gradient(circle at 22% 24%, rgba(182,224,255,0.62) 0%, rgba(182,224,255,0) 48%),
     radial-gradient(circle at 82% 76%, rgba(88,166,255,0.38) 0%, rgba(88,166,255,0) 52%),
@@ -94,16 +94,16 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
 }
 
 .card-code-vert{
-  position:absolute;right:14px;top:18px;writing-mode:vertical-rl;
-  font-size:9.5px;letter-spacing:1.3px;color:rgba(255,255,255,0.56);user-select:none;
+  position:absolute;right:14px;top:16px;writing-mode:vertical-rl;
+  font-size:9.5px;letter-spacing:1.3px;color:rgba(255,255,255,0.62);user-select:none;
 }
-.bal-row{display:flex;align-items:center;justify-content:space-between;gap:14px;position:relative;z-index:1}
-.bal-left{display:flex;align-items:center;gap:14px}
+.bal-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;position:relative;z-index:1}
+.bal-left{display:flex;align-items:center;gap:14px;padding-top:2px}
 
 /* Живой бриллиантик без квадрата и рамки */
 .gem-live{
   display:inline-flex;align-items:center;justify-content:center;
-  font-size:38px;line-height:1;flex-shrink:0;
+  font-size:36px;line-height:1;flex-shrink:0;
   background:none;border:none;box-shadow:none;padding:0;
   filter:drop-shadow(0 6px 14px rgba(255,255,255,0.45)) drop-shadow(0 0 12px rgba(130,205,255,0.75));
   animation:gemAlive 3.2s ease-in-out infinite;
@@ -118,14 +118,20 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
   75%{transform:translateY(-2px) scale(1.04) rotate(-2deg)}
 }
 
-.bal-num{font-size:36px;font-weight:800;line-height:1.06;letter-spacing:-0.6px;text-shadow:0 2px 10px rgba(6,32,92,0.35)}
-.bal-usd{font-size:16px;color:rgba(255,255,255,0.84);margin-top:4px}
-.bal-handle{
-  margin-top:28px;font-size:15px;font-weight:600;
-  color:rgba(255,255,255,0.95);letter-spacing:-0.2px;position:relative;z-index:1;
+/* Аккуратная плотность надписи 0 GRAM как на скриншоте */
+.bal-num{
+  font-size:28px;font-weight:600;line-height:1.12;letter-spacing:-0.3px;
+  color:#fff;text-shadow:0 2px 8px rgba(6,32,92,0.3);
 }
+.bal-usd{font-size:15px;font-weight:500;color:rgba(255,255,255,0.88);margin-top:4px}
+.bal-handle{
+  margin-top:26px;font-size:15px;font-weight:600;
+  color:#fff;letter-spacing:-0.2px;position:relative;z-index:1;
+}
+
+/* Кнопка QR на карточке смещена чуть ниже */
 .qr-btn{
-  width:54px;height:54px;border-radius:17px;
+  width:52px;height:52px;border-radius:16px;margin-top:14px;margin-right:18px;
   background:linear-gradient(180deg,rgba(255,255,255,0.34),rgba(255,255,255,0.14));
   border:1px solid rgba(255,255,255,0.36);
   box-shadow:0 8px 18px rgba(7,37,102,0.32),0 3px 0 rgba(8,44,122,0.55),inset 0 1px 1px rgba(255,255,255,0.65);
@@ -143,7 +149,9 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
     0 12px 24px rgba(63,138,246,0.35),
     0 4px 0 #1f56b8,
     inset 0 1px 1px rgba(255,255,255,0.6);
-  color:#071324;font-size:16px;font-weight:800;cursor:pointer;
+  color:#fff;font-size:16px;font-weight:700;
+  text-shadow:0 1px 2px rgba(9,36,92,0.45);
+  cursor:pointer;
   transition:transform .14s cubic-bezier(.22,1,.36,1),box-shadow .14s ease,filter .14s ease;
 }
 .btn-3d:hover{filter:brightness(1.04);transform:translateY(-1px)}
@@ -161,7 +169,7 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
 }
 .tab{
   height:40px;border:none;border-radius:999px;background:transparent;
-  color:var(--muted);font-size:15px;font-weight:600;cursor:pointer;
+  color:#b6bcc8;font-size:15px;font-weight:600;cursor:pointer;
   transition:background .15s ease,color .15s ease,box-shadow .15s ease;
 }
 .tab.active{
@@ -187,14 +195,14 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
   box-shadow:0 10px 20px rgba(0,0,0,0.35),inset 0 1px 1px rgba(255,255,255,0.16);
   display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:14px;
 }
-.empty-title{font-size:18px;font-weight:700;margin-bottom:6px}
-.empty-sub{font-size:14px;color:var(--muted);line-height:1.45;max-width:250px}
+.empty-title{font-size:18px;font-weight:700;color:#fff;margin-bottom:6px}
+.empty-sub{font-size:14px;color:#b2b8c4;line-height:1.45;max-width:250px}
 
 .tx-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
 .tx-item:last-child{border-bottom:none}
-.tx-title{font-size:15px;font-weight:600}
-.tx-user{font-size:13px;color:#d0d5df;font-weight:600;margin-top:2px}
-.tx-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.tx-title{font-size:15px;font-weight:600;color:#fff}
+.tx-user{font-size:13px;color:#e5e9f0;font-weight:600;margin-top:2px}
+.tx-sub{font-size:12px;color:#b2b8c4;margin-top:2px}
 .tx-pos{color:var(--green);font-weight:700;font-size:15px}
 .tx-neg{color:var(--red);font-weight:700;font-size:15px}
 
@@ -205,13 +213,13 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
   border-radius:18px;padding:14px;text-align:center;
 }
 .nft-badge{font-size:28px;margin-bottom:6px}
-.nft-name{font-size:14px;font-weight:700}
+.nft-name{font-size:14px;font-weight:700;color:#fff}
 
 .view{display:none}
 .view.active{display:block}
 .sub-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-.sub-title{font-size:20px;font-weight:700}
-.field-lbl{font-size:12px;letter-spacing:0.6px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:8px}
+.sub-title{font-size:20px;font-weight:700;color:#fff}
+.field-lbl{font-size:12px;letter-spacing:0.6px;text-transform:uppercase;color:#c2c8d4;font-weight:700;margin-bottom:8px}
 .input-wrap{position:relative;margin-bottom:18px}
 .inp{
   width:100%;height:52px;border-radius:16px;
@@ -219,17 +227,18 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
   border:1px solid var(--line);box-shadow:inset 0 2px 6px rgba(0,0,0,0.45);
   color:#fff;font-size:16px;padding:0 74px 0 16px;outline:none;
 }
+.inp::placeholder{color:#9ca3b0}
 .inp:focus{border-color:#5b9eff}
 .max-btn{
   position:absolute;right:10px;top:50%;transform:translateY(-50%);
-  height:32px;padding:0 12px;border-radius:10px;border:1px solid rgba(123,184,255,0.35);
-  background:linear-gradient(180deg,rgba(123,184,255,0.28),rgba(79,149,247,0.16));
-  box-shadow:0 3px 8px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.25);
-  color:#8cc0ff;font-size:12px;font-weight:800;cursor:pointer;
+  height:32px;padding:0 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.28);
+  background:linear-gradient(180deg,rgba(123,184,255,0.34),rgba(79,149,247,0.2));
+  box-shadow:0 3px 8px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.3);
+  color:#fff;font-size:12px;font-weight:700;cursor:pointer;
 }
 .max-btn:active{transform:translateY(-50%) scale(0.94)}
-.avail-line{text-align:center;font-size:15px;color:var(--muted);margin:14px 0 22px}
-.avail-line span{color:#7bb8ff;font-weight:600}
+.avail-line{text-align:center;font-size:15px;color:#c2c8d4;margin:14px 0 22px}
+.avail-line span{color:#fff;font-weight:600}
 
 .backdrop{
   position:fixed;inset:0;background:rgba(0,0,0,0.72);backdrop-filter:blur(4px);
@@ -244,8 +253,8 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
   box-shadow:0 -12px 36px rgba(0,0,0,0.65);
 }
 .grabber{width:40px;height:4px;border-radius:2px;background:rgba(255,255,255,0.24);margin:0 auto 14px}
-.sheet-title{text-align:center;font-size:20px;font-weight:700;margin-bottom:6px}
-.sheet-sub{text-align:center;font-size:14px;color:var(--muted);margin-bottom:18px}
+.sheet-title{text-align:center;font-size:20px;font-weight:700;color:#fff;margin-bottom:6px}
+.sheet-sub{text-align:center;font-size:14px;color:#c2c8d4;margin-bottom:18px}
 .option-row{
   display:flex;align-items:center;justify-content:space-between;
   background:linear-gradient(180deg,#2b2e36 0%,#22242b 100%);
@@ -263,8 +272,8 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
   box-shadow:inset 0 1px 1px rgba(255,255,255,0.2);
   display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;
 }
-.option-t{font-size:15px;font-weight:700}
-.option-d{font-size:13px;color:var(--muted);margin-top:2px}
+.option-t{font-size:15px;font-weight:700;color:#fff}
+.option-d{font-size:13px;color:#c2c8d4;margin-top:2px}
 .sheet-cancel{
   width:100%;height:50px;border-radius:16px;
   background:linear-gradient(180deg,#2b2e36 0%,#22242b 100%);
@@ -286,7 +295,7 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
   background:#22242b;border:1px solid rgba(255,255,255,0.08);
   box-shadow:inset 0 2px 6px rgba(0,0,0,0.45);
   border-radius:14px;padding:13px 14px;font-size:13px;text-align:center;letter-spacing:0.6px;
-  color:#e5e8ee;margin-bottom:16px;word-break:break-word;
+  color:#fff;margin-bottom:16px;word-break:break-word;
 }
 </style>
 </head>
@@ -393,7 +402,7 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
           <div class="option-d" data-i18n="depCryptoSub">Перевод GRAM или TON по адресу</div>
         </div>
       </div>
-      <div style="color:var(--muted);font-size:18px">›</div>
+      <div style="color:#d4dae4;font-size:18px">›</div>
     </button>
 
     <button class="option-row" onclick="closeSheet('depositSheet'); openSheet('checkSheet');">
@@ -404,7 +413,7 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
           <div class="option-d" data-i18n="depCheckSub">Введите код чека или промокод</div>
         </div>
       </div>
-      <div style="color:var(--muted);font-size:18px">›</div>
+      <div style="color:#d4dae4;font-size:18px">›</div>
     </button>
 
     <button class="option-row" onclick="toast(t('p2pSoon'), 0)">
@@ -415,7 +424,7 @@ html,body{margin:0;padding:0;background:var(--bg);color:#fff;min-height:100vh;ov
           <div class="option-d" data-i18n="depCardSub">Покупка через проверенных партнеров</div>
         </div>
       </div>
-      <div style="color:var(--muted);font-size:18px">›</div>
+      <div style="color:#d4dae4;font-size:18px">›</div>
     </button>
 
     <button class="sheet-cancel" onclick="closeSheet('depositSheet')">Cancel</button>
