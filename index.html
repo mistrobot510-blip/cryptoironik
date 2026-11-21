@@ -2,419 +2,212 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#000000">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>Gram Wallet</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
 <style>
-:root { --bg:#000; --panel:#0e0f11; --panel2:#17181b; --line:#2a2c31; --ink:#fff; --mut:#8a8d96; --blue:#4c94f0; --blue2:#2f7ee8; --green:#43d17a; --red:#ff6b7c; --safe:env(safe-area-inset-bottom); }
-* { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html,body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,"Segoe UI",Roboto,Inter,system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
-body { min-height:100vh; overflow-x:hidden; }
-button,input { font:inherit; color:inherit; } button { border:0; background:none; cursor:pointer; }
-.i { width:24px; height:24px; flex:none; display:inline-block; vertical-align:middle; }
-#app { max-width:520px; margin:0 auto; padding:12px 14px calc(30px + var(--safe)); min-height:100vh; display:flex; flex-direction:column; }
-.glow { position:fixed; left:50%; top:210px; width:520px; height:300px; transform:translateX(-50%); background:radial-gradient(closest-side,rgba(47,126,232,.28),transparent); filter:blur(30px); pointer-events:none; z-index:-1; }
-
-/* шапка */
-.top { position:relative; display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
-.top h1 { font-size:19px; font-weight:700; margin:0; position:absolute; left:50%; transform:translateX(-50%); }
-.rbtn { height:42px; min-width:42px; border-radius:21px; background:#0f1012; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; box-shadow:inset 0 1px 0 rgba(255,255,255,.06); }
-.rbtn.pill { padding:0 4px; gap:0; } .rbtn.pill button { width:44px; height:40px; display:grid; place-items:center; }
-.rbtn:active, .rbtn button:active { opacity:.6; }
-
-/* карта */
-.card { position:relative; height:196px; border-radius:30px; padding:22px 22px 20px; overflow:hidden; color:#fff;
-  background:linear-gradient(155deg,#55adff 0%,#2a85ff 45%,#1568f2 100%); border:1px solid rgba(255,255,255,.4);
-  box-shadow:0 0 70px -6px rgba(47,126,232,.7), inset 0 2px 0 rgba(255,255,255,.45), inset 0 -20px 40px rgba(0,60,200,.25); }
-.card::before { content:""; position:absolute; inset:0; background:radial-gradient(120% 70% at 10% -10%,rgba(255,255,255,.35),transparent 55%); }
-.card::after { content:""; position:absolute; top:-40%; bottom:-40%; width:40%; left:-60%; background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent); transform:skewX(-18deg); animation:sweep 5s ease-in-out infinite; }
-@keyframes sweep { 55%,100% { left:130%; } }
-.card > * { position:relative; z-index:1; }
-.bal { display:flex; align-items:center; gap:12px; margin-top:44px; }
-.bal .gem { width:40px; height:40px; filter:drop-shadow(0 2px 6px rgba(0,40,160,.5)); }
-.bal b { font-size:42px; font-weight:800; letter-spacing:-.02em; line-height:1; }
-.bal span { font-size:28px; font-weight:700; color:rgba(220,235,255,.72); margin-left:-4px; }
-.usd { font-size:16px; font-weight:600; color:rgba(255,255,255,.82); margin:6px 0 0 52px; }
-.holder { position:absolute !important; left:22px; bottom:18px; font-size:18px; font-weight:800; letter-spacing:.05em; max-width:52%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.qrbtn { position:absolute !important; right:50px; top:50%; margin-top:-16px; width:58px; height:58px; border-radius:18px; background:rgba(255,255,255,.3); border:1px solid rgba(255,255,255,.5); display:grid; place-items:center; backdrop-filter:blur(6px); box-shadow:0 8px 20px -8px rgba(0,40,160,.6), inset 0 1px 0 rgba(255,255,255,.6); }
-.qrbtn:active { transform:scale(.94); }
-.vcode { position:absolute !important; right:16px; top:20px; display:flex; gap:4px; }
-.vcode span { writing-mode:vertical-rl; font:600 11px/1.1 ui-monospace,Menlo,monospace; letter-spacing:.12em; color:rgba(255,255,255,.4); }
-
-/* кнопки */
-.actions { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; }
-.pbtn { height:54px; border-radius:27px; font-size:18px; font-weight:700; color:#fff; background:linear-gradient(180deg,#63a8f6,#4a90ea); border:1px solid rgba(255,255,255,.18);
-  box-shadow:0 0 28px -4px rgba(76,148,240,.55), inset 0 1px 0 rgba(255,255,255,.35); transition:transform .1s, opacity .15s; }
-.pbtn:active { transform:scale(.97); opacity:.9; } .pbtn:disabled { opacity:.45; }
-.seg { display:flex; padding:4px; border-radius:30px; background:#0c0d0f; border:1px solid var(--line); margin-bottom:14px; }
-.seg button { flex:1; height:50px; border-radius:26px; font-size:17px; font-weight:700; color:#6e7178; border:1px solid transparent; transition:.2s; }
-.seg button.on { background:#3a3b40; color:#fff; border-color:#55575d; box-shadow:inset 0 1px 0 rgba(255,255,255,.14); }
-.empty { text-align:center; padding:44px 24px 48px; border-radius:30px; background:#0b0c0e; border:1px solid #202226; }
-.empty .ic { width:68px; height:68px; margin:0 auto 18px; border-radius:50%; background:#17181b; border:1px solid #2a2c31; display:grid; place-items:center; }
-.empty h3 { margin:0 0 8px; font-size:19px; font-weight:700; } .empty p { margin:0; font-size:15px; color:#777a82; line-height:1.4; }
-.list { border-radius:30px; background:#0b0c0e; border:1px solid #202226; overflow:hidden; }
-.tx { display:flex; align-items:center; gap:12px; padding:14px 16px; border-bottom:1px solid #1b1d20; } .tx:last-child { border:0; }
-.tx .ti { width:42px; height:42px; border-radius:14px; background:#17181b; border:1px solid #2a2c31; display:grid; place-items:center; flex:none; }
-.tx .tt { flex:1; min-width:0; } .tx .tt b { display:block; font-size:15.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .tx .tt small { color:#7b7e86; font-size:12.5px; }
-.tx .ta { font-weight:700; font-size:16px; white-space:nowrap; } .pos { color:var(--green); } .st { color:#e0b04a; font-size:12px; font-weight:600; }
-
-/* экран отправки */
-.lbl { font-size:14px; font-weight:800; letter-spacing:.06em; color:#8a8d96; margin:22px 4px 10px; text-transform:uppercase; }
-.field { height:60px; border-radius:30px; background:#141517; border:1px solid #2c2e33; display:flex; align-items:center; padding:0 16px 0 24px; gap:10px; box-shadow:inset 0 2px 8px rgba(0,0,0,.4); }
-.field:focus-within { border-color:var(--blue); box-shadow:0 0 0 3px rgba(76,148,240,.2); }
-.field input { flex:1; min-width:0; background:none; border:0; outline:0; font-size:19px; }
-.field input::placeholder { color:#6a6d74; }
-.chip { height:40px; padding:0 18px; border-radius:20px; background:#1c2a40; color:#5aa2f6; font-weight:800; font-size:16px; }
-.avail { text-align:center; margin:44px 0 0; color:#8a8d96; font-size:18px; } .avail b { color:var(--blue); }
-.note { text-align:center; color:#9a9ea6; font-size:13.5px; line-height:1.45; margin:16px 10px 0; }
-.spacer { flex:1; }
-.bottom { position:sticky; bottom:calc(12px + var(--safe)); padding-top:16px; }
-.bottom .pbtn { width:100%; height:58px; border-radius:29px; font-size:19px; }
-
-/* шторки */
-.backdrop { position:fixed; inset:0; z-index:20; background:rgba(0,0,0,.62); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); animation:fade .2s; }
-@keyframes fade { from { opacity:0; } }
-.sheet { position:fixed; left:0; right:0; bottom:0; z-index:21; max-width:520px; margin:0 auto; padding:10px 18px calc(20px + var(--safe)); border-radius:32px 32px 0 0; background:#1c1d21; border:1px solid #2c2e33; border-bottom:0;
-  box-shadow:0 -20px 60px -20px rgba(47,126,232,.35); animation:rise .3s cubic-bezier(.2,.9,.3,1); max-height:94vh; overflow-y:auto; }
-@keyframes rise { from { transform:translateY(100%); } }
-.sheet::before { content:""; display:block; width:42px; height:5px; border-radius:5px; background:#4a4c52; margin:0 auto 18px; }
-.sheet h2 { text-align:center; font-size:23px; font-weight:800; margin:0 0 8px; }
-.sheet .sub { text-align:center; color:#8a8d96; font-size:16px; line-height:1.4; margin:0 6px 22px; }
-.row { display:flex; align-items:center; gap:16px; width:100%; text-align:left; padding:16px 18px; margin-bottom:14px; border-radius:28px; background:#25262a; border:1px solid #34363b; transition:transform .1s; }
-.row:active { transform:scale(.98); }
-.row .ib { width:56px; height:56px; border-radius:18px; background:#303136; border:1px solid #3d3f45; display:grid; place-items:center; flex:none; }
-.row .tx2 { flex:1; min-width:0; } .row .tx2 b { display:block; font-size:19.5px; font-weight:700; line-height:1.2; } .row .tx2 small { display:block; color:#85878d; font-size:14.5px; margin-top:3px; line-height:1.3; }
-.row .chev { color:#7b7e86; }
-.xbtn { width:100%; height:58px; border-radius:29px; border:1px solid #373a40; font-size:20px; font-weight:700; margin-top:6px; background:transparent; }
-.xbtn:active { background:#25262a; }
-.qr { width:208px; height:208px; margin:0 auto 22px; padding:14px; border-radius:30px; background:#fff; box-shadow:0 0 50px -8px rgba(76,148,240,.6); } .qr svg { width:100%; height:100%; display:block; }
-.addr { padding:16px 18px; border-radius:24px; background:#232428; border:1px solid #303236; font:600 16.5px/1.5 ui-monospace,Menlo,monospace; letter-spacing:.04em; text-align:center; word-break:break-word; color:#dfe3ea; }
-.memo { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:12px 0 16px; padding:12px 16px; border-radius:20px; background:rgba(224,176,74,.1); border:1px solid rgba(224,176,74,.35); font-size:14px; color:#e8c277; }
-.memo b { font:700 16px ui-monospace,Menlo,monospace; color:#fff; }
-.memo button { color:var(--blue); font-weight:700; }
-.sheet .field { margin-bottom:16px; }
-.toast { position:fixed; left:50%; bottom:calc(30px + var(--safe)); transform:translateX(-50%); z-index:40; padding:13px 18px; border-radius:18px; background:#26272b; border:1px solid #3a3c42; font-size:15px; font-weight:600; max-width:92%; text-align:center; animation:pop .25s; box-shadow:0 14px 40px -10px #000; }
-@keyframes pop { from { opacity:0; transform:translate(-50%,14px); } }
-.toast.err { border-color:#ff6b7c88; } .toast.ok { border-color:#43d17a88; }
-@media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } }
-
-/* ===== v2: премиальные кнопки ===== */
-.pbtn,.row,.xbtn,.chip,.rbtn,.rbtn button,.seg button,.qrbtn { position:relative; overflow:hidden; user-select:none; -webkit-user-select:none; touch-action:manipulation; }
-.pbtn { background:linear-gradient(180deg,#7dbcff 0%,#4f98f2 46%,#2b7be6 100%); border:1px solid rgba(255,255,255,.34);
-  box-shadow:0 12px 26px -10px rgba(47,126,232,.9), 0 0 34px -8px rgba(76,148,240,.7), inset 0 1.5px 0 rgba(255,255,255,.6), inset 0 -3px 8px rgba(8,50,150,.38); text-shadow:0 1px 2px rgba(0,40,120,.45); letter-spacing:.01em; }
-.pbtn::before { content:""; position:absolute; left:2px; right:2px; top:1px; height:52%; border-radius:inherit; background:linear-gradient(rgba(255,255,255,.34),rgba(255,255,255,0)); pointer-events:none; }
-.pbtn:active { transform:scale(.97) translateY(1px); box-shadow:0 5px 14px -8px rgba(47,126,232,.9), inset 0 1.5px 0 rgba(255,255,255,.45), inset 0 -2px 6px rgba(8,50,150,.4); }
-.pbtn:disabled { opacity:.5; filter:saturate(.6); box-shadow:none; }
-.xbtn { background:linear-gradient(180deg,#26272c,#1c1d21); border:1px solid #3b3e45; box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 6px 16px -10px #000; }
-.xbtn:active { transform:scale(.98); background:#2a2b30; }
-.row { background:linear-gradient(180deg,#2b2c31,#222327); border:1px solid #3a3c42; box-shadow:inset 0 1px 0 rgba(255,255,255,.07), 0 8px 18px -12px #000; }
-.row .ib { background:linear-gradient(180deg,#3a3b41,#2b2c31); box-shadow:inset 0 1px 0 rgba(255,255,255,.1); }
-.chip { background:linear-gradient(180deg,#24395a,#1a2b46); box-shadow:inset 0 1px 0 rgba(120,180,255,.25), 0 0 16px -6px rgba(76,148,240,.6); }
-.chip:active { transform:scale(.94); }
-.rbtn { background:linear-gradient(180deg,#17181b,#0e0f11); } .rbtn:active { transform:scale(.95); }
-.seg button.on { background:linear-gradient(180deg,#46474d,#34353a); }
-.rip { position:absolute; border-radius:50%; background:rgba(255,255,255,.38); transform:scale(0); animation:rip .6s ease-out forwards; pointer-events:none; }
-@keyframes rip { to { transform:scale(1); opacity:0; } }
-
-/* карта: нажатие копирует адрес */
-.card { cursor:pointer; transition:transform .12s; } .card:active { transform:scale(.99); }
-.cp { position:absolute !important; right:16px; bottom:16px; display:flex; align-items:center; gap:6px; height:30px; padding:0 11px; border-radius:15px; background:rgba(0,0,0,.24); border:1px solid rgba(255,255,255,.28); font:600 12.5px ui-monospace,Menlo,monospace; letter-spacing:.03em; backdrop-filter:blur(6px); }
-
-/* песочные часы */
-.empty .ic { width:84px; height:84px; background:radial-gradient(circle at 50% 35%,#24262b,#141518 70%); box-shadow:0 0 30px -8px rgba(240,179,35,.35), inset 0 1px 0 rgba(255,255,255,.08); }
-.hg { overflow:visible; transform-origin:50% 60%; animation:hgSway 5s ease-in-out infinite; filter:drop-shadow(0 4px 6px rgba(0,0,0,.5)); }
-@keyframes hgSway { 50% { transform:rotate(4deg); } }
-.hg-top { animation:hgDrain 7s linear infinite; }
-@keyframes hgDrain { 0% { transform:translateY(0); opacity:1; } 88% { transform:translateY(21px); opacity:1; } 100% { transform:translateY(21px); opacity:0; } }
-.hg-bot { transform-origin:32px 53px; animation:hgFill 7s linear infinite; }
-@keyframes hgFill { 0% { transform:scaleY(.05); opacity:1; } 88% { transform:scaleY(1); opacity:1; } 100% { transform:scaleY(1); opacity:0; } }
-.hg-stream { animation:hgFlow .55s linear infinite; }
-@keyframes hgFlow { to { stroke-dashoffset:-4; } }
+:root{
+  --bg:var(--tg-theme-bg-color,#0f1115);
+  --card:var(--tg-theme-secondary-bg-color,#181b22);
+  --text:var(--tg-theme-text-color,#ffffff);
+  --hint:var(--tg-theme-hint-color,#8e95a5);
+}
+*{box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{margin:0;padding:16px;background:var(--bg);color:var(--text);min-height:100vh}
+.blue-card{
+  background:linear-gradient(135deg,#0088cc 0%,#0055ff 100%);
+  border-radius:20px;
+  padding:22px;
+  margin-bottom:16px;
+  color:#fff;
+  box-shadow:0 10px 25px rgba(0,119,255,0.3);
+}
+.blue-card .lbl{font-size:12px;letter-spacing:0.8px;opacity:0.85;text-transform:uppercase;font-weight:600}
+.blue-card .val{font-size:36px;font-weight:800;margin:6px 0 2px;letter-spacing:-0.5px}
+.blue-card .usd{font-size:15px;opacity:0.85;font-weight:500;margin-bottom:18px}
+.row{display:flex;gap:10px}
+button{
+  flex:1;
+  background:#ffffff;
+  color:#0055ff;
+  border:none;
+  border-radius:12px;
+  padding:12px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform .1s;
+}
+button:active{transform:scale(0.97)}
+button.sec{background:rgba(255,255,255,0.18);color:#fff;backdrop-filter:blur(4px)}
+.card{background:var(--card);border-radius:18px;padding:18px;margin-bottom:14px}
+.card .lbl{font-size:13px;color:var(--hint);text-transform:uppercase;font-weight:600}
+input{
+  width:100%;padding:12px;border-radius:12px;
+  border:1px solid rgba(255,255,255,0.15);
+  background:rgba(0,0,0,0.25);color:#fff;
+  font-size:15px;margin-bottom:10px;outline:none;
+}
+input::placeholder{color:rgba(255,255,255,0.6)}
+.box{display:none;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.2)}
+.box.act{display:block}
+.tx{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.tx:last-child{border-bottom:none}
+.pos{color:#34c759;font-weight:700}
+.neg{color:#ff453a;font-weight:700}
+.sub{font-size:12px;color:var(--hint);margin-top:2px}
+#msg{text-align:center;font-size:14px;font-weight:600;margin-bottom:10px;min-height:20px}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-  <linearGradient id="gGem" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bff1ff"/><stop offset=".5" stop-color="#4dc3ff"/><stop offset="1" stop-color="#1a7bff"/></linearGradient>
-  <symbol id="i-back" viewBox="0 0 24 24"><path d="m14.5 5.5-6.5 6.5 6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9.5 5.5 6.5 6.5-6.5 6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 9V6.5A2.5 2.5 0 0 1 6.5 4H9M15 4h2.5A2.5 2.5 0 0 1 20 6.5V9M20 15v2.5a2.5 2.5 0 0 1-2.5 2.5H15M9 20H6.5A2.5 2.5 0 0 1 4 17.5V15M4 12h16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
-  <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.9" fill="currentColor"/><circle cx="12" cy="12" r="1.9" fill="currentColor"/><circle cx="19" cy="12" r="1.9" fill="currentColor"/></symbol>
-  <symbol id="i-qr" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="2.2"/></symbol>
-  <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6.2 3.5h11.6l4.2 5.6L12 21 2 9.1l4.2-5.6Z" fill="url(#gGem)" stroke="#e8f8ff" stroke-width=".9" stroke-linejoin="round"/><path d="M2 9.1h20M8.4 9.1 12 3.5l3.6 5.6L12 21 8.4 9.1Z" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width=".8" stroke-linejoin="round"/></symbol>
-  <symbol id="i-gem-o" viewBox="0 0 24 24"><path d="M6.7 4.2h10.6L21 9.2 12 19.8 3 9.2l3.7-5Zm-3.7 5h18M9 9.2l3-5 3 5-3 10.6L9 9.2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
-  <symbol id="i-glass" viewBox="0 0 24 24"><path d="M6.5 3h11M6.5 21h11M8 3c0 4 2.4 5.6 4 9-1.6 3.4-4 5-4 9M16 3c0 4-2.4 5.6-4 9 1.6 3.4 4 5 4 9" fill="none" stroke="#d6dae2" stroke-width="1.8" stroke-linecap="round"/><path d="M9.2 5.2h5.6c-.4 2.2-1.5 3.2-2.8 4.6-1.3-1.4-2.4-2.4-2.8-4.6ZM9 19.6c.5-2.2 1.7-3.6 3-4.8 1.3 1.2 2.5 2.6 3 4.8H9Z" fill="#f0b323"/></symbol>
-  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3.5 8.5A2 2 0 0 1 5.5 6.5h13a2 2 0 0 1 2 2v1.7a1.8 1.8 0 0 0 0 3.6v1.7a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-1.7a1.8 1.8 0 0 0 0-3.6V8.5Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="m9.2 14.8 5.6-5.6M9.6 9.6h.01M14.4 14.4h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
-  <symbol id="i-card" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 10h18M6.5 14.5h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
-  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3.5 12h17M12 3.5c2.6 2.4 3.6 5.2 3.6 8.5s-1 6.1-3.6 8.5c-2.6-2.4-3.6-5.2-3.6-8.5s1-6.1 3.6-8.5Z" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
-  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="2.1"/><path d="M15.5 8.5V7a2.5 2.5 0 0 0-2.5-2.5H7A2.5 2.5 0 0 0 4.5 7v6A2.5 2.5 0 0 0 7 15.5h1.5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/></symbol>
-  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 5v14m0 0-5-5m5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5m0 0-5 5m5-5 5 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h3.4l2 2.2H18A2.5 2.5 0 0 1 20.5 9.7v7.8A2.5 2.5 0 0 1 18 20H6a2.5 2.5 0 0 1-2.5-2.5v-10Z" fill="none" stroke="#9aa0ab" stroke-width="1.9" stroke-linejoin="round"/></symbol>
-</defs></svg>
-<div class="glow" aria-hidden="true"></div>
-<div id="app"></div>
-<div class="backdrop" id="backdrop" hidden></div>
-<section class="sheet" id="sheet" hidden></section>
-<div class="toast" id="toast" hidden></div>
+<div id="msg"></div>
+
+<div class="blue-card">
+  <div class="lbl">Ваш баланс</div>
+  <div class="val"><span id="bal">—</span> GRAM</div>
+  <div class="usd">≈ $<span id="usd">0.00</span></div>
+  <div class="row">
+    <button onclick="tog('sBox')">Отправить</button>
+    <button class="sec" onclick="tog('cBox')">Ввести чек</button>
+  </div>
+  <div id="sBox" class="box">
+    <input id="toU" placeholder="@username или ID получателя">
+    <input id="toA" type="number" step="0.01" placeholder="Сумма GRAM">
+    <button onclick="send()">Перевести</button>
+  </div>
+  <div id="cBox" class="box">
+    <input id="pCode" placeholder="Введите код чека">
+    <button onclick="redeem()">Активировать чек</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="lbl" style="margin-bottom:8px">История операций</div>
+  <div id="list"><div class="sub">Синхронизация с сервером...</div></div>
+</div>
 
 <script>
-// ============ Gram Wallet — Telegram Mini App (один файл) ============
-const tg = window.Telegram?.WebApp;
-if (tg) { tg.ready(); tg.expand(); tg.setHeaderColor?.('#000000'); tg.setBackgroundColor?.('#000000'); tg.disableVerticalSwipes?.(); }
-// Если запускаете БЕЗ сервера — вставьте сюда адрес кошелька сервиса (иначе адрес не будет показан)
-const LOCAL_TON_ADDRESS = '';
-const NANO = 1e9;
-const $ = (s, r = document) => r.querySelector(s);
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const ic = (n, s = 24, c = '') => `<svg class="i ${c}" style="width:${s}px;height:${s}px"><use href="#i-${n}"/></svg>`;
-
-const hourglass = () => `<svg class="hg" viewBox="0 0 64 64" width="46" height="46" aria-hidden="true"><defs>
-  <linearGradient id="hgCap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6f9"/><stop offset=".55" stop-color="#b3b9c4"/><stop offset="1" stop-color="#7b818c"/></linearGradient>
-  <linearGradient id="hgGlass" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d4e8ff" stop-opacity=".6"/><stop offset=".5" stop-color="#9ac3ee" stop-opacity=".14"/><stop offset="1" stop-color="#d4e8ff" stop-opacity=".5"/></linearGradient>
-  <linearGradient id="hgSand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe28e"/><stop offset=".55" stop-color="#f6b92e"/><stop offset="1" stop-color="#d98a0c"/></linearGradient>
-  <clipPath id="hgTopClip"><path d="M18 11C18 23 28 26.5 30.2 32H33.8C36 26.5 46 23 46 11Z"/></clipPath>
-  <clipPath id="hgBotClip"><path d="M30.2 32C28 37.5 18 41 18 53H46C46 41 36 37.5 33.8 32Z"/></clipPath></defs>
-  <ellipse cx="32" cy="59" rx="17" ry="2.4" fill="#000" opacity=".5"/>
-  <g clip-path="url(#hgTopClip)"><rect class="hg-top" x="16" y="11" width="32" height="21" fill="url(#hgSand)"/></g>
-  <g clip-path="url(#hgBotClip)"><path class="hg-bot" d="M16 53C25 53 29.5 46 32 42.5 34.5 46 39 53 48 53Z" fill="url(#hgSand)"/></g>
-  <path class="hg-stream" d="M32 30.5V50" stroke="#ffd466" stroke-width="1.3" fill="none" stroke-dasharray="1.6 2.4"/>
-  <path d="M18 11C18 23 28 26.5 30.2 32 28 37.5 18 41 18 53H46C46 41 36 37.5 33.8 32 36 26.5 46 23 46 11Z" fill="url(#hgGlass)" stroke="#e9f3ff" stroke-opacity=".7" stroke-width="1.1" stroke-linejoin="round"/>
-  <path d="M21.6 14c.4 6 4 9 6.6 11.6" stroke="#fff" stroke-opacity=".8" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-  <path d="M21.4 50c.2-3.4 2.2-6 5-8.2" stroke="#fff" stroke-opacity=".4" stroke-width="1.3" stroke-linecap="round" fill="none"/>
-  <rect x="11" y="4" width="42" height="7" rx="3" fill="url(#hgCap)" stroke="#6b717c" stroke-width=".6"/>
-  <rect x="11" y="53" width="42" height="7" rx="3" fill="url(#hgCap)" stroke="#6b717c" stroke-width=".6"/>
-  <path d="M14 6.3h36M14 55.3h36" stroke="#fff" stroke-opacity=".75" stroke-width=".9" stroke-linecap="round"/></svg>`;
-const I18N = {
-  ru: {
-    title: 'Кошелёк', addrCopied: 'Адрес скопирован. Для пополнения укажите комментарий {0}', noAddr: 'Адрес кошелька сервиса не настроен.', sendCheck: 'Отправить чеком в чат', needTg: 'Доступно внутри Telegram', tx_check_out: 'Чек отправлен: {0}', send: 'Отправить', topup: 'Пополнить', txs: 'Транзакции', cols: 'Коллекции',
-    emptyTx: 'История операций пуста', emptyTxSub: 'Здесь появятся ваши пополнения и чеки', emptyCols: 'Коллекций пока нет', emptyColsSub: 'Здесь появятся ваши NFT-подарки',
-    sendTitle: 'Отправить GRAM', recipient: 'Получатель', recipientPh: '@username или адрес', amount: 'Сумма (GRAM)', max: 'MAX', available: 'Доступно:',
-    extNote: 'Вывод на внешний адрес создаёт заявку. Она обрабатывается вручную, минимум {0} GRAM.',
-    topupTitle: 'Пополнение баланса', topupSub: 'Выберите удобный способ пополнения',
-    byCrypto: 'Криптовалютой', byCryptoSub: 'Перевод GRAM или TON по адресу', byCheck: 'Активировать чек', byCheckSub: 'Ввести код чека или промокод', byCard: 'Банковская карта (P2P)', byCardSub: 'Покупка через проверенных партнёров',
-    cancel: 'Отмена', close: 'Закрыть',
-    addrTitle: 'Ваш адрес кошелька', addrSub: 'Используйте этот адрес для получения GRAM и TON', copyAddr: 'Копировать адрес', memo: 'Комментарий (обязательно)', memoWarn: 'Без комментария платёж не будет зачислен.', copy: 'Копировать', copied: 'Скопировано',
-   
-    settings: 'Настройки кошелька', lang: 'Сменить язык / Switch Language', langCur: 'Текущий: Русский (RU)', copyMy: 'Скопировать мой адрес', copyMySub: 'Для входящих переводов',
-    redeemTitle: 'Активировать чек', redeemSub: 'Введите код чека или промокод', redeemPh: 'Код', redeemBtn: 'Активировать', redeemOk: 'Чек активирован: +{0} GRAM',
-    sentOk: 'Отправлено', withdrawOk: 'Заявка на вывод создана', soon: 'Скоро будет доступно', noscan: 'Сканер доступен внутри Telegram', checking: 'Проверяем поступления…', credited: 'Зачислено: +{0} GRAM', nothing: 'Новых поступлений пока нет', check: 'Проверить поступление',
-    tx_deposit: 'Пополнение', tx_in: 'Получено от {0}', tx_out: 'Отправлено: {0}', tx_withdraw: 'Вывод: {0}', tx_check: 'Чек', tx_refund: 'Возврат', st_pending: 'в обработке', st_paid: 'выполнено', st_rejected: 'отклонено',
-    E_INSUFFICIENT: 'Недостаточно средств', E_NO_RECIPIENT: 'Получатель не найден. Он должен открыть кошелёк.', E_SELF: 'Нельзя отправить самому себе', E_BAD_INPUT: 'Проверьте данные', E_MIN_WITHDRAW: 'Сумма меньше минимальной для вывода',
-    E_CHECK_INVALID: 'Неверный код', E_CHECK_USED: 'Вы уже активировали этот код', E_CHECK_EMPTY: 'Код больше недействителен', E_UNAUTHORIZED: 'Откройте кошелёк через Telegram', E_SERVER_ERROR: 'Ошибка сервера', E_TOO_MANY_REQUESTS: 'Слишком часто, подождите',
-  },
-  en: {
-    title: 'Wallet', addrCopied: 'Address copied. Add the comment {0} when topping up', noAddr: 'The service wallet address is not configured.', sendCheck: 'Send as a check in chat', needTg: 'Available inside Telegram', tx_check_out: 'Check sent: {0}', send: 'Send', topup: 'Top up', txs: 'Transactions', cols: 'Collections',
-    emptyTx: 'No transactions yet', emptyTxSub: 'Your deposits and checks will appear here', emptyCols: 'No collections yet', emptyColsSub: 'Your NFT gifts will appear here',
-    sendTitle: 'Send GRAM', recipient: 'Recipient', recipientPh: '@username or address', amount: 'Amount (GRAM)', max: 'MAX', available: 'Available:',
-    extNote: 'A withdrawal to an external address creates a request. It is processed manually, minimum {0} GRAM.',
-    topupTitle: 'Top up balance', topupSub: 'Choose a convenient way to top up',
-    byCrypto: 'Crypto', byCryptoSub: 'Transfer GRAM or TON to the address', byCheck: 'Redeem a check', byCheckSub: 'Enter a check code or promo code', byCard: 'Bank card (P2P)', byCardSub: 'Buy through verified partners',
-    cancel: 'Cancel', close: 'Close',
-    addrTitle: 'Your wallet address', addrSub: 'Use this address to receive GRAM and TON', copyAddr: 'Copy address', memo: 'Comment (required)', memoWarn: 'Without the comment the deposit will not be credited.', copy: 'Copy', copied: 'Copied',
-   
-    settings: 'Wallet settings', lang: 'Сменить язык / Switch Language', langCur: 'Current: English (EN)', copyMy: 'Copy my address', copyMySub: 'For incoming transfers',
-    redeemTitle: 'Redeem a check', redeemSub: 'Enter a check code or promo code', redeemPh: 'Code', redeemBtn: 'Redeem', redeemOk: 'Check redeemed: +{0} GRAM',
-    sentOk: 'Sent', withdrawOk: 'Withdrawal request created', soon: 'Coming soon', noscan: 'Scanner is available inside Telegram', checking: 'Checking for deposits…', credited: 'Credited: +{0} GRAM', nothing: 'No new deposits yet', check: 'Check deposit',
-    tx_deposit: 'Deposit', tx_in: 'Received from {0}', tx_out: 'Sent: {0}', tx_withdraw: 'Withdrawal: {0}', tx_check: 'Check', tx_refund: 'Refund', st_pending: 'pending', st_paid: 'completed', st_rejected: 'rejected',
-    E_INSUFFICIENT: 'Insufficient funds', E_NO_RECIPIENT: 'Recipient not found. They must open the wallet first.', E_SELF: 'You cannot send to yourself', E_BAD_INPUT: 'Check the data', E_MIN_WITHDRAW: 'Amount is below the minimum withdrawal',
-    E_CHECK_INVALID: 'Invalid code', E_CHECK_USED: 'You already redeemed this code', E_CHECK_EMPTY: 'This code is no longer valid', E_UNAUTHORIZED: 'Open the wallet via Telegram', E_SERVER_ERROR: 'Server error', E_TOO_MANY_REQUESTS: 'Too many requests, wait a bit',
-  },
-};
-const state = { view: 'home', tab: 'tx', me: null, txs: [], cfg: {}, rate: null, local: false, lang: (tg?.initDataUnsafe?.user?.language_code || 'ru').startsWith('ru') ? 'ru' : 'en', draft: { to: '', amount: '' } };
-const t = (k, ...a) => String((I18N[state.lang][k] ?? I18N.ru[k] ?? k)).replace(/\{(\d)\}/g, (_, i) => a[i]);
-const loc = () => (state.lang === 'ru' ? 'ru-RU' : 'en-US');
-const fmtG = (n) => (n / NANO).toLocaleString(loc(), { maximumFractionDigits: 4 });
-const grp = (s) => String(s || '').replace(/\s+/g, '').match(/.{1,4}/g)?.join(' ') || '';
-
-// ---------- API: настоящий сервер, а если его нет — локальный демо-режим ----------
-async function apiReal(path, body) {
-  let r;
-  try { r = await fetch('/api' + path, { method: body ? 'POST' : 'GET', headers: { 'Content-Type': 'application/json', 'X-Init-Data': tg?.initData || '' }, body: body ? JSON.stringify(body) : undefined }); }
-  catch { throw new Error('NO_BACKEND'); }
-  if (!(r.headers.get('content-type') || '').includes('json')) throw new Error('NO_BACKEND');
-  const j = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(j.error || 'SERVER_ERROR');
-  return j;
-}
-async function api(path, body) {
-  if (!state.local) { try { return await apiReal(path, body); } catch (e) { if (e.message !== 'NO_BACKEND') throw e; state.local = true; } }
-  return Mock.call(path, body);
-}
-const Mock = (() => {
-  const KEY = 'gw_local_v1', MIN = 1 * NANO, A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  const tgu = tg?.initDataUnsafe?.user || {};
-  const mkCode = (id) => { let h = 2166136261 ^ id, s = ''; for (let i = 0; i < 32; i++) { h = Math.imul(h ^ (i + 7), 16777619) >>> 0; h ^= h >>> 13; s += A[(h >>> 0) % 32]; } return s; };
-  let S = null; try { S = JSON.parse(localStorage.getItem(KEY)); } catch {}
-  if (!S) { const id = tgu.id || 999; S = { me: { id, name: tgu.first_name || 'Wallet', username: tgu.username || null, code: mkCode(id), balance: 0 }, txs: [], redeemed: [], nid: 1 }; }
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
-  const CHECKS = { WELCOME: 5 }, USERS = { '@alice': 1001, '@bob': 1002 };
-  const tx = (type, amount, who, status) => { S.txs.unshift({ id: S.nid++, type, amount, counterparty: who || null, status: status || null, created: Math.floor(Date.now() / 1000) }); };
-  const H = {
-    '/config': () => ({ address: LOCAL_TON_ADDRESS, minWithdraw: MIN, rate: null }),
-    '/wallet': () => { if (tgu.id) { S.me.name = tgu.first_name || S.me.name; S.me.username = tgu.username || null; } return { user: S.me, txs: S.txs.slice(0, 50) }; },
-    '/lang': () => ({ ok: true }),
-    '/deposit/check': () => ({ credited: 0 }),
-    '/redeem': (b) => {
-      const code = String(b.code || '').trim().toUpperCase(), v = CHECKS[code];
-      if (!v) throw new Error('CHECK_INVALID'); if (S.redeemed.includes(code)) throw new Error('CHECK_USED');
-      S.redeemed.push(code); S.me.balance += v * NANO; tx('check', v * NANO, code); return { amount: v * NANO };
-    },
-    '/send': (b) => {
-      const amt = Math.round(Number(String(b.amount).replace(',', '.')) * NANO), to = String(b.to || '').trim().replace(/\s+/g, '');
-      if (!(amt > 0) || !to) throw new Error('BAD_INPUT');
-      if (/^[EU]Q[A-Za-z0-9_-]{46}$/.test(to)) { if (amt < MIN) throw new Error('MIN_WITHDRAW'); if (S.me.balance < amt) throw new Error('INSUFFICIENT'); S.me.balance -= amt; tx('withdraw', -amt, to.slice(0, 6) + '…' + to.slice(-4), 'pending'); return { pending: true }; }
-      const key = to.toLowerCase(); if (key === '@' + String(S.me.username).toLowerCase()) throw new Error('SELF');
-      if (!USERS[key]) throw new Error('NO_RECIPIENT'); if (S.me.balance < amt) throw new Error('INSUFFICIENT');
-      S.me.balance -= amt; tx('transfer_out', -amt, key); return { ok: true };
-    },
-  };
-  return { call(path, body) { const h = H[path]; if (!h) throw new Error('SERVER_ERROR'); const out = h(body || {}); save(); return JSON.parse(JSON.stringify(out)); } };
-})();
-
-// ---------- утилиты UI ----------
-let toastT;
-function toast(msg, kind = '') { const el = $('#toast'); el.className = 'toast ' + kind; el.textContent = msg; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (el.hidden = true), 2600); tg?.HapticFeedback?.notificationOccurred(kind === 'err' ? 'error' : 'success'); }
-const fail = (e) => toast(I18N[state.lang]['E_' + e.message] || e.message, 'err');
-const openSheet = (html) => { $('#sheet').innerHTML = html; $('#sheet').hidden = false; $('#backdrop').hidden = false; $('#sheet').scrollTop = 0; };
-const closeSheet = () => { $('#sheet').hidden = true; $('#backdrop').hidden = true; };
-$('#backdrop').onclick = closeSheet;
-async function copyText(s, msg) {
-  try { await navigator.clipboard.writeText(s); } catch { const ta = document.createElement('textarea'); ta.value = s; ta.style.cssText = 'position:fixed;opacity:0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch {} ta.remove(); }
-  toast(msg || t('copied'), 'ok');
-}
-function copyAddr() { if (!addr()) return toast(t('noAddr'), 'err'); copyText(addr(), t('addrCopied', memoOf())); }
-const memoOf = () => 'gw' + state.me.id;
-const addr = () => state.cfg.address || '';
-const isTonAddr = (s) => /^[EU]Q[A-Za-z0-9_-]{46}$/.test(String(s).replace(/\s+/g, ''));
-async function loadRate() { if (state.cfg.rate) return (state.rate = state.cfg.rate); try { const r = await fetch('https://tonapi.io/v2/rates?tokens=ton&currencies=usd'); const j = await r.json(); const p = j?.rates?.TON?.prices?.USD; if (p > 0) state.rate = p; } catch {} }
-async function refresh() { const d = await api('/wallet'); state.me = d.user; state.txs = d.txs; if (d.user.lang) state.lang = d.user.lang; }
-
-// ---------- главный экран ----------
-function renderHome() {
-  state.view = 'home'; tg?.BackButton?.hide();
-  const me = state.me, bal = me.balance;
-  const usd = bal === 0 ? '$0.00' : state.rate ? '$' + ((bal / NANO) * state.rate).toLocaleString(loc(), { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '$—';
-  const code = me.code || '', l1 = grp(code.slice(0, 16)), l2 = grp(code.slice(16, 32));
-  const body = state.tab === 'tx'
-    ? (state.txs.length ? `<div class="list">${state.txs.map(txRow).join('')}</div>` : `<div class="empty"><div class="ic">${hourglass()}</div><h3>${t('emptyTx')}</h3><p>${t('emptyTxSub')}</p></div>`)
-    : `<div class="empty"><div class="ic">${ic('folder', 34)}</div><h3>${t('emptyCols')}</h3><p>${t('emptyColsSub')}</p></div>`;
-  $('#app').innerHTML = `
-    <div class="top"><button class="rbtn" id="bk" aria-label="Back">${ic('back', 22)}</button><h1>${t('title')}</h1>
-      <div class="rbtn pill"><button id="scan" aria-label="Scan">${ic('scan', 22)}</button><button id="mn" aria-label="Menu">${ic('dots', 22)}</button></div></div>
-    <div class="card">
-      <div class="vcode"><span>${esc(l1)}</span><span>${esc(l2)}</span></div>
-      <div class="bal">${ic('gem', 40, 'gem')}<b>${fmtG(bal)}</b><span>GRAM</span></div>
-      <div class="usd">${usd}</div>
-      <button class="qrbtn" id="qr" aria-label="QR">${ic('qr', 26)}</button>
-      <div class="holder">${esc(me.username ? '@' + me.username : me.name || 'ID ' + me.id)}</div>
-      ${addr() ? `<span class="cp">${ic('copy', 14)}${esc(addr().slice(0, 4) + '…' + addr().slice(-4))}</span>` : ''}
-    </div>
-    <div class="actions"><button class="pbtn" id="tp">${t('topup')}</button><button class="pbtn" id="sd">${t('send')}</button></div>
-    <div class="seg"><button data-t="tx" class="${state.tab === 'tx' ? 'on' : ''}">${t('txs')}</button><button data-t="cols" class="${state.tab === 'cols' ? 'on' : ''}">${t('cols')}</button></div>
-    ${body}`;
-  $('#bk').onclick = () => (tg?.close ? tg.close() : history.back());
-  $('#scan').onclick = scan; $('#mn').onclick = openSettings; $('#qr').onclick = (e) => { e.stopPropagation(); openReceive(); };
-  $('.card').onclick = copyAddr; $('#tp').onclick = openTopup; $('#sd').onclick = () => renderSend();
-  document.querySelectorAll('.seg button').forEach((b) => (b.onclick = () => { state.tab = b.dataset.t; renderHome(); }));
-}
-function txRow(x) {
-  const out = x.amount < 0, who = x.counterparty || '';
-  const title = { deposit: t('tx_deposit'), transfer_in: t('tx_in', who), transfer_out: t('tx_out', who), withdraw: t('tx_withdraw', who), check: t('tx_check') + (who ? ' ' + who : ''), check_out: t('tx_check_out', who), refund: t('tx_refund') }[x.type] || x.type;
-  const icon = x.type === 'check' || x.type === 'check_out' ? 'ticket' : out ? 'up' : 'down';
-  const st = x.status ? ` · <span class="st">${t('st_' + x.status)}</span>` : '';
-  return `<div class="tx"><span class="ti" style="color:${out ? '#fff' : '#43d17a'}">${ic(icon, 20)}</span><div class="tt"><b>${esc(title)}</b><small>${new Date(x.created * 1000).toLocaleString(loc(), { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}${st}</small></div><div class="ta ${out ? '' : 'pos'}">${out ? '−' : '+'}${fmtG(Math.abs(x.amount))} GRAM</div></div>`;
+const tg = window.Telegram && window.Telegram.WebApp;
+if (tg) {
+  tg.ready();
+  tg.expand();
 }
 
-// ---------- экран отправки ----------
-function renderSend(prefill) {
-  state.view = 'send'; if (prefill) Object.assign(state.draft, prefill);
-  const bal = state.me.balance, min = state.cfg.minWithdraw || NANO;
-  $('#app').innerHTML = `
-    <div class="top" style="justify-content:flex-start;gap:14px"><button class="rbtn" id="bk" aria-label="Back">${ic('back', 22)}</button><h1 style="position:static;transform:none;font-size:24px">${t('sendTitle')}</h1></div>
-    <div class="lbl">${t('recipient')}</div>
-    <div class="field"><input id="to" placeholder="${esc(t('recipientPh'))}" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(state.draft.to)}"></div>
-    <div class="lbl">${t('amount')}</div>
-    <div class="field"><input id="am" inputmode="decimal" placeholder="0" value="${esc(state.draft.amount)}"><button class="chip" id="mx">${t('max')}</button></div>
-    <div class="avail">${t('available')} <b>${fmtG(bal)} GRAM</b></div>
-    <div class="note" id="nt" hidden>${t('extNote', min / NANO)}</div>
-    <div class="spacer"></div>
-    <div class="bottom"><button class="xbtn" id="ck" style="margin:0 0 12px">${ic('ticket', 22)}&nbsp; ${t('sendCheck')}</button><button class="pbtn" id="go">${t('send')}</button></div>`;
-  const back = () => { renderHome(); };
-  $('#bk').onclick = back; tg?.BackButton?.show();
-  const upd = () => { state.draft.to = $('#to').value; state.draft.amount = $('#am').value; $('#nt').hidden = !isTonAddr(state.draft.to); };
-  $('#to').oninput = upd; $('#am').oninput = upd; upd();
-  $('#mx').onclick = () => { $('#am').value = String(bal / NANO); upd(); };
-  $('#ck').onclick = () => { upd(); if (!tg?.switchInlineQuery) return toast(t('needTg')); tg.switchInlineQuery(String(state.draft.amount || '').replace(',', '.'), ['users', 'groups']); };
-  $('#go').onclick = async () => {
-    upd(); const b = $('#go'); b.disabled = true;
-    try { const r = await api('/send', { to: state.draft.to, amount: state.draft.amount }); state.draft = { to: '', amount: '' }; await refresh(); toast(r.pending ? t('withdrawOk') : t('sentOk'), 'ok'); renderHome(); }
-    catch (e) { fail(e); b.disabled = false; }
-  };
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function tog(id){
+  document.querySelectorAll('.box').forEach(e=>{if(e.id!==id)e.classList.remove('act')});
+  document.getElementById(id).classList.toggle('act');
 }
 
-// ---------- шторки ----------
-function openTopup() {
-  openSheet(`<h2>${t('topupTitle')}</h2><p class="sub">${t('topupSub')}</p>
-    <button class="row" id="r1"><span class="ib">${ic('gem-o', 28)}</span><span class="tx2"><b>${t('byCrypto')}</b><small>${t('byCryptoSub')}</small></span><span class="chev">${ic('chev', 18)}</span></button>
-    <button class="row" id="r2"><span class="ib">${ic('ticket', 28)}</span><span class="tx2"><b>${t('byCheck')}</b><small>${t('byCheckSub')}</small></span><span class="chev">${ic('chev', 18)}</span></button>
-    <button class="row" id="r3"><span class="ib">${ic('card', 28)}</span><span class="tx2"><b>${t('byCard')}</b><small>${t('byCardSub')}</small></span><span class="chev">${ic('chev', 18)}</span></button>
-    <button class="xbtn" id="cn">${t('cancel')}</button>`);
-  $('#r1').onclick = openReceive; $('#r2').onclick = openRedeem; $('#r3').onclick = () => toast(t('soon')); $('#cn').onclick = closeSheet;
-}
-function openReceive() {
-  const a = addr(), link = `ton://transfer/${a}?text=${memoOf()}`;
-  let qr = ''; try { if (window.qrcode && a) { const q = qrcode(0, 'M'); q.addData(link); q.make(); qr = q.createSvgTag({ cellSize: 6, margin: 0, scalable: true }); } } catch {}
-  openSheet(`<h2>${t('addrTitle')}</h2><p class="sub">${t('addrSub')}</p>
-    ${qr ? `<div class="qr">${qr}</div>` : ''}
-    <div class="addr">${esc(grp(a)) || '—'}</div>
-    <div class="memo"><span>${t('memo')}<br><b>${esc(memoOf())}</b></span><button id="cm">${t('copy')}</button></div>
-    <p class="note" style="margin:0 6px 16px">${a ? t('memoWarn') : t('noAddr')}</p>
-    <button class="pbtn" id="ca" style="width:100%;height:58px;border-radius:29px;font-size:19px" ${a ? '' : 'disabled'}>${t('copyAddr')}</button>
-    <button class="xbtn" id="ck" style="margin-top:12px">${t('check')}</button>`);
-  $('#ca').onclick = () => copyText(a); $('#cm').onclick = () => copyText(memoOf());
-  $('#ck').onclick = async () => { toast(t('checking')); try { const r = await api('/deposit/check', {}); await refresh(); r.credited ? (closeSheet(), toast(t('credited', fmtG(r.credited)), 'ok'), renderHome()) : toast(t('nothing')); } catch (e) { fail(e); } };
-}
-function openRedeem(code = '') {
-  openSheet(`<h2>${t('redeemTitle')}</h2><p class="sub">${t('redeemSub')}</p>
-    <div class="field"><input id="cd" placeholder="${esc(t('redeemPh'))}" autocomplete="off" autocapitalize="characters" spellcheck="false" value="${esc(code)}"></div>
-    <button class="pbtn" id="ok" style="width:100%;height:58px;border-radius:29px;font-size:19px">${t('redeemBtn')}</button>
-    <button class="xbtn" id="cn" style="margin-top:12px">${t('cancel')}</button>`);
-  $('#cn').onclick = closeSheet;
-  $('#ok').onclick = async () => { const b = $('#ok'); b.disabled = true; try { const r = await api('/redeem', { code: $('#cd').value }); await refresh(); closeSheet(); toast(t('redeemOk', fmtG(r.amount)), 'ok'); renderHome(); } catch (e) { fail(e); b.disabled = false; } };
-}
-function openSettings() {
-  openSheet(`<h2>${t('settings')}</h2><div style="height:14px"></div>
-    <button class="row" id="lg"><span class="ib">${ic('globe', 28)}</span><span class="tx2"><b>${t('lang')}</b><small>${t('langCur')}</small></span></button>
-    <button class="row" id="cp"><span class="ib">${ic('copy', 28)}</span><span class="tx2"><b>${t('copyMy')}</b><small>${t('copyMySub')}</small></span></button>
-    <button class="xbtn" id="cl">${t('close')}</button>`);
-  $('#cl').onclick = closeSheet; $('#cp').onclick = () => copyText(addr());
-  $('#lg').onclick = async () => { state.lang = state.lang === 'ru' ? 'en' : 'ru'; api('/lang', { lang: state.lang }).catch(() => {}); closeSheet(); renderHome(); };
-}
-function scan() {
-  if (!tg?.showScanQrPopup) return toast(t('noscan'));
-  tg.showScanQrPopup({ text: '' }, (txt) => {
-    tg.closeScanQrPopup?.(); let s = String(txt || '').trim();
-    const m = s.match(/^ton:\/\/transfer\/([A-Za-z0-9_-]{48})/); if (m) s = m[1];
-    if (isTonAddr(s) || s.startsWith('@')) renderSend({ to: s }); else openRedeem(s);
-    return true;
-  });
+function msg(t,err=0){
+  const e=document.getElementById('msg');
+  e.style.color=err?'#ff453a':'#34c759';
+  e.innerText=t;
+  setTimeout(()=>{if(e.innerText===t)e.innerText=''},5000);
 }
 
-document.addEventListener('pointerdown', (e) => {
-  const b = e.target.closest('.pbtn,.row,.xbtn,.chip,.rbtn button,.seg button,.qrbtn'); if (!b || b.disabled) return;
-  const r = b.getBoundingClientRect(), d = Math.max(r.width, r.height) * 2, sp = document.createElement('span');
-  sp.className = 'rip'; sp.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - r.left - d / 2}px;top:${e.clientY - r.top - d / 2}px`;
-  b.appendChild(sp); setTimeout(() => sp.remove(), 650); tg?.HapticFeedback?.impactOccurred('light');
-}, { passive: true });
-
-(async function init() {
+// Если хотите зашить адрес бэкенда прямо в HTML, впишите сюда 'https://ваш-бэкенд'
+const FIXED_API = '';
+let API = FIXED_API.replace(/\/+$/, '');
+if (!API) {
   try {
-    tg?.BackButton?.onClick?.(() => state.view === 'send' && renderHome());
-    state.cfg = await api('/config'); await refresh(); renderHome(); loadRate().then(() => state.view === 'home' && renderHome());
-  } catch (e) { $('#app').innerHTML = `<div class="empty" style="margin-top:80px"><h3>${esc(I18N[state.lang]['E_' + e.message] || 'Error')}</h3><p>Open the wallet from the Telegram bot.</p></div>`; }
+    const cand = (new URLSearchParams(location.search).get('api') || sessionStorage.getItem('gw_api') || '').replace(/\/+$/, '');
+    if (/^https:\/\//i.test(cand)) {
+      API = cand;
+      sessionStorage.setItem('gw_api', API);
+    }
+  } catch (e) {}
+}
+
+async function api(u, b = null) {
+  if (!API) {
+    throw new Error('Не задан адрес сервера API (?api=https://...). Запустите бэкенд с HTTPS и передайте API_URL.');
+  }
+  let r;
+  try {
+    r = await fetch(API + u, {
+      method: b ? 'POST' : 'GET',
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Init-Data': (tg && tg.initData) || '',
+        'ngrok-skip-browser-warning': '1',
+        'cloudflared-skip-browser-warning': '1'
+      },
+      body: b ? JSON.stringify(b) : null
+    });
+  } catch (e) {
+    throw new Error('Нет связи с сервером кошелька. Проверьте, что бэкенд запущен и доступен по HTTPS.');
+  }
+  const d = await r.json().catch(() => null);
+  if (!d) throw new Error('Сервер вернул не JSON. Проверьте адрес API.');
+  if (!r.ok) throw new Error(d.error || 'Ошибка сервера');
+  return d;
+}
+
+let lastRaw = null, loading = false;
+const fmtG = n => (n / 1e9).toLocaleString('ru-RU', { maximumFractionDigits: 4 });
+
+async function load(force = false) {
+  if (loading && !force) return;
+  loading = true;
+  try {
+    const initData = tg && tg.initData;
+    if (!initData) throw new Error('Откройте кошелёк через кнопку в боте Telegram');
+    const d = await api('/api/wallet');
+    document.getElementById('bal').innerText = d.balance;
+    document.getElementById('usd').innerText = d.usd;
+    if (lastRaw !== null && d.balance_raw > lastRaw) {
+      msg('💰 Баланс пополнен: +' + fmtG(d.balance_raw - lastRaw) + ' GRAM');
+    }
+    lastRaw = d.balance_raw;
+    document.getElementById('list').innerHTML = d.txs.length
+      ? d.txs.map(t => {
+          const when = new Date(t.ts * 1000).toLocaleString('ru-RU', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+          return `<div class="tx"><div><div>${esc(t.title)}</div><div class="sub">${esc([t.cp, when].filter(Boolean).join(' · '))}</div></div><div class="${t.raw >= 0 ? 'pos' : 'neg'}">${t.raw >= 0 ? '+' : ''}${esc(t.amt)} GRAM</div></div>`;
+        }).join('')
+      : '<div class="sub">Операций пока нет</div>';
+  } catch (e) {
+    if (lastRaw === null) {
+      document.getElementById('bal').innerText = '!';
+    }
+    document.getElementById('list').innerHTML = '<div class="sub" style="color:#ff453a">' + esc(e.message) + '</div>';
+  } finally {
+    loading = false;
+  }
+}
+
+async function send() {
+  try {
+    await api('/api/send', { to: document.getElementById('toU').value, amount: document.getElementById('toA').value });
+    msg('✅ Перевод выполнен!');
+    document.getElementById('toU').value = '';
+    document.getElementById('toA').value = '';
+    tog('sBox');
+    await load(true);
+  } catch (e) { msg(e.message, 1); }
+}
+
+async function redeem(autoCode = null) {
+  const code = autoCode || document.getElementById('pCode').value;
+  if (!code) return;
+  try {
+    const r = await api('/api/redeem', { code: code });
+    msg('🎉 Получено +' + r.amount + ' GRAM!');
+    if (!autoCode) { document.getElementById('pCode').value = ''; tog('cBox'); }
+    await load(true);
+  } catch (e) { msg(e.message, 1); await load(true); }
+}
+
+(async () => {
+  const startParam = tg && tg.initDataUnsafe && tg.initDataUnsafe.start_param;
+  if (startParam) { await redeem(startParam); } else { await load(true); }
 })();
+
+setInterval(() => { if (!document.hidden) load(); }, 3000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) load(true); });
+window.addEventListener('focus', () => { load(true); });
 </script>
 </body>
-    </html>
+</html>
